@@ -1,0 +1,124 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Build and upload Android APK to Google Play Store"
+  lane :deploy do
+    # Build the app
+    gradle(
+      task: "assembleRelease",
+      project_dir: "android"
+    )
+    
+    # Upload to Google Play Store
+    upload_to_play_store(
+      track: "internal",
+      aab: "android/app/build/outputs/bundle/release/app-release.aab",
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Build Android APK for testing"
+  lane :build_test do
+    gradle(
+      task: "assembleDebug",
+      project_dir: "android"
+    )
+  end
+
+  desc "Run tests"
+  lane :test do
+    sh("npm test -- --watchAll=false")
+  end
+
+  desc "Run linting"
+  lane :lint do
+    sh("npm run lint")
+  end
+
+  desc "Run type checking"
+  lane :typecheck do
+    sh("npm run type-check")
+  end
+end
+
+platform :ios do
+  desc "Build and upload iOS app to App Store"
+  lane :deploy do
+    # Build the app
+    build_app(
+      workspace: "ios/DosageCalculator.xcworkspace",
+      scheme: "DosageCalculator",
+      export_method: "app-store"
+    )
+    
+    # Upload to App Store
+    upload_to_app_store(
+      force: true,
+      skip_binary_upload: false,
+      skip_metadata: false,
+      skip_screenshots: false
+    )
+  end
+
+  desc "Build iOS app for testing"
+  lane :build_test do
+    build_app(
+      workspace: "ios/DosageCalculator.xcworkspace",
+      scheme: "DosageCalculator",
+      export_method: "development"
+    )
+  end
+
+  desc "Run tests"
+  lane :test do
+    sh("npm test -- --watchAll=false")
+  end
+
+  desc "Run linting"
+  lane :lint do
+    sh("npm run lint")
+  end
+
+  desc "Run type checking"
+  lane :typecheck do
+    sh("npm run type-check")
+  end
+end
+
+# Cross-platform lanes
+desc "Run all tests and checks"
+lane :ci do
+  test
+  lint
+  typecheck
+end
+
+desc "Build for both platforms"
+lane :build_all do
+  build_test(platform: :android)
+  build_test(platform: :ios)
+end
+
+desc "Deploy to both stores"
+lane :deploy_all do
+  deploy(platform: :android)
+  deploy(platform: :ios)
+end
