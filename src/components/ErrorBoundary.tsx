@@ -1,6 +1,8 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
+import { reportError } from '../services/monitoring';
 
 interface Props {
   children: ReactNode;
@@ -22,13 +24,17 @@ class ErrorBoundaryClass extends Component<Props, State> {
     return { hasError: true, error };
   }
 
+  handleReset = () => {
+    this.setState({ hasError: false, error: undefined });
+  };
+
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
-    // Send error to Sentry or other error tracking service
-    if (__DEV__) {
-      console.log('Error Info:', errorInfo);
-    }
+    // This used to only console.error, so a crash that reached the boundary was
+    // invisible in production — the very crashes worth knowing about.
+    reportError(error, {
+      boundary: 'root',
+      componentStack: errorInfo.componentStack?.slice(0, 500) ?? 'unknown',
+    });
   }
 
   render() {
@@ -37,15 +43,21 @@ class ErrorBoundaryClass extends Component<Props, State> {
         return this.props.fallback;
       }
 
-      return <ErrorFallback error={this.state.error} />;
+      return (
+        <ErrorFallback error={this.state.error} onReset={this.handleReset} />
+      );
     }
 
     return this.props.children;
   }
 }
 
-const ErrorFallback: React.FC<{ error?: Error }> = ({ error }) => {
+const ErrorFallback: React.FC<{ error?: Error; onReset: () => void }> = ({
+  error,
+  onReset,
+}) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
 
   const styles = StyleSheet.create({
     container: {
@@ -89,33 +101,30 @@ const ErrorFallback: React.FC<{ error?: Error }> = ({ error }) => {
     },
   });
 
-  const handleReload = () => {
-    // Reset error boundary state
-    window.location?.reload?.();
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bir Hata Oluştu</Text>
-      <Text style={styles.message}>
-        Uygulamada beklenmeyen bir hata oluştu. Lütfen uygulamayı yeniden başlatın.
-      </Text>
-      
+      <Text style={styles.title}>{t('errors.crashTitle')}</Text>
+      <Text style={styles.message}>{t('errors.crashMessage')}</Text>
+
       {__DEV__ && error && (
-        <Text style={styles.errorDetails}>
-          {error.message}
-        </Text>
+        <Text style={styles.errorDetails}>{error.message}</Text>
       )}
-      
-      <TouchableOpacity style={styles.button} onPress={handleReload}>
-        <Text style={styles.buttonText}>Yeniden Başlat</Text>
+
+      {/* Clears the boundary and re-mounts the tree. `window.location.reload()`
+          is a web API and was a no-op here, so this button did nothing. */}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={onReset}
+        accessibilityRole="button"
+      >
+        <Text style={styles.buttonText}>{t('errors.crashRetry')}</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 // Hook-based Error Boundary for functional components
-export const ErrorBoundary: React.FC<Props> = (props) => {
+export const ErrorBoundary: React.FC<Props> = props => {
   return <ErrorBoundaryClass {...props} />;
 };
 

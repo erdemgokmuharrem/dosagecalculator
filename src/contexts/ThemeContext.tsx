@@ -74,6 +74,21 @@ const darkTheme: Theme = {
     textSecondary: '#94a3b8',
     border: '#334155',
     disabled: '#64748b',
+    shadow: '#000000',
+
+    // Dose-safety severities re-tuned for the dark surface. Safety text must stay
+    // readable in both themes — a warning nobody can read is a warning nobody sees.
+    info: '#60a5fa',
+    infoLight: '#1e3a8a',
+    critical: '#f87171',
+    criticalLight: '#450a0a',
+    criticalText: '#fecaca',
+    warningSurface: '#451a03',
+    warningText: '#fde68a',
+    infoSurface: '#172554',
+    infoText: '#bfdbfe',
+    safeSurface: '#052e16',
+    safeText: '#86efac',
   },
 };
 

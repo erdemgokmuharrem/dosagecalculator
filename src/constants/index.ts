@@ -22,9 +22,30 @@ export const COLORS = {
   disabled: '#94a3b8',
   accent: '#06b6d4',
   accentLight: '#22d3ee',
+
+  // Referenced by MedicalDisclaimerModal and the result panel. These were missing,
+  // so those styles silently resolved to `undefined` at runtime.
+  info: '#2563eb',
+  infoLight: '#dbeafe',
+  shadow: '#0f172a',
+
+  // Dose-safety severities. Kept distinct from `error` so a capped dose reads
+  // differently from a form validation failure, and legible on both themes.
+  critical: '#b91c1c',
+  criticalLight: '#fee2e2',
+  criticalText: '#7f1d1d',
+  warningSurface: '#fef3c7',
+  warningText: '#92400e',
+  infoSurface: '#dbeafe',
+  infoText: '#1e3a8a',
+  safeSurface: '#d1fae5',
+  safeText: '#065f46',
 };
 
 // Gradient definitions
+// `as const` keeps these as fixed-length tuples. expo-linear-gradient v15 types
+// `colors` as `readonly [ColorValue, ColorValue, ...ColorValue[]]`; a plain
+// string[] does not satisfy it and every <LinearGradient> failed to type-check.
 export const GRADIENTS = {
   primary: ['#3b82f6', '#2563eb'],
   secondary: ['#8b5cf6', '#7c3aed'],
@@ -34,7 +55,10 @@ export const GRADIENTS = {
   accent: ['#06b6d4', '#0891b2'],
   surface: ['#ffffff', '#f8fafc'],
   background: ['#f8fafc', '#f1f5f9'],
-};
+} as const;
+
+/** Tuple shape accepted by expo-linear-gradient. */
+export type GradientColors = readonly [string, string, ...string[]];
 
 export const SPACING = {
   xs: 4,
@@ -73,6 +97,17 @@ export const DRUG_CATEGORIES = [
   'Corticosteroids',
   'Antiemetics',
   'Antihistamines',
+  'Oncology',
+  'Supplements',
+  'Antimicrobials',
+  'Neurology',
+  'Psychiatry',
+  'Respiratory',
+  'Gastrointestinal',
+  'Emergency',
+  'Endocrinology',
+  'Cardiovascular',
+  'Immunosuppressants',
   'Vitamins',
   'Other',
 ] as const;

@@ -1,106 +1,103 @@
 const { device, expect, element, by, waitFor } = require('detox');
 
-describe('Dosage Calculation Flow', () => {
+/**
+ * End-to-end dose calculation flow.
+ *
+ * The previous version of this spec drove a navigation flow that no longer
+ * exists (Home → "Başla" → PatientInfo → "Devam Et" → DrugSelection) and
+ * addressed testIDs that were never present in the app, so it could not have
+ * passed. It now targets the single-screen calculator and the testIDs added
+ * alongside it.
+ */
+
+const VISIBLE_TIMEOUT = 10000;
+
+const fillPatient = async ({ age, weight, height, creatinine }) => {
+  await element(by.id('age-input')).replaceText(age);
+  await element(by.id('weight-input')).replaceText(weight);
+  await element(by.id('height-input')).replaceText(height);
+  if (creatinine !== undefined) {
+    await element(by.id('creatinine-input')).replaceText(creatinine);
+  }
+};
+
+const selectFirstDrug = async query => {
+  await element(by.id('drug-search')).replaceText(query);
+  await waitFor(element(by.id('drug-item-0')))
+    .toBeVisible()
+    .withTimeout(VISIBLE_TIMEOUT);
+  await element(by.id('drug-item-0')).tap();
+};
+
+describe('Dosage calculation', () => {
   beforeAll(async () => {
-    await device.launchApp();
+    await device.launchApp({ newInstance: true });
+    // The medical disclaimer gates the app on first launch and must be accepted.
+    try {
+      await waitFor(element(by.id('disclaimer-accept')))
+        .toBeVisible()
+        .withTimeout(5000);
+      await element(by.id('disclaimer-accept')).tap();
+    } catch {
+      // Already accepted on this simulator install.
+    }
   });
 
   beforeEach(async () => {
     await device.reloadReactNative();
   });
 
-  it('should complete full dosage calculation flow', async () => {
-    // Wait for home screen to load
-    await waitFor(element(by.text('İlaç Doz Hesaplama')))
+  it('calculates a dose for a standard adult', async () => {
+    await fillPatient({ age: '30', weight: '70', height: '170' });
+    await selectFirstDrug('Paracetamol');
+
+    await waitFor(element(by.id('result-dose')))
       .toBeVisible()
-      .withTimeout(10000);
-
-    // Start calculation by tapping "Başla" button
-    await element(by.text('Başla')).tap();
-
-    // Wait for patient info screen
-    await waitFor(element(by.text('Hasta Bilgileri')))
-      .toBeVisible()
-      .withTimeout(5000);
-
-    // Fill patient information
-    await element(by.id('age-input')).typeText('30');
-    await element(by.id('weight-input')).typeText('70');
-    await element(by.id('height-input')).typeText('170');
-
-    // Select gender (male)
-    await element(by.text('Erkek')).tap();
-
-    // Select patient type (adult)
-    await element(by.text('Adult (18-64 years)')).tap();
-
-    // Submit form
-    await element(by.text('Devam Et')).tap();
-
-    // Wait for drug selection screen
-    await waitFor(element(by.text('İlaç Seç')))
-      .toBeVisible()
-      .withTimeout(5000);
-
-    // Search for a drug
-    await element(by.id('drug-search')).typeText('paracetamol');
-
-    // Select first drug from results
-    await element(by.id('drug-item-0')).tap();
-
-    // Wait for dosage calculation screen
-    await waitFor(element(by.text('Hesaplanan Doz')))
-      .toBeVisible()
-      .withTimeout(5000);
-
-    // Verify calculation result is displayed
-    await expect(element(by.id('dosage-result'))).toBeVisible();
-
-    // Save calculation
-    await element(by.text('Kaydet')).tap();
-
-    // Navigate to history
-    await element(by.text('Hesaplama Geçmişi')).tap();
-
-    // Verify calculation appears in history
-    await waitFor(element(by.id('calculation-history-item-0')))
-      .toBeVisible()
-      .withTimeout(5000);
+      .withTimeout(VISIBLE_TIMEOUT);
+    await expect(element(by.id('result-dose'))).toBeVisible();
   });
 
-  it('should validate patient information', async () => {
-    // Start calculation
-    await element(by.text('Başla')).tap();
+  it('caps the dose and warns when the single-dose ceiling is exceeded', async () => {
+    // A heavy adult on a mg/kg drug drives the calculation past maxSingleDose.
+    await fillPatient({ age: '40', weight: '150', height: '185' });
+    await selectFirstDrug('Paracetamol');
 
-    // Try to submit without filling required fields
-    await element(by.text('Devam Et')).tap();
-
-    // Should show validation error
-    await expect(element(by.text('Yaş 0\'dan büyük olmalıdır'))).toBeVisible();
+    await waitFor(element(by.id('result-dose')))
+      .toBeVisible()
+      .withTimeout(VISIBLE_TIMEOUT);
+    // The capped-dose warning is critical and must be on screen with the dose.
+    await expect(element(by.text(/SINIRLANDIRILDI|CAPPED/i))).toBeVisible();
   });
 
-  it('should handle drug search and filtering', async () => {
-    // Navigate to drug selection
-    await element(by.text('Başla')).tap();
-    
-    // Fill minimal patient info
-    await element(by.id('age-input')).typeText('30');
-    await element(by.id('weight-input')).typeText('70');
-    await element(by.id('height-input')).typeText('170');
-    await element(by.text('Devam Et')).tap();
+  it('refuses to dose a drug contraindicated at the patient’s age', async () => {
+    // Aspirin is contraindicated under 12 (Reye's syndrome); the engine must
+    // refuse rather than render a 0 mg dose.
+    await fillPatient({ age: '8', weight: '25', height: '130' });
+    await selectFirstDrug('Aspirin');
 
-    // Test drug search
-    await element(by.id('drug-search')).typeText('antibiotic');
-    
-    // Verify search results
-    await waitFor(element(by.id('drug-list')))
+    await waitFor(element(by.id('blocked-message')))
       .toBeVisible()
-      .withTimeout(5000);
+      .withTimeout(VISIBLE_TIMEOUT);
+    await expect(element(by.id('result-dose'))).not.toBeVisible();
+  });
 
-    // Test category filtering
-    await element(by.text('Antibiotics')).tap();
-    
-    // Verify filtered results
-    await expect(element(by.id('drug-list'))).toBeVisible();
+  it('rejects an implausible weight at the field', async () => {
+    await fillPatient({ age: '30', weight: '900', height: '170' });
+    await selectFirstDrug('Paracetamol');
+
+    // No dose may be produced from an out-of-range input.
+    await expect(element(by.id('result-dose'))).not.toBeVisible();
+  });
+
+  it('clears a displayed dose when the patient changes', async () => {
+    await fillPatient({ age: '30', weight: '70', height: '170' });
+    await selectFirstDrug('Paracetamol');
+    await waitFor(element(by.id('result-dose')))
+      .toBeVisible()
+      .withTimeout(VISIBLE_TIMEOUT);
+
+    // A stale dose next to edited inputs is how a wrong number gets read out.
+    await element(by.id('weight-input')).replaceText('55');
+    await expect(element(by.id('result-dose'))).not.toBeVisible();
   });
 });

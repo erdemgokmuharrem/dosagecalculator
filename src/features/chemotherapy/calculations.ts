@@ -1,155 +1,347 @@
 import { ChemotherapyDrug } from '../../data/chemotherapy';
+import type { DoseWarning } from '../../types';
+import {
+  calculateBSA as sharedCalculateBSA,
+  calculateCrCl,
+} from '../dosage/calculations';
 
-export interface ChemotherapyCalculationResult {
-  drug: ChemotherapyDrug;
-  patientInfo: {
-    weight: number;
-    height: number;
-    bsa: number;
-    age: number;
-    gender: 'male' | 'female';
-    gfr?: number;
-    auc?: number;
-  };
-  calculatedDose: {
-    dose: number;
-    unit: string;
-    method: string;
-    formula: string;
-  };
-  administration: {
-    route: string;
-    solvent: string;
-    concentration: string;
-    concentrationMgPerMl: number;
-    requiredVolumeMl: number;
-    bagVolumeMl: number;
-    finalConcentrationMgPerMl: number;
-    volume: string;
-    infusionTime: string;
-  };
-  safety: {
-    maxDose: number;
-    isWithinLimits: boolean;
-    warnings: string[];
-  };
-  monitoring: {
-    required: string[];
-    frequency: string;
-  };
-}
+/**
+ * Discriminated so a refusal cannot be rendered as though it carried a dose.
+ * The previous shape was a single object and the engine signalled failure by
+ * throwing, which the calling screen did not catch.
+ */
+export type ChemotherapyCalculationResult =
+  | {
+      status: 'success';
+      drug: ChemotherapyDrug;
+      patientInfo: {
+        weight: number;
+        height: number;
+        bsa: number;
+        age: number;
+        gender: 'male' | 'female';
+        gfr?: number;
+        auc?: number;
+        serumCreatinine?: number;
+      };
+      calculatedDose: {
+        dose: number;
+        unit: string;
+        method: string;
+        formula: string;
+      };
+      administration: {
+        route: string;
+        solvent: string;
+        concentration: string;
+        concentrationMgPerMl: number;
+        requiredVolumeMl: number;
+        bagVolumeMl: number;
+        finalConcentrationMgPerMl: number;
+        volume: string;
+        infusionTime: string;
+      };
+      safety: {
+        /** Absolute milligram ceiling for THIS patient (mg/m² ceiling × BSA). */
+        maxDose?: number;
+        cappedByMaximumDose: boolean;
+        isWithinLimits: boolean;
+        warnings: DoseWarning[];
+      };
+      monitoring: {
+        required: string[];
+        frequency: string;
+      };
+    }
+  | {
+      status: 'blocked';
+      messageCode: string;
+      messageParams?: Record<string, string | number>;
+    };
 
 export interface PatientInfo {
   weight: number; // kg
   height: number; // cm
   age: number;
   gender: 'male' | 'female';
-  gfr?: number; // mL/min/1.73m²
-  auc?: number; // for carboplatin
+  gfr?: number; // mL/min
+  /** mg/dL. Required to derive a GFR; never defaulted. */
+  serumCreatinine?: number;
+  auc?: number; // for carboplatin (Calvert)
 }
 
-// BSA hesaplama (Mosteller formülü)
-export const calculateBSA = (weight: number, height: number): number => {
-  // Mosteller: BSA(m²) = sqrt( (height(cm) * weight(kg)) / 3600 )
-  return Math.sqrt((height * weight) / 3600);
-};
+/**
+ * BSA is imported from the dosage engine so the app has exactly one Mosteller
+ * implementation. The local copy here (with its arguments in the opposite order)
+ * was a second place for the formula to drift.
+ */
+export const calculateBSA = (weight: number, height: number): number =>
+  sharedCalculateBSA(height, weight);
 
-// GFR hesaplama (Cockcroft-Gault formülü)
-export const calculateGFR = (weight: number, age: number, gender: 'male' | 'female', creatinine: number = 1.0): number => {
-  const genderFactor = gender === 'male' ? 1 : 0.85;
-  return ((140 - age) * weight * genderFactor) / (72 * creatinine);
-};
+/**
+ * Cockcroft-Gault. Unlike the previous version this takes no default creatinine:
+ * inventing a normal renal function and feeding it into the Calvert equation
+ * scales a cytotoxic dose off a number nobody measured.
+ */
+export const calculateGFR = (
+  weight: number,
+  age: number,
+  gender: 'male' | 'female',
+  creatinine: number
+): number => calculateCrCl(age, weight, gender, creatinine);
 
-// Kemoterapi doz hesaplama
+const isFiniteNumber = (v: unknown): v is number =>
+  typeof v === 'number' && Number.isFinite(v);
+
+const round1 = (v: number) => Math.round(v * 10) / 10;
+
+/** Calvert caps GFR at 125 mL/min; without it an overestimate inflates the dose. */
+const CALVERT_GFR_CAP = 125;
+
+/**
+ * Chemotherapy dose calculation.
+ *
+ * Rewritten to fail closed. The previous version:
+ *   - returned `weight * 1.5` for ANY weight-dosed agent,
+ *   - returned `bsa * (maxDailyDose * 0.8)` for any BSA agent it did not
+ *     recognise, mixing an absolute mg ceiling into a mg/m² rate,
+ *   - compared the absolute mg result against a mg/m² ceiling, so every result
+ *     for a patient above 1 m² reported "exceeds maximum",
+ *   - defaulted serum creatinine to 1.0 mg/dL when GFR was unknown, and
+ *   - threw raw Errors that the calling screen did not catch.
+ *
+ * It now refuses to produce a number whenever the protocol is not explicitly
+ * recorded on the drug.
+ */
 export const calculateChemotherapyDose = (
   drug: ChemotherapyDrug,
   patientInfo: PatientInfo
 ): ChemotherapyCalculationResult => {
+  const blocked = (
+    messageCode: string,
+    params: Record<string, string | number> = {}
+  ) => ({ status: 'blocked', messageCode, messageParams: params }) as const;
+
+  if (!drug) return blocked('chemo.blocked.missingDrug');
+
+  if (
+    !isFiniteNumber(patientInfo.weight) ||
+    !isFiniteNumber(patientInfo.height) ||
+    !isFiniteNumber(patientInfo.age) ||
+    patientInfo.weight <= 0 ||
+    patientInfo.height <= 0 ||
+    patientInfo.age < 0
+  ) {
+    return blocked('chemo.blocked.invalidPatient');
+  }
+
+  if (
+    patientInfo.weight > 500 ||
+    patientInfo.height > 250 ||
+    patientInfo.age > 120
+  ) {
+    return blocked('chemo.blocked.implausiblePatient');
+  }
+
   const bsa = calculateBSA(patientInfo.weight, patientInfo.height);
-  const gfr = patientInfo.gfr || calculateGFR(patientInfo.weight, patientInfo.age, patientInfo.gender);
-  
+  if (bsa <= 0) return blocked('chemo.blocked.invalidPatient');
+
+  // GFR is only derived when a creatinine was actually measured.
+  const gfr = isFiniteNumber(patientInfo.gfr)
+    ? patientInfo.gfr
+    : isFiniteNumber(patientInfo.serumCreatinine) &&
+        patientInfo.serumCreatinine > 0
+      ? calculateGFR(
+          patientInfo.weight,
+          patientInfo.age,
+          patientInfo.gender,
+          patientInfo.serumCreatinine
+        )
+      : undefined;
+
+  const warnings: DoseWarning[] = [];
   let calculatedDose = 0;
   let method = '';
   let formula = '';
 
   switch (drug.calculationMethod) {
-    case 'BSA':
-      calculatedDose = calculateBSADose(drug, bsa);
-      method = 'BSA (Body Surface Area)';
-      formula = drug.formula;
-      break;
-    
-    case 'Weight':
-      calculatedDose = calculateWeightDose(drug, patientInfo.weight);
-      method = 'Weight-based';
-      formula = drug.formula;
-      break;
-    
-    case 'AUC':
-      if (drug.id === 'carboplatin' && patientInfo.auc) {
-        calculatedDose = patientInfo.auc * (gfr + 25);
-        method = 'AUC (Area Under Curve)';
-        formula = `Dose = AUC × (GFR + 25) = ${patientInfo.auc} × (${gfr.toFixed(1)} + 25) = ${calculatedDose.toFixed(1)} mg`;
-      } else {
-        throw new Error('AUC value required for carboplatin calculation');
+    case 'BSA': {
+      if (
+        !isFiniteNumber(drug.standardDosePerM2) ||
+        drug.standardDosePerM2 <= 0
+      ) {
+        // No recorded mg/m² rate. Previously this fell through to
+        // `bsa * maxDailyDose * 0.8`, which is not a dose.
+        return blocked('chemo.blocked.noProtocolRate', { drug: drug.name });
       }
+      calculatedDose = bsa * drug.standardDosePerM2;
+      method = 'BSA';
+      formula = `${round1(bsa)} m² × ${drug.standardDosePerM2} mg/m² = ${round1(calculatedDose)} mg`;
       break;
-    
-    case 'Fixed':
-      calculatedDose = drug.maxDailyDose;
-      method = 'Fixed dose';
-      formula = 'Fixed dose as per protocol';
+    }
+
+    case 'Weight': {
+      if (
+        !isFiniteNumber(drug.standardDosePerKg) ||
+        drug.standardDosePerKg <= 0
+      ) {
+        // Previously a flat 1.5 mg/kg for every weight-dosed cytotoxic agent.
+        return blocked('chemo.blocked.noProtocolRate', { drug: drug.name });
+      }
+      calculatedDose = patientInfo.weight * drug.standardDosePerKg;
+      method = 'Weight';
+      formula = `${patientInfo.weight} kg × ${drug.standardDosePerKg} mg/kg = ${round1(calculatedDose)} mg`;
       break;
-    
+    }
+
+    case 'AUC': {
+      if (!isFiniteNumber(patientInfo.auc) || patientInfo.auc <= 0) {
+        return blocked('chemo.blocked.aucRequired', { drug: drug.name });
+      }
+      if (!isFiniteNumber(gfr) || gfr <= 0) {
+        // Calvert without a measured GFR is a guess multiplied by a cytotoxic.
+        return blocked('chemo.blocked.gfrRequired', { drug: drug.name });
+      }
+      const cappedGfr = Math.min(gfr, CALVERT_GFR_CAP);
+      if (gfr > CALVERT_GFR_CAP) {
+        warnings.push({
+          code: 'chemo.safety.gfrCapped',
+          severity: 'warning',
+          params: { measured: round1(gfr), cap: CALVERT_GFR_CAP },
+        });
+      }
+      calculatedDose = patientInfo.auc * (cappedGfr + 25);
+      method = 'AUC (Calvert)';
+      formula = `AUC ${patientInfo.auc} × (GFR ${round1(cappedGfr)} + 25) = ${round1(calculatedDose)} mg`;
+      break;
+    }
+
+    case 'Fixed': {
+      if (
+        !isFiniteNumber(drug.maxAbsoluteDoseMg) ||
+        drug.maxAbsoluteDoseMg <= 0
+      ) {
+        return blocked('chemo.blocked.noProtocolRate', { drug: drug.name });
+      }
+      calculatedDose = drug.maxAbsoluteDoseMg;
+      method = 'Fixed';
+      formula = `${drug.maxAbsoluteDoseMg} mg (protocol fixed dose)`;
+      break;
+    }
+
     default:
-      throw new Error(`Unknown calculation method: ${drug.calculationMethod}`);
+      return blocked('chemo.blocked.unknownMethod', {
+        method: String(drug.calculationMethod),
+      });
   }
 
-  // Konsantrasyon (mg/mL) belirleme ve gerekli hacim hesabı
-  const concentrationMgPerMl = getConcentrationMgPerMl(drug);
-  const requiredVolumeMl = concentrationMgPerMl > 0 ? Math.round((calculatedDose / concentrationMgPerMl) * 10) / 10 : 0;
-  const bagVolumeMl = chooseBagVolume(calculatedDose, requiredVolumeMl, drug);
-  const finalConcentrationMgPerMl = bagVolumeMl > 0 ? Math.round((calculatedDose / bagVolumeMl) * 10) / 10 : 0;
-
-  // Güvenlik kontrolü
-  const isWithinLimits = calculatedDose <= drug.maxDailyDose;
-  const warnings: string[] = [];
-  
-  if (!isWithinLimits) {
-    warnings.push(`Hesaplanan doz (${calculatedDose.toFixed(1)} ${drug.unit}) maksimum günlük dozu (${drug.maxDailyDose} ${drug.unit}) aşıyor`);
+  if (!isFiniteNumber(calculatedDose) || calculatedDose <= 0) {
+    return blocked('chemo.blocked.invalidResult');
   }
 
-  // Yaş bazlı uyarılar
-  if (patientInfo.age > 70) {
-    warnings.push('Yaşlı hasta - doz azaltımı gerekebilir');
+  // ---- Ceiling ------------------------------------------------------------
+  // `maxDailyDose` is recorded in the drug's own unit (mg/m² for BSA agents),
+  // so it must be scaled by BSA before it can be compared with an absolute dose.
+  // For BSA agents the recorded mg/m² ceiling scales with the patient. For AUC
+  // and weight dosing there is no per-m² interpretation, so only an explicit
+  // absolute ceiling counts — treating the mg/m² number as absolute milligrams
+  // would clamp a carboplatin dose to a figure that is not a dose at all.
+  const ceilingMg =
+    drug.calculationMethod === 'BSA' && isFiniteNumber(drug.maxDailyDose)
+      ? drug.maxDailyDose * bsa
+      : isFiniteNumber(drug.maxAbsoluteDoseMg)
+        ? drug.maxAbsoluteDoseMg
+        : undefined;
+
+  if (!isFiniteNumber(ceilingMg)) {
+    warnings.push({
+      code: 'chemo.safety.noCeiling',
+      severity: 'critical',
+      params: {},
+    });
   }
 
+  let cappedByMaximumDose = false;
+  if (isFiniteNumber(ceilingMg) && calculatedDose > ceilingMg) {
+    warnings.push({
+      code: 'chemo.safety.doseCapped',
+      severity: 'critical',
+      params: { calculated: round1(calculatedDose), max: round1(ceilingMg) },
+    });
+    calculatedDose = ceilingMg;
+    cappedByMaximumDose = true;
+  }
+
+  calculatedDose = round1(calculatedDose);
+
+  // ---- Clinical flags -----------------------------------------------------
   if (patientInfo.age < 18) {
-    warnings.push('Pediatrik hasta - özel doz hesaplama gerekebilir');
+    warnings.push({
+      code: 'chemo.safety.pediatric',
+      severity: 'critical',
+      params: {},
+    });
+  } else if (patientInfo.age > 70) {
+    warnings.push({
+      code: 'chemo.safety.elderly',
+      severity: 'warning',
+      params: {},
+    });
   }
 
-  // GFR bazlı uyarılar
-  if (gfr < 60) {
-    warnings.push('Böbrek fonksiyon bozukluğu - doz azaltımı gerekebilir');
+  if (!isFiniteNumber(gfr)) {
+    warnings.push({
+      code: 'chemo.safety.renalNotAssessed',
+      severity: 'warning',
+      params: {},
+    });
+  } else if (gfr < 30) {
+    warnings.push({
+      code: 'chemo.safety.severeRenal',
+      severity: 'critical',
+      params: { gfr: round1(gfr) },
+    });
+  } else if (gfr < 60) {
+    warnings.push({
+      code: 'chemo.safety.moderateRenal',
+      severity: 'critical',
+      params: { gfr: round1(gfr) },
+    });
   }
 
-  if (gfr < 30) {
-    warnings.push('Ciddi böbrek fonksiyon bozukluğu - ilaç kontrendike olabilir');
+  if (bsa > 2.2) {
+    warnings.push({
+      code: 'chemo.safety.largeBsa',
+      severity: 'warning',
+      params: { bsa: round1(bsa) },
+    });
   }
+
+  // Every rule in this data set is machine-entered and unreviewed.
+  warnings.push({
+    code: 'chemo.safety.unverified',
+    severity: 'warning',
+    params: {},
+  });
+
+  const concentrationMgPerMl = getConcentrationMgPerMl(drug);
+  const requiredVolumeMl =
+    concentrationMgPerMl > 0
+      ? round1(calculatedDose / concentrationMgPerMl)
+      : 0;
+  const bagVolumeMl = chooseBagVolume(calculatedDose, requiredVolumeMl, drug);
+  const finalConcentrationMgPerMl =
+    bagVolumeMl > 0 ? round1(calculatedDose / bagVolumeMl) : 0;
 
   return {
+    status: 'success',
     drug,
     patientInfo: {
       ...patientInfo,
-      bsa,
-      gfr
+      bsa: round1(bsa),
+      gfr: isFiniteNumber(gfr) ? round1(gfr) : undefined,
     },
-    calculatedDose: {
-      dose: Math.round(calculatedDose * 10) / 10, // mg cinsinden, 1 ondalık basamak
-      unit: 'mg',
-      method,
-      formula
-    },
+    calculatedDose: { dose: calculatedDose, unit: 'mg', method, formula },
     administration: {
       route: drug.administrationRoute,
       solvent: drug.dilution.solvent,
@@ -159,46 +351,19 @@ export const calculateChemotherapyDose = (
       bagVolumeMl,
       finalConcentrationMgPerMl,
       volume: drug.dilution.volume,
-      infusionTime: getInfusionTime(drug)
+      infusionTime: getInfusionTime(drug),
     },
     safety: {
-      maxDose: drug.maxDailyDose,
-      isWithinLimits,
-      warnings
+      maxDose: isFiniteNumber(ceilingMg) ? round1(ceilingMg) : undefined,
+      cappedByMaximumDose,
+      isWithinLimits: !cappedByMaximumDose,
+      warnings,
     },
     monitoring: {
       required: drug.monitoring,
-      frequency: getMonitoringFrequency(drug)
-    }
+      frequency: getMonitoringFrequency(drug),
+    },
   };
-};
-
-// BSA bazlı doz hesaplama
-const calculateBSADose = (drug: ChemotherapyDrug, bsa: number): number => {
-  switch (drug.id) {
-    case 'cisplatin':
-      return bsa * 75; // 75-100 mg/m² arası, güvenli başlangıç
-    case 'doxorubicin':
-      return bsa * 60; // 60-75 mg/m² arası
-    case 'cyclophosphamide':
-      return bsa * 750; // 600-1000 mg/m² arası
-    case 'paclitaxel':
-      return bsa * 175; // 135-175 mg/m² arası
-    case 'docetaxel':
-      return bsa * 75; // 75-100 mg/m² arası
-    case '5-fluorouracil':
-      return bsa * 500; // 400-600 mg/m² arası
-    case 'methotrexate':
-      return bsa * 100; // 100-1000 mg/m² arası, düşük doz
-    default:
-      return bsa * (drug.maxDailyDose * 0.8); // Güvenli başlangıç
-  }
-};
-
-// Kilo bazlı doz hesaplama
-const calculateWeightDose = (drug: ChemotherapyDrug, weight: number): number => {
-  // Genel olarak 1-2 mg/kg kullanılır
-  return weight * 1.5;
 };
 
 // İnfüzyon süresi belirleme
@@ -262,7 +427,11 @@ const getConcentrationMgPerMl = (drug: ChemotherapyDrug): number => {
 };
 
 // Önerilen torba hacmini seç (100, 250, 500, 1000 mL gibi)
-const chooseBagVolume = (doseMg: number, requiredVolumeMl: number, drug: ChemotherapyDrug): number => {
+const chooseBagVolume = (
+  doseMg: number,
+  requiredVolumeMl: number,
+  drug: ChemotherapyDrug
+): number => {
   // Kurum protokolüne yakın rafine seçim:
   // 1) Belli ilaçlar için minimum torba hacmi (stabilite/güvenlik):
   const minByDrug: Record<string, number> = {
@@ -324,21 +493,34 @@ const getMonitoringFrequency = (drug: ChemotherapyDrug): string => {
 // Doz azaltım faktörleri
 export const getDoseReductionFactors = (patientInfo: PatientInfo) => {
   const factors: { [key: string]: number } = {};
-  
+
   // Yaş faktörü
   if (patientInfo.age > 70) {
     factors.age = 0.8;
   }
-  
-  // GFR faktörü
-  const gfr = patientInfo.gfr || calculateGFR(patientInfo.weight, patientInfo.age, patientInfo.gender);
-  if (gfr < 60) {
-    factors.renal = 0.75;
+
+  // GFR factor. Only applied when renal function was actually measured — the
+  // previous version defaulted creatinine to 1.0 mg/dL and derived a factor from it.
+  const gfr =
+    patientInfo.gfr ??
+    (typeof patientInfo.serumCreatinine === 'number' &&
+    patientInfo.serumCreatinine > 0
+      ? calculateGFR(
+          patientInfo.weight,
+          patientInfo.age,
+          patientInfo.gender,
+          patientInfo.serumCreatinine
+        )
+      : undefined);
+
+  if (typeof gfr === 'number') {
+    if (gfr < 30) {
+      factors.renal = 0.5;
+    } else if (gfr < 60) {
+      factors.renal = 0.75;
+    }
   }
-  if (gfr < 30) {
-    factors.renal = 0.5;
-  }
-  
+
   return factors;
 };
 
@@ -350,6 +532,6 @@ export const calculateTotalDose = (
 ): { totalDose: number; totalTime: number } => {
   return {
     totalDose: singleDose * cycleCount,
-    totalTime: cycleCount * cycleInterval
+    totalTime: cycleCount * cycleInterval,
   };
 };

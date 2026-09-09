@@ -4,25 +4,66 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
-  SafeAreaView,
+  SectionList,
   Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAppStore } from '../store';
 import { DosageCalculation } from '../types';
+import {
+  formatWarning,
+  sortWarnings,
+  ICON_BY_SEVERITY,
+} from '../features/dosage/warnings';
 import { getDrugById } from '../data/drugs';
 import ModernCard from '../components/ModernCard';
 import GradientButton from '../components/GradientButton';
 import FadeInView from '../components/FadeInView';
+import { AdBanner } from '../components/AdBanner';
 
 const HistoryScreen: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { theme } = useTheme();
   const { calculations, patients, clearCalculations } = useAppStore();
   const [selectedCalculation, setSelectedCalculation] =
     useState<DosageCalculation | null>(null);
+
+  const groupedCalculations = React.useMemo(() => {
+    const map = new Map<string, DosageCalculation[]>();
+
+    const sortedCalcs = [...calculations].sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+
+    sortedCalcs.forEach(calc => {
+      const d = new Date(calc.timestamp);
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      let dateStr = d.toLocaleDateString(i18n.language, {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+
+      if (d.toDateString() === today.toDateString()) {
+        dateStr = t('history.today', 'Today');
+      } else if (d.toDateString() === yesterday.toDateString()) {
+        dateStr = t('history.yesterday', 'Yesterday');
+      }
+
+      if (!map.has(dateStr)) {
+        map.set(dateStr, []);
+      }
+      map.get(dateStr)!.push(calc);
+    });
+
+    return Array.from(map.entries()).map(([title, data]) => ({ title, data }));
+  }, [calculations, i18n.language]);
 
   const styles = StyleSheet.create({
     container: {
@@ -137,46 +178,65 @@ const HistoryScreen: React.FC = () => {
       fontSize: theme.fontSizes.md,
       fontWeight: 'bold',
     },
+    sectionHeader: {
+      backgroundColor: theme.colors.background,
+      paddingVertical: theme.spacing.sm,
+      paddingHorizontal: theme.spacing.xs,
+      marginBottom: theme.spacing.sm,
+    },
+    sectionHeaderText: {
+      fontSize: theme.fontSizes.md,
+      fontWeight: '700',
+      color: theme.colors.textSecondary,
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+    },
   });
 
   const handleClearHistory = () => {
-    Alert.alert(
-      'Geçmişi Temizle',
-      'Tüm hesaplama geçmişini silmek istediğinizden emin misiniz?',
-      [
-        { text: 'İptal', style: 'cancel' },
-        {
-          text: 'Sil',
-          style: 'destructive',
-          onPress: () => clearCalculations(),
-        },
-      ]
-    );
+    Alert.alert(t('history.clearHistory'), t('history.clearConfirm'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('common.delete'),
+        style: 'destructive',
+        onPress: () => clearCalculations(),
+      },
+    ]);
   };
 
   const getPatientName = (patientId: string): string => {
     const patient = patients.find(p => p.id === patientId);
     return patient
-      ? `${patient.age} yaş, ${patient.weight}kg`
-      : 'Bilinmeyen Hasta';
+      ? `${patient.age} ${t('patient.age').toLowerCase()}, ${patient.weight}kg`
+      : t('common.noData');
   };
 
   const getDrugName = (drugId: string): string => {
     const drug = getDrugById(drugId);
-    return drug ? drug.name : 'Bilinmeyen İlaç';
+    return drug ? drug.name : t('common.noData');
   };
 
-  const formatDate = (date: Date): string => {
-    return new Intl.DateTimeFormat('tr-TR', {
+  const formatDate = (date: Date | string): string => {
+    // JSON persistence turns Date into an ISO string, so always re-hydrate before
+    // formatting — Intl.DateTimeFormat throws when handed a string.
+    const value = date instanceof Date ? date : new Date(date);
+    if (Number.isNaN(value.getTime())) return t('common.noData');
+    return new Intl.DateTimeFormat(i18n.language, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    }).format(date);
+    }).format(value);
   };
 
-  const renderCalculation = ({ item, index }: { item: DosageCalculation; index: number }) => (
+  const renderCalculation = ({
+    item,
+    index,
+  }: {
+    item: DosageCalculation;
+    index: number;
+  }) => (
     <FadeInView delay={index * 100}>
       <ModernCard
         variant="elevated"
@@ -184,7 +244,9 @@ const HistoryScreen: React.FC = () => {
         onPress={() => setSelectedCalculation(item)}
       >
         <View style={styles.calculationHeader}>
-          <Text style={styles.calculationDate}>{formatDate(item.timestamp)}</Text>
+          <Text style={styles.calculationDate}>
+            {formatDate(item.timestamp)}
+          </Text>
           <Text style={styles.calculationDose}>
             {item.calculatedDose}
             {item.unit}
@@ -192,26 +254,30 @@ const HistoryScreen: React.FC = () => {
         </View>
 
         <View style={styles.calculationInfo}>
-          <Text style={styles.calculationLabel}>Hasta</Text>
+          <Text style={styles.calculationLabel}>{t('patient.title')}</Text>
           <Text style={styles.calculationValue}>
             {getPatientName(item.patientId)}
           </Text>
         </View>
 
         <View style={styles.calculationInfo}>
-          <Text style={styles.calculationLabel}>İlaç</Text>
-          <Text style={styles.calculationValue}>{getDrugName(item.drugId)}</Text>
+          <Text style={styles.calculationLabel}>{t('drug.name')}</Text>
+          <Text style={styles.calculationValue}>
+            {getDrugName(item.drugId)}
+          </Text>
         </View>
 
         <View style={styles.calculationInfo}>
-          <Text style={styles.calculationLabel}>Sıklık</Text>
+          <Text style={styles.calculationLabel}>
+            {t('calculation.frequency')}
+          </Text>
           <Text style={styles.calculationValue}>{item.frequency}</Text>
         </View>
 
         {item.warnings.length > 0 && (
           <View style={styles.warningBadge}>
             <Text style={styles.warningBadgeText}>
-              {item.warnings.length} Uyarı
+              {item.warnings.length} {t('calculation.warnings')}
             </Text>
           </View>
         )}
@@ -237,33 +303,37 @@ const HistoryScreen: React.FC = () => {
     return (
       <View style={styles.detailModal}>
         <View style={styles.detailCard}>
-          <Text style={styles.detailTitle}>Hesaplama Detayları</Text>
+          <Text style={styles.detailTitle}>
+            {t('calculation.title', 'Calculation Details')}
+          </Text>
 
           <View style={styles.calculationInfo}>
-            <Text style={styles.calculationLabel}>Tarih</Text>
+            <Text style={styles.calculationLabel}>{t('history.date')}</Text>
             <Text style={styles.calculationValue}>
               {formatDate(selectedCalculation.timestamp)}
             </Text>
           </View>
 
           <View style={styles.calculationInfo}>
-            <Text style={styles.calculationLabel}>Hasta Bilgileri</Text>
+            <Text style={styles.calculationLabel}>{t('history.patient')}</Text>
             <Text style={styles.calculationValue}>
               {patient
-                ? `${patient.age} yaş, ${patient.weight}kg, ${patient.height}cm, ${patient.gender === 'male' ? 'Erkek' : 'Kadın'}, ${patient.patientType}`
-                : 'Bilinmeyen'}
+                ? `${patient.age} ${t('patient.age').toLowerCase()}, ${patient.weight}kg, ${patient.height}cm, ${patient.gender === 'male' ? t('patient.male') : t('patient.female')}, ${patient.patientType}`
+                : t('common.noData')}
             </Text>
           </View>
 
           <View style={styles.calculationInfo}>
-            <Text style={styles.calculationLabel}>İlaç</Text>
+            <Text style={styles.calculationLabel}>{t('history.drug')}</Text>
             <Text style={styles.calculationValue}>
-              {drug ? `${drug.name} (${drug.genericName})` : 'Bilinmeyen'}
+              {drug ? `${drug.name} (${drug.genericName})` : t('common.noData')}
             </Text>
           </View>
 
           <View style={styles.calculationInfo}>
-            <Text style={styles.calculationLabel}>Hesaplanan Doz</Text>
+            <Text style={styles.calculationLabel}>
+              {t('calculation.singleDose')}
+            </Text>
             <Text style={styles.calculationValue}>
               {selectedCalculation.calculatedDose}
               {selectedCalculation.unit} - {selectedCalculation.frequency}
@@ -271,7 +341,9 @@ const HistoryScreen: React.FC = () => {
           </View>
 
           <View style={styles.calculationInfo}>
-            <Text style={styles.calculationLabel}>Maksimum Günlük Doz</Text>
+            <Text style={styles.calculationLabel}>
+              {t('calculation.maxDailyDose')}
+            </Text>
             <Text style={styles.calculationValue}>
               {selectedCalculation.maxDailyDose}
               {selectedCalculation.unit}
@@ -280,18 +352,30 @@ const HistoryScreen: React.FC = () => {
 
           {selectedCalculation.warnings.length > 0 && (
             <View style={styles.calculationInfo}>
-              <Text style={styles.calculationLabel}>Uyarılar</Text>
-              {selectedCalculation.warnings.map((warning, index) => (
-                <Text
-                  key={index}
-                  style={[
-                    styles.calculationValue,
-                    { color: theme.colors.warning },
-                  ]}
-                >
-                  • {warning}
-                </Text>
-              ))}
+              <Text style={styles.calculationLabel}>
+                {t('calculation.warnings')}
+              </Text>
+              {sortWarnings(selectedCalculation.warnings).map(
+                (warning, index) => (
+                  <Text
+                    key={`${warning.code}-${index}`}
+                    style={[
+                      styles.calculationValue,
+                      {
+                        color:
+                          warning.severity === 'critical'
+                            ? theme.colors.critical
+                            : theme.colors.warning,
+                        fontWeight:
+                          warning.severity === 'critical' ? '700' : '400',
+                      },
+                    ]}
+                  >
+                    {ICON_BY_SEVERITY[warning.severity]}{' '}
+                    {formatWarning(t, warning)}
+                  </Text>
+                )
+              )}
             </View>
           )}
 
@@ -299,7 +383,9 @@ const HistoryScreen: React.FC = () => {
             style={styles.detailCloseButton}
             onPress={() => setSelectedCalculation(null)}
           >
-            <Text style={styles.detailCloseButtonText}>Kapat</Text>
+            <Text style={styles.detailCloseButtonText}>
+              {t('common.close')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -311,10 +397,10 @@ const HistoryScreen: React.FC = () => {
       <View style={styles.content}>
         <FadeInView delay={0}>
           <View style={styles.header}>
-            <Text style={styles.title}>Hesaplama Geçmişi</Text>
+            <Text style={styles.title}>{t('history.title')}</Text>
             {calculations.length > 0 && (
               <GradientButton
-                title="Temizle"
+                title={t('history.clearHistory')}
                 onPress={handleClearHistory}
                 variant="error"
                 size="small"
@@ -326,16 +412,23 @@ const HistoryScreen: React.FC = () => {
         {calculations.length === 0 ? (
           renderEmptyState()
         ) : (
-          <FlatList
-            data={calculations}
+          <SectionList
+            sections={groupedCalculations}
             renderItem={renderCalculation}
+            renderSectionHeader={({ section: { title } }) => (
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionHeaderText}>{title}</Text>
+              </View>
+            )}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
+            stickySectionHeadersEnabled={false}
           />
         )}
 
         {selectedCalculation && renderDetailModal()}
       </View>
+      <AdBanner />
     </SafeAreaView>
   );
 };

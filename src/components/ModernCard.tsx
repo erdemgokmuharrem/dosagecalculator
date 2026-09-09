@@ -2,19 +2,20 @@ import React from 'react';
 import {
   View,
   StyleSheet,
+  StyleProp,
   ViewStyle,
   TouchableOpacity,
   TouchableOpacityProps,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeContext';
-import { GRADIENTS } from '../constants';
+import { GRADIENTS, GradientColors } from '../constants';
 
 interface ModernCardProps extends TouchableOpacityProps {
   children: React.ReactNode;
   variant?: 'default' | 'gradient' | 'elevated' | 'outlined';
-  gradientColors?: string[];
-  style?: ViewStyle;
+  gradientColors?: GradientColors;
+  style?: StyleProp<ViewStyle>;
   onPress?: () => void;
 }
 
@@ -77,11 +78,11 @@ const ModernCard: React.FC<ModernCardProps> = ({
     }
   };
 
-  const cardStyle = [getCardStyles(), style];
+  const cardStyle: StyleProp<ViewStyle> = [getCardStyles() as ViewStyle, style];
 
   const renderContent = () => {
     if (variant === 'gradient') {
-      const colors = gradientColors || GRADIENTS.surface;
+      const colors: GradientColors = gradientColors ?? GRADIENTS.surface;
       return (
         <LinearGradient
           colors={colors}

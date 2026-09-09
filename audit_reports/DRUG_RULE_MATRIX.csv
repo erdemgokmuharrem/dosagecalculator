@@ -1,0 +1,6 @@
+DrugID,DrugName,ActiveIngredient,Form,Concentration,Route,Indication,MinAge,MaxAge,MinWeight,CalculationMethod,BaseDose,Frequency,MaxSingleDose,MaxDailyDose,RenalAdjust,HepaticAdjust,Rounding,Source,VerificationStatus
+1,Paracetamol,Acetaminophen,tablet,N/A,Oral,Analgesic,0,120,0,weight,15,q6h,1000,4000,false,false,none,None,UNVERIFIED
+61,Piperasilin/Tazobaktam,Piperacillin/Tazobactam,injection,N/A,IV,Antibiotic,0,120,0,weight,100,q8h,4500,18000,false,false,none,None,UNVERIFIED
+chemo-001,Sisplatin,Cisplatin,injection,N/A,IV,Oncology,0,120,0,bsa,120,variable,N/A,120,true,false,none,None,UNVERIFIED
+extra-001,Ibuprofen Pediatrik Şurup,Ibuprofen,syrup,100mg/5mL,Oral,Analgesic,0.5,12,0,age,100,q8h,400,1200,false,false,none,None,UNVERIFIED
+extra-002,Asiklovir Krem/Tablet,Acyclovir,tablet,N/A,Oral,Antiviral,0,120,0,fixed,400,tid,800,4000,true,false,none,None,UNVERIFIED

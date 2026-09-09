@@ -6,36 +6,47 @@ Sağlık profesyonelleri için geliştirilmiş güvenli ve doğru ilaç doz hesa
 
 - **Hasta Bilgileri Yönetimi**: Yaş, kilo, boy, cinsiyet ve hasta tipi girişi
 - **İlaç Seçimi**: Kapsamlı ilaç veritabanı ile arama ve filtreleme
-- **Güvenli Doz Hesaplama**: 
+- **Güvenli Doz Hesaplama**:
   - Kilo bazlı hesaplama (mg/kg)
   - Vücut yüzey alanı bazlı hesaplama (mg/m²)
   - Sabit doz hesaplama
   - Yaş bazlı doz ayarlamaları
 - **Güvenlik Kontrolleri**: Maksimum doz sınırları ve uyarı sistemi
 - **Hesaplama Geçmişi**: Önceki hesaplamaları görüntüleme ve yönetme
-- **Çoklu Dil Desteği**: Türkçe ve İngilizce
+- **Çoklu Dil Desteği**: Türkçe, İngilizce, Almanca, Rusça, Çince
 - **Modern UI/UX**: Kullanıcı dostu ve erişilebilir tasarım
+
+## ⚠️ Klinik Durum
+
+Bu uygulama **henüz yayına hazır değildir**. Veritabanındaki doz kurallarının
+tamamı `sourceVerification: 'UNVERIFIED'` durumundadır; hiçbiri bir farmakolog
+tarafından imzalanmamıştır. Hesaplama motoru bunu her sonuçta kullanıcıya
+bildirir ve doğrulanamayan hiçbir kuralı tahmin etmeye çalışmaz.
+
+Yayın öncesi zorunlu adımlar için `npm run check:release` çalıştırın.
 
 ## 🛠️ Teknoloji Stack
 
-- **React Native** + **TypeScript**
-- **Expo** - Geliştirme ve build platformu
-- **React Navigation** - Navigasyon
-- **Zustand** - State management
-- **React Query** - Server state management
-- **React Hook Form** + **Zod** - Form yönetimi ve validasyon
-- **i18next** - Uluslararasılaştırma
-- **Jest** + **React Native Testing Library** - Test framework
-- **ESLint** + **Prettier** - Code quality
-- **GitHub Actions** + **Fastlane** - CI/CD
-- **Sentry** - Error tracking
-- **Analytics** - Kullanıcı analitikleri
+- **React Native 0.81** + **TypeScript** (strict)
+- **Expo SDK 54** - Geliştirme ve build platformu
+- **React Navigation 7** - Navigasyon
+- **Zustand** (AsyncStorage ile kalıcı) - State management
+- **Zod** - Hasta girdisi doğrulama (`src/features/dosage/patientForm.ts`)
+- **i18next** - 5 dil; güvenlik uyarıları dahil tüm metinler çevrilidir
+- **Jest** + **fast-check** - Birim ve özellik tabanlı testler
+- **Detox** - E2E
+- **ESLint** + **Prettier** + **Husky** - Kod kalitesi
+- **GitHub Actions** + **EAS** + **Fastlane** - CI/CD
+- **Sentry** - Hata takibi (hasta verisi maskelenir)
+
+> Not: Uygulama tamamen çevrimdışı çalışır. İlaç veritabanı pakete gömülüdür;
+> sunucu çağrısı yoktur, bu nedenle bir HTTP istemcisi veya server-state
+> kütüphanesi kullanılmaz.
 
 ## 📱 Desteklenen Platformlar
 
 - iOS
 - Android
-- Web (Expo Web)
 
 ## 🚀 Kurulum
 
@@ -50,17 +61,20 @@ Sağlık profesyonelleri için geliştirilmiş güvenli ve doğru ilaç doz hesa
 ### Adımlar
 
 1. **Repository'yi klonlayın**
+
    ```bash
    git clone <repository-url>
    cd DosageCalculator
    ```
 
 2. **Bağımlılıkları yükleyin**
+
    ```bash
    npm install
    ```
 
 3. **Uygulamayı başlatın**
+
    ```bash
    npm start
    ```
@@ -101,6 +115,7 @@ npm run type-check
 ### Git Hooks
 
 Proje Husky ile pre-commit hooks kullanır:
+
 - ESLint kontrolü
 - Prettier formatting
 - TypeScript type checking

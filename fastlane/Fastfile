@@ -18,12 +18,14 @@ default_platform(:android)
 platform :android do
   desc "Build and upload Android APK to Google Play Store"
   lane :deploy do
-    # Build the app
+    # `bundleRelease` produces the .aab that Google Play requires. This lane
+    # previously ran `assembleRelease` (an APK) and then uploaded an .aab path
+    # that was never generated.
     gradle(
-      task: "assembleRelease",
+      task: "bundleRelease",
       project_dir: "android"
     )
-    
+
     # Upload to Google Play Store
     upload_to_play_store(
       track: "internal",
@@ -45,7 +47,7 @@ platform :android do
 
   desc "Run tests"
   lane :test do
-    sh("npm test -- --watchAll=false")
+    sh("npm run test:ci")
   end
 
   desc "Run linting"
@@ -89,7 +91,7 @@ platform :ios do
 
   desc "Run tests"
   lane :test do
-    sh("npm test -- --watchAll=false")
+    sh("npm run test:ci")
   end
 
   desc "Run linting"

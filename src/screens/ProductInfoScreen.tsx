@@ -4,13 +4,13 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
-import { RootStackParamList, Drug, ProductInfo } from '../types';
+import { RootStackParamList, ProductInfo } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAppStore } from '../store';
 import ModernCard from '../components/ModernCard';
@@ -28,13 +28,34 @@ const ProductInfoScreen: React.FC = () => {
   const { theme } = useTheme();
   const { selectedDrug } = useAppStore();
 
+  // NOTE: this guard must not reference `styles` — that const is declared below,
+  // so touching it here threw "Cannot access 'styles' before initialization" and
+  // crashed the screen whenever no drug was selected (the default state). The
+  // message is also translated rather than hardcoded Turkish.
   if (!selectedDrug || !selectedDrug.productInfo) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <View style={styles.errorContainer}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: theme.colors.background }}
+      >
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 24,
+          }}
+        >
           <Icon name="alert-circle" size={48} color={theme.colors.error} />
-          <Text style={[styles.errorText, { color: theme.colors.text }]}>
-            İlaç bilgisi bulunamadı
+          <Text
+            style={{
+              marginTop: 12,
+              fontSize: 15,
+              fontWeight: '600',
+              textAlign: 'center',
+              color: theme.colors.text,
+            }}
+          >
+            {t('drug.noDrugSelected')}
           </Text>
         </View>
       </SafeAreaView>
@@ -162,13 +183,6 @@ const ProductInfoScreen: React.FC = () => {
     </View>
   );
 
-  const renderInfoBox = (title: string, content: string) => (
-    <View style={styles.infoBox}>
-      <Text style={styles.infoText}>{title}</Text>
-      <Text style={styles.bulletText}>{content}</Text>
-    </View>
-  );
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -187,14 +201,18 @@ const ProductInfoScreen: React.FC = () => {
         <FadeInView delay={0}>
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>Etken Madde</Text>
-            <Text style={styles.cardContent}>{productInfo.activeIngredient}</Text>
+            <Text style={styles.cardContent}>
+              {productInfo.activeIngredient}
+            </Text>
           </ModernCard>
         </FadeInView>
 
         <FadeInView delay={100}>
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>Etki Mekanizması</Text>
-            <Text style={styles.cardContent}>{productInfo.mechanismOfAction}</Text>
+            <Text style={styles.cardContent}>
+              {productInfo.mechanismOfAction}
+            </Text>
           </ModernCard>
         </FadeInView>
 
@@ -202,19 +220,29 @@ const ProductInfoScreen: React.FC = () => {
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>Farmakokinetik</Text>
             <Text style={styles.sectionTitle}>Absorpsiyon:</Text>
-            <Text style={styles.cardContent}>{productInfo.pharmacokinetics.absorption}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.pharmacokinetics.absorption}
+            </Text>
+
             <Text style={styles.sectionTitle}>Dağılım:</Text>
-            <Text style={styles.cardContent}>{productInfo.pharmacokinetics.distribution}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.pharmacokinetics.distribution}
+            </Text>
+
             <Text style={styles.sectionTitle}>Metabolizma:</Text>
-            <Text style={styles.cardContent}>{productInfo.pharmacokinetics.metabolism}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.pharmacokinetics.metabolism}
+            </Text>
+
             <Text style={styles.sectionTitle}>Eliminasyon:</Text>
-            <Text style={styles.cardContent}>{productInfo.pharmacokinetics.elimination}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.pharmacokinetics.elimination}
+            </Text>
+
             <Text style={styles.sectionTitle}>Yarı Ömür:</Text>
-            <Text style={styles.cardContent}>{productInfo.pharmacokinetics.halfLife}</Text>
+            <Text style={styles.cardContent}>
+              {productInfo.pharmacokinetics.halfLife}
+            </Text>
           </ModernCard>
         </FadeInView>
 
@@ -222,23 +250,33 @@ const ProductInfoScreen: React.FC = () => {
           <ModernCard variant="gradient" style={styles.card}>
             <Text style={styles.cardTitle}>Uygulama Bilgileri</Text>
             <Text style={styles.sectionTitle}>Uygulama Yolu:</Text>
-            <Text style={styles.cardContent}>{productInfo.administration.route}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.administration.route}
+            </Text>
+
             <Text style={styles.sectionTitle}>Uygulama Yöntemi:</Text>
-            <Text style={styles.cardContent}>{productInfo.administration.method}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.administration.method}
+            </Text>
+
             <Text style={styles.sectionTitle}>İnfüzyon Süresi:</Text>
-            <Text style={styles.cardContent}>{productInfo.administration.duration}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.administration.duration}
+            </Text>
+
             <Text style={styles.sectionTitle}>Seyreltici:</Text>
-            <Text style={styles.cardContent}>{productInfo.administration.diluent}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.administration.diluent}
+            </Text>
+
             <Text style={styles.sectionTitle}>Konsantrasyon:</Text>
-            <Text style={styles.cardContent}>{productInfo.administration.concentration}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.administration.concentration}
+            </Text>
+
             <Text style={styles.sectionTitle}>Uyumlu Solüsyonlar:</Text>
             {renderBulletList(productInfo.administration.compatibility)}
-            
+
             <Text style={styles.sectionTitle}>Uyumsuz Solüsyonlar:</Text>
             {renderBulletList(productInfo.administration.incompatibility)}
           </ModernCard>
@@ -261,7 +299,10 @@ const ProductInfoScreen: React.FC = () => {
         <FadeInView delay={600}>
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>Uyarılar</Text>
-            {renderWarningBox('Dikkat Edilmesi Gerekenler:', productInfo.warnings)}
+            {renderWarningBox(
+              'Dikkat Edilmesi Gerekenler:',
+              productInfo.warnings
+            )}
           </ModernCard>
         </FadeInView>
 
@@ -270,10 +311,10 @@ const ProductInfoScreen: React.FC = () => {
             <Text style={styles.cardTitle}>İlaç Etkileşimleri</Text>
             <Text style={styles.sectionTitle}>İlaç Etkileşimleri:</Text>
             {renderBulletList(productInfo.interactions.drugInteractions)}
-            
+
             <Text style={styles.sectionTitle}>Besin Etkileşimleri:</Text>
             {renderBulletList(productInfo.interactions.foodInteractions)}
-            
+
             <Text style={styles.sectionTitle}>Laboratuvar Etkileşimleri:</Text>
             {renderBulletList(productInfo.interactions.labInteractions)}
           </ModernCard>
@@ -282,12 +323,16 @@ const ProductInfoScreen: React.FC = () => {
         <FadeInView delay={800}>
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>İzleme</Text>
-            <Text style={styles.sectionTitle}>İzlenmesi Gereken Parametreler:</Text>
+            <Text style={styles.sectionTitle}>
+              İzlenmesi Gereken Parametreler:
+            </Text>
             {renderBulletList(productInfo.monitoring.parameters)}
-            
+
             <Text style={styles.sectionTitle}>İzleme Sıklığı:</Text>
-            <Text style={styles.cardContent}>{productInfo.monitoring.frequency}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.monitoring.frequency}
+            </Text>
+
             <Text style={styles.sectionTitle}>Özel Durumlar:</Text>
             {renderBulletList(productInfo.monitoring.specialConsiderations)}
           </ModernCard>
@@ -297,13 +342,17 @@ const ProductInfoScreen: React.FC = () => {
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>Saklama Koşulları</Text>
             <Text style={styles.sectionTitle}>Sıcaklık:</Text>
-            <Text style={styles.cardContent}>{productInfo.storage.temperature}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.storage.temperature}
+            </Text>
+
             <Text style={styles.sectionTitle}>Işık:</Text>
             <Text style={styles.cardContent}>{productInfo.storage.light}</Text>
-            
+
             <Text style={styles.sectionTitle}>Stabilite:</Text>
-            <Text style={styles.cardContent}>{productInfo.storage.stability}</Text>
+            <Text style={styles.cardContent}>
+              {productInfo.storage.stability}
+            </Text>
           </ModernCard>
         </FadeInView>
 
@@ -311,22 +360,28 @@ const ProductInfoScreen: React.FC = () => {
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>Özel Populasyonlar</Text>
             <Text style={styles.sectionTitle}>Gebelik Kategorisi:</Text>
-            <Text style={styles.cardContent}>{productInfo.pregnancyCategory}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.pregnancyCategory}
+            </Text>
+
             <Text style={styles.sectionTitle}>Emzirme:</Text>
             <Text style={styles.cardContent}>{productInfo.lactation}</Text>
-            
+
             <Text style={styles.sectionTitle}>Pediatrik Kullanım:</Text>
             <Text style={styles.cardContent}>{productInfo.pediatricUse}</Text>
-            
+
             <Text style={styles.sectionTitle}>Geriatrik Kullanım:</Text>
             <Text style={styles.cardContent}>{productInfo.geriatricUse}</Text>
-            
+
             <Text style={styles.sectionTitle}>Böbrek Yetmezliği:</Text>
-            <Text style={styles.cardContent}>{productInfo.renalAdjustment}</Text>
-            
+            <Text style={styles.cardContent}>
+              {productInfo.renalAdjustment}
+            </Text>
+
             <Text style={styles.sectionTitle}>Karaciğer Yetmezliği:</Text>
-            <Text style={styles.cardContent}>{productInfo.hepaticAdjustment}</Text>
+            <Text style={styles.cardContent}>
+              {productInfo.hepaticAdjustment}
+            </Text>
           </ModernCard>
         </FadeInView>
       </ScrollView>

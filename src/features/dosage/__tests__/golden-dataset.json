@@ -1,0 +1,115 @@
+[
+  {
+    "testId": "golden_paracetamol_adult_normal",
+    "description": "Normal weight adult taking Paracetamol (Weight-based method)",
+    "inputs": {
+      "patient": {
+        "id": "patient-1",
+        "age": 30,
+        "weight": 60,
+        "height": 170,
+        "gender": "male",
+        "patientType": "adult"
+      },
+      "drugId": "paracetamol-001"
+    },
+    "expectedResult": {
+      "status": "success",
+      "doseMg": 900,
+      "frequency": "q6h",
+      "cappedByMaximumDose": false,
+      "sourceStatus": "UNVERIFIED"
+    },
+    "reviewerSignOff": null
+  },
+  {
+    "testId": "golden_paracetamol_adult_heavy",
+    "description": "Heavy adult taking Paracetamol - Should hit Max Single Dose Cap",
+    "inputs": {
+      "patient": {
+        "id": "patient-2",
+        "age": 40,
+        "weight": 120,
+        "height": 185,
+        "gender": "male",
+        "patientType": "adult"
+      },
+      "drugId": "paracetamol-001"
+    },
+    "expectedResult": {
+      "status": "success",
+      "doseMg": 1000,
+      "frequency": "q6h",
+      "cappedByMaximumDose": true,
+      "sourceStatus": "UNVERIFIED"
+    },
+    "reviewerSignOff": null
+  },
+  {
+    "testId": "golden_ibuprofen_pediatric_syrup",
+    "description": "Pediatric patient taking Ibuprofen Syrup (Age-adjusted calculation & Volume test)",
+    "inputs": {
+      "patient": {
+        "id": "patient-3",
+        "age": 5,
+        "weight": 20,
+        "height": 110,
+        "gender": "female",
+        "patientType": "child"
+      },
+      "drugId": "extra-001"
+    },
+    "expectedResult": {
+      "status": "success",
+      "doseMg": 200,
+      "volumeMl": 10,
+      "frequency": "q8h",
+      "cappedByMaximumDose": false,
+      "sourceStatus": "UNVERIFIED"
+    },
+    "reviewerSignOff": null
+  },
+  {
+    "testId": "golden_cisplatin_oncology",
+    "description": "Adult oncology patient taking Cisplatin (BSA-based calculation)",
+    "inputs": {
+      "patient": {
+        "id": "patient-4",
+        "age": 55,
+        "weight": 70,
+        "height": 175,
+        "gender": "male",
+        "patientType": "adult"
+      },
+      "drugId": "chemo-001"
+    },
+    "expectedResult": {
+      "status": "success",
+      "doseMg": 221.36,
+      "frequency": "variable",
+      "cappedByMaximumDose": false,
+      "sourceStatus": "UNVERIFIED"
+    },
+    "reviewerSignOff": null
+  },
+  {
+    "testId": "golden_missing_weight_weight_based",
+    "description": "Patient with missing/zero weight for a weight-based drug should be BLOCKED",
+    "inputs": {
+      "patient": {
+        "id": "patient-5",
+        "age": 30,
+        "weight": 0,
+        "height": 170,
+        "gender": "male",
+        "patientType": "adult"
+      },
+      "drugId": "paracetamol-001"
+    },
+    "expectedResult": {
+      "status": "blocked",
+      "reason": "MISSING_PATIENT_DATA"
+    },
+    "reviewerSignOff": null
+  }
+]

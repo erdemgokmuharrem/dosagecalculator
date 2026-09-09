@@ -22,7 +22,7 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, color, style }) => {
       settings: '⚙️',
       user: '👤',
       patient: '🏥',
-      
+
       // Medical icons
       pill: '💊',
       syringe: '💉',
@@ -30,7 +30,7 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, color, style }) => {
       stethoscope: '🩺',
       medical: '⚕️',
       hospital: '🏥',
-      
+
       // Action icons
       plus: '➕',
       minus: '➖',
@@ -47,7 +47,7 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, color, style }) => {
       share: '📤',
       download: '⬇️',
       upload: '⬆️',
-      
+
       // UI icons
       arrow_right: '➡️',
       arrow_left: '⬅️',
@@ -57,18 +57,18 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, color, style }) => {
       close: '✕',
       back: '🔙',
       forward: '🔜',
-      
+
       // Status icons
       success: '✅',
       loading: '⏳',
       pending: '⏸️',
       completed: '🎯',
-      
+
       // Time icons
       clock: '🕐',
       calendar: '📅',
       time: '⏰',
-      
+
       // Form icons
       email: '📧',
       phone: '📞',

@@ -7,21 +7,36 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
-import { CHEMOTHERAPY_DRUGS, CHEMOTHERAPY_CATEGORIES, ADMINISTRATION_ROUTES } from '../data/chemotherapy';
-import { calculateChemotherapyDose, PatientInfo, ChemotherapyCalculationResult } from '../features/chemotherapy/calculations';
+import {
+  CHEMOTHERAPY_DRUGS,
+  CHEMOTHERAPY_CATEGORIES,
+  ADMINISTRATION_ROUTES,
+} from '../data/chemotherapy';
+import {
+  calculateChemotherapyDose,
+  PatientInfo,
+  ChemotherapyCalculationResult,
+} from '../features/chemotherapy/calculations';
 import ModernCard from '../components/ModernCard';
 import GradientButton from '../components/GradientButton';
 import FadeInView from '../components/FadeInView';
 import Icon from '../components/Icon';
+import {
+  formatWarning,
+  sortWarnings,
+  ICON_BY_SEVERITY,
+} from '../features/dosage/warnings';
+import { reportError } from '../services/monitoring';
 
 const ChemotherapyDoseScreen: React.FC = () => {
   const { theme } = useTheme();
   const navigation = useNavigation();
-  
+
   const [patientInfo, setPatientInfo] = useState<PatientInfo>({
     weight: 70,
     height: 170,
@@ -30,12 +45,18 @@ const ChemotherapyDoseScreen: React.FC = () => {
     gfr: undefined,
     auc: undefined,
   });
-  
+
   const [selectedDrug, setSelectedDrugState] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedRoute, setSelectedRoute] = useState<string>('IV');
-  const [calculationResult, setCalculationResult] = useState<ChemotherapyCalculationResult | null>(null);
+  const { t } = useTranslation();
+  const [calculationResult, setCalculationResult] =
+    useState<ChemotherapyCalculationResult | null>(null);
+  // Narrowed once so every field access below is type-checked against the
+  // success branch rather than the union.
+  const chemoResult =
+    calculationResult?.status === 'success' ? calculationResult : null;
   const [isCalculating, setIsCalculating] = useState(false);
   const [showSideEffects, setShowSideEffects] = useState(false);
   const [showComplications, setShowComplications] = useState(false);
@@ -43,18 +64,19 @@ const ChemotherapyDoseScreen: React.FC = () => {
   // Filtrelenmiş ilaçlar
   const filteredDrugs = useMemo(() => {
     let drugs = CHEMOTHERAPY_DRUGS;
-    
+
     if (selectedCategory !== 'All') {
       drugs = drugs.filter(drug => drug.category === selectedCategory);
     }
-    
+
     if (searchQuery.trim()) {
-      drugs = drugs.filter(drug => 
-        drug.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        drug.genericName.toLowerCase().includes(searchQuery.toLowerCase())
+      drugs = drugs.filter(
+        drug =>
+          drug.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          drug.genericName.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    
+
     return drugs;
   }, [selectedCategory, searchQuery]);
 
@@ -76,18 +98,21 @@ const ChemotherapyDoseScreen: React.FC = () => {
     }
 
     setIsCalculating(true);
-    
+
     try {
       const drug = CHEMOTHERAPY_DRUGS.find(d => d.id === selectedDrug);
       if (!drug) {
-        throw new Error('İlaç bulunamadı');
+        Alert.alert(t('common.error'), t('drug.noResults'));
+        return;
       }
 
+      // The engine returns a discriminated result instead of throwing, so a
+      // refusal reaches the UI as a message rather than an uncaught exception.
       const result = calculateChemotherapyDose(drug, patientInfo);
       setCalculationResult(result);
-      
-    } catch (e: any) {
-      Alert.alert('Hesaplama Hatası', e?.message ?? String(e));
+    } catch (error) {
+      reportError(error, { screen: 'ChemotherapyDose', drugId: selectedDrug });
+      Alert.alert(t('common.error'), t('errors.calculationError'));
     } finally {
       setIsCalculating(false);
     }
@@ -159,7 +184,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
       paddingVertical: theme.spacing.xs,
       paddingHorizontal: theme.spacing.sm,
       borderRadius: theme.borderRadius.md,
-      backgroundColor: 'rgba(255,255,255,0.15)'
+      backgroundColor: 'rgba(255,255,255,0.15)',
     },
     backButtonText: {
       color: '#ffffff',
@@ -310,6 +335,47 @@ const ChemotherapyDoseScreen: React.FC = () => {
       color: '#000',
       marginBottom: theme.spacing.xs,
     },
+    blockedContainer: {
+      backgroundColor: theme.colors.criticalLight,
+      borderWidth: 1.5,
+      borderColor: theme.colors.critical,
+      borderRadius: theme.borderRadius.lg,
+      margin: theme.spacing.md,
+      padding: theme.spacing.md,
+    },
+    blockedTitle: {
+      fontSize: theme.fontSizes.md,
+      fontWeight: '800',
+      color: theme.colors.criticalText,
+      marginBottom: theme.spacing.xs,
+    },
+    blockedText: {
+      fontSize: theme.fontSizes.sm,
+      color: theme.colors.criticalText,
+      lineHeight: 19,
+    },
+    chemoWarning: {
+      backgroundColor: theme.colors.warningSurface,
+      borderLeftWidth: 3,
+      borderLeftColor: theme.colors.warning,
+      borderRadius: theme.borderRadius.sm,
+      padding: theme.spacing.sm,
+      marginTop: theme.spacing.xs,
+    },
+    chemoWarningCritical: {
+      backgroundColor: theme.colors.criticalLight,
+      borderLeftColor: theme.colors.critical,
+      borderLeftWidth: 4,
+    },
+    chemoWarningText: {
+      fontSize: theme.fontSizes.sm,
+      color: theme.colors.warningText,
+      lineHeight: 18,
+    },
+    chemoWarningTextCritical: {
+      color: theme.colors.criticalText,
+      fontWeight: '700',
+    },
     resultContainer: {
       margin: theme.spacing.md,
     },
@@ -347,12 +413,17 @@ const ChemotherapyDoseScreen: React.FC = () => {
       <View style={styles.content}>
         <FadeInView delay={0}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Home' as never)}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.navigate('Home' as never)}
+            >
               <Text style={styles.backButtonText}>← Ana Menü</Text>
             </TouchableOpacity>
             <Icon name="syringe" size={32} color={'#ffffff'} />
             <Text style={styles.headerTitle}>Kemoterapi Doz Hesaplama</Text>
-            <Text style={styles.headerSubtitle}>Güvenli ve etkili doz hesaplama</Text>
+            <Text style={styles.headerSubtitle}>
+              Güvenli ve etkili doz hesaplama
+            </Text>
           </View>
         </FadeInView>
 
@@ -360,7 +431,11 @@ const ChemotherapyDoseScreen: React.FC = () => {
         <FadeInView delay={50}>
           <View style={styles.searchContainer}>
             <View style={styles.searchInputContainer}>
-              <Icon name="search" size={20} color={theme.colors.textSecondary} />
+              <Icon
+                name="search"
+                size={20}
+                color={theme.colors.textSecondary}
+              />
               <TextInput
                 style={styles.searchInput}
                 placeholder="İlaç ara..."
@@ -372,21 +447,29 @@ const ChemotherapyDoseScreen: React.FC = () => {
           </View>
         </FadeInView>
 
-        <ScrollView style={[styles.content, { backgroundColor: theme.colors.background }] }>
+        <ScrollView
+          style={[styles.content, { backgroundColor: theme.colors.background }]}
+        >
           {/* Hasta Bilgileri */}
           <FadeInView delay={100}>
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                <Icon name="user" size={20} color={theme.colors.primary} /> Hasta Bilgileri
+                <Icon name="user" size={20} color={theme.colors.primary} />{' '}
+                Hasta Bilgileri
               </Text>
-              
+
               <View style={styles.inputRow}>
                 <View style={styles.inputContainer}>
                   <Text style={styles.inputLabel}>Kilo (kg)</Text>
                   <TextInput
                     style={styles.input}
                     value={patientInfo.weight.toString()}
-                    onChangeText={(text) => setPatientInfo(prev => ({ ...prev, weight: parseFloat(text) || 0 }))}
+                    onChangeText={text =>
+                      setPatientInfo(prev => ({
+                        ...prev,
+                        weight: parseFloat(text) || 0,
+                      }))
+                    }
                     keyboardType="numeric"
                     placeholder="70"
                   />
@@ -396,7 +479,12 @@ const ChemotherapyDoseScreen: React.FC = () => {
                   <TextInput
                     style={styles.input}
                     value={patientInfo.height.toString()}
-                    onChangeText={(text) => setPatientInfo(prev => ({ ...prev, height: parseFloat(text) || 0 }))}
+                    onChangeText={text =>
+                      setPatientInfo(prev => ({
+                        ...prev,
+                        height: parseFloat(text) || 0,
+                      }))
+                    }
                     keyboardType="numeric"
                     placeholder="170"
                   />
@@ -409,40 +497,62 @@ const ChemotherapyDoseScreen: React.FC = () => {
                   <TextInput
                     style={styles.input}
                     value={patientInfo.age.toString()}
-                    onChangeText={(text) => setPatientInfo(prev => ({ ...prev, age: parseInt(text) || 0 }))}
+                    onChangeText={text =>
+                      setPatientInfo(prev => ({
+                        ...prev,
+                        age: parseInt(text) || 0,
+                      }))
+                    }
                     keyboardType="numeric"
                     placeholder="50"
                   />
                 </View>
                 <View style={styles.inputContainer}>
                   <Text style={styles.inputLabel}>Cinsiyet</Text>
-                  <View style={{ flexDirection: 'row', marginTop: theme.spacing.sm }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: theme.spacing.sm,
+                    }}
+                  >
                     <TouchableOpacity
                       style={[
                         styles.categoryButton,
-                        patientInfo.gender === 'male' && styles.categoryButtonActive,
-                        { marginRight: theme.spacing.sm }
+                        patientInfo.gender === 'male' &&
+                          styles.categoryButtonActive,
+                        { marginRight: theme.spacing.sm },
                       ]}
-                      onPress={() => setPatientInfo(prev => ({ ...prev, gender: 'male' }))}
+                      onPress={() =>
+                        setPatientInfo(prev => ({ ...prev, gender: 'male' }))
+                      }
                     >
-                      <Text style={[
-                        styles.categoryButtonText,
-                        patientInfo.gender === 'male' && styles.categoryButtonTextActive
-                      ]}>
+                      <Text
+                        style={[
+                          styles.categoryButtonText,
+                          patientInfo.gender === 'male' &&
+                            styles.categoryButtonTextActive,
+                        ]}
+                      >
                         Erkek
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[
                         styles.categoryButton,
-                        patientInfo.gender === 'female' && styles.categoryButtonActive
+                        patientInfo.gender === 'female' &&
+                          styles.categoryButtonActive,
                       ]}
-                      onPress={() => setPatientInfo(prev => ({ ...prev, gender: 'female' }))}
+                      onPress={() =>
+                        setPatientInfo(prev => ({ ...prev, gender: 'female' }))
+                      }
                     >
-                      <Text style={[
-                        styles.categoryButtonText,
-                        patientInfo.gender === 'female' && styles.categoryButtonTextActive
-                      ]}>
+                      <Text
+                        style={[
+                          styles.categoryButtonText,
+                          patientInfo.gender === 'female' &&
+                            styles.categoryButtonTextActive,
+                        ]}
+                      >
                         Kadın
                       </Text>
                     </TouchableOpacity>
@@ -456,9 +566,10 @@ const ChemotherapyDoseScreen: React.FC = () => {
           <FadeInView delay={150}>
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                <Icon name="syringe" size={20} color={theme.colors.primary} /> Uygulama Yolu
+                <Icon name="syringe" size={20} color={theme.colors.primary} />{' '}
+                Uygulama Yolu
               </Text>
-              
+
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -476,7 +587,8 @@ const ChemotherapyDoseScreen: React.FC = () => {
                     <Text
                       style={[
                         styles.categoryButtonText,
-                        selectedRoute === route && styles.categoryButtonTextActive,
+                        selectedRoute === route &&
+                          styles.categoryButtonTextActive,
                       ]}
                     >
                       {route}
@@ -491,9 +603,10 @@ const ChemotherapyDoseScreen: React.FC = () => {
           <FadeInView delay={200}>
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                <Icon name="pill" size={20} color={theme.colors.primary} /> İlaç Kategorisi
+                <Icon name="pill" size={20} color={theme.colors.primary} /> İlaç
+                Kategorisi
               </Text>
-              
+
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -504,14 +617,16 @@ const ChemotherapyDoseScreen: React.FC = () => {
                     key={category}
                     style={[
                       styles.categoryButton,
-                      selectedCategory === category && styles.categoryButtonActive,
+                      selectedCategory === category &&
+                        styles.categoryButtonActive,
                     ]}
                     onPress={() => handleCategorySelect(category)}
                   >
                     <Text
                       style={[
                         styles.categoryButtonText,
-                        selectedCategory === category && styles.categoryButtonTextActive,
+                        selectedCategory === category &&
+                          styles.categoryButtonTextActive,
                       ]}
                     >
                       {category}
@@ -526,26 +641,36 @@ const ChemotherapyDoseScreen: React.FC = () => {
           <FadeInView delay={250}>
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                <Icon name="pill" size={20} color={theme.colors.primary} /> İlaç Seçimi
+                <Icon name="pill" size={20} color={theme.colors.primary} /> İlaç
+                Seçimi
               </Text>
               <ScrollView style={styles.drugList}>
-                {filteredDrugs.map((drug) => (
+                {filteredDrugs.map(drug => (
                   <ModernCard
                     key={drug.id}
                     variant={selectedDrug === drug.id ? 'gradient' : 'elevated'}
                     onPress={() => handleDrugSelect(drug.id)}
                   >
                     <View style={styles.drugHeader}>
-                      <Icon name="pill" size={20} color={theme.colors.primary} />
-                      <Text style={styles.drugName} numberOfLines={1}>{drug.name}</Text>
+                      <Icon
+                        name="pill"
+                        size={20}
+                        color={theme.colors.primary}
+                      />
+                      <Text style={styles.drugName} numberOfLines={1}>
+                        {drug.name}
+                      </Text>
                     </View>
-                    <Text style={styles.drugGenericName} numberOfLines={1}>{drug.genericName}</Text>
+                    <Text style={styles.drugGenericName} numberOfLines={1}>
+                      {drug.genericName}
+                    </Text>
                     <View style={styles.drugInfoRow}>
                       <Text style={styles.drugCategory}>{drug.category}</Text>
                       <Text style={styles.drugUnit}>{drug.unit}</Text>
                     </View>
                     <Text style={styles.drugDescription} numberOfLines={2}>
-                      {drug.dosageForm} • Max: {drug.maxDailyDose}{drug.unit}
+                      {drug.dosageForm} • Max: {drug.maxDailyDose}
+                      {drug.unit}
                     </Text>
 
                     {selectedDrug === drug.id && (
@@ -557,7 +682,12 @@ const ChemotherapyDoseScreen: React.FC = () => {
                               <TextInput
                                 style={styles.input}
                                 value={(patientInfo.auc ?? '').toString()}
-                                onChangeText={(text) => setPatientInfo(prev => ({ ...prev, auc: parseFloat(text) || undefined }))}
+                                onChangeText={text =>
+                                  setPatientInfo(prev => ({
+                                    ...prev,
+                                    auc: parseFloat(text) || undefined,
+                                  }))
+                                }
                                 keyboardType="numeric"
                                 placeholder="5"
                               />
@@ -567,7 +697,11 @@ const ChemotherapyDoseScreen: React.FC = () => {
 
                         <View style={styles.infoButton}>
                           <GradientButton
-                            title={showSideEffects ? 'Yan Etkileri Gizle' : 'Yan Etkileri Göster'}
+                            title={
+                              showSideEffects
+                                ? 'Yan Etkileri Gizle'
+                                : 'Yan Etkileri Göster'
+                            }
                             onPress={() => setShowSideEffects(!showSideEffects)}
                             variant="secondary"
                             size="small"
@@ -578,18 +712,31 @@ const ChemotherapyDoseScreen: React.FC = () => {
                         {showSideEffects && (
                           <View style={styles.infoSection}>
                             <Text style={styles.infoTitle}>
-                              <Icon name="warning" size={16} color={theme.colors.warning} /> Yan Etkiler
+                              <Icon
+                                name="warning"
+                                size={16}
+                                color={theme.colors.warning}
+                              />{' '}
+                              Yan Etkiler
                             </Text>
                             {drug.sideEffects.map((effect, index) => (
-                              <Text key={index} style={styles.infoText}>• {effect}</Text>
+                              <Text key={index} style={styles.infoText}>
+                                • {effect}
+                              </Text>
                             ))}
                           </View>
                         )}
 
                         <View style={styles.infoButton}>
                           <GradientButton
-                            title={showComplications ? 'Komplikasyonları Gizle' : 'Komplikasyonları Göster'}
-                            onPress={() => setShowComplications(!showComplications)}
+                            title={
+                              showComplications
+                                ? 'Komplikasyonları Gizle'
+                                : 'Komplikasyonları Göster'
+                            }
+                            onPress={() =>
+                              setShowComplications(!showComplications)
+                            }
                             variant="warning"
                             size="small"
                             fullWidth
@@ -599,18 +746,43 @@ const ChemotherapyDoseScreen: React.FC = () => {
                         {showComplications && (
                           <View style={styles.infoSection}>
                             <Text style={styles.infoTitle}>
-                              <Icon name="error" size={16} color={theme.colors.warning} /> Komplikasyonlar ve Önlemler
+                              <Icon
+                                name="error"
+                                size={16}
+                                color={theme.colors.warning}
+                              />{' '}
+                              Komplikasyonlar ve Önlemler
                             </Text>
                             {drug.precautions.map((precaution, index) => (
-                              <Text key={index} style={styles.infoText}>• {precaution}</Text>
+                              <Text key={index} style={styles.infoText}>
+                                • {precaution}
+                              </Text>
                             ))}
-                            <Text style={[styles.infoTitle, { marginTop: theme.spacing.md }]}>Kontrendikasyonlar:</Text>
+                            <Text
+                              style={[
+                                styles.infoTitle,
+                                { marginTop: theme.spacing.md },
+                              ]}
+                            >
+                              Kontrendikasyonlar:
+                            </Text>
                             {drug.contraindications.map((contra, index) => (
-                              <Text key={index} style={styles.infoText}>• {contra}</Text>
+                              <Text key={index} style={styles.infoText}>
+                                • {contra}
+                              </Text>
                             ))}
-                            <Text style={[styles.infoTitle, { marginTop: theme.spacing.md }]}>İzlem Gereksinimleri:</Text>
+                            <Text
+                              style={[
+                                styles.infoTitle,
+                                { marginTop: theme.spacing.md },
+                              ]}
+                            >
+                              İzlem Gereksinimleri:
+                            </Text>
                             {drug.monitoring.map((monitor, index) => (
-                              <Text key={index} style={styles.infoText}>• {monitor}</Text>
+                              <Text key={index} style={styles.infoText}>
+                                • {monitor}
+                              </Text>
                             ))}
                           </View>
                         )}
@@ -637,29 +809,84 @@ const ChemotherapyDoseScreen: React.FC = () => {
             </FadeInView>
           )}
 
+          {/* Refusal: the engine could not produce a safe dose. */}
+          {calculationResult?.status === 'blocked' && (
+            <FadeInView delay={350}>
+              <View style={styles.blockedContainer}>
+                <Text style={styles.blockedTitle}>⛔ {t('blocked.title')}</Text>
+                <Text style={styles.blockedText}>
+                  {t(calculationResult.messageCode, {
+                    ...(calculationResult.messageParams ?? {}),
+                    defaultValue: calculationResult.messageCode,
+                  })}
+                </Text>
+              </View>
+            </FadeInView>
+          )}
+
           {/* Sonuçlar */}
-          {calculationResult && (
+          {chemoResult && (
             <FadeInView delay={350}>
               <View style={styles.resultContainer}>
                 <Text style={styles.resultTitle}>
-                  <Icon name="calculator" size={24} color={theme.colors.primary} /> Hesaplama Sonucu
+                  <Icon
+                    name="calculator"
+                    size={24}
+                    color={theme.colors.primary}
+                  />{' '}
+                  Hesaplama Sonucu
                 </Text>
 
                 <ModernCard variant="elevated" style={styles.resultCard}>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>İlaç:</Text>
-                    <Text style={styles.resultValue}>{calculationResult.drug.name}</Text>
+                    <Text style={styles.resultValue}>
+                      {chemoResult.drug.name}
+                    </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>BSA:</Text>
-                    <Text style={styles.resultValue}>{calculationResult.patientInfo.bsa.toFixed(2)} m²</Text>
+                    <Text style={styles.resultValue}>
+                      {chemoResult.patientInfo.bsa.toFixed(2)} m²
+                    </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Hesaplanan Doz:</Text>
                     <Text style={styles.resultValue}>
-                      {calculationResult.calculatedDose.dose} {calculationResult.calculatedDose.unit}
+                      {chemoResult.calculatedDose.dose}{' '}
+                      {chemoResult.calculatedDose.unit}
                     </Text>
                   </View>
+                  <View style={styles.resultRow}>
+                    <Text style={styles.resultLabel}>Formül:</Text>
+                    <Text style={styles.resultValue}>
+                      {chemoResult.calculatedDose.formula}
+                    </Text>
+                  </View>
+
+                  {/* Safety warnings. These were computed by the engine but
+                      never rendered, so a capped cytotoxic dose or an
+                      unassessed renal function reached nobody. */}
+                  {sortWarnings(chemoResult.safety.warnings).map((w, i) => (
+                    <View
+                      key={`${w.code}-${i}`}
+                      style={[
+                        styles.chemoWarning,
+                        w.severity === 'critical' &&
+                          styles.chemoWarningCritical,
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.chemoWarningText,
+                          w.severity === 'critical' &&
+                            styles.chemoWarningTextCritical,
+                        ]}
+                      >
+                        {ICON_BY_SEVERITY[w.severity]} {formatWarning(t, w)}
+                      </Text>
+                    </View>
+                  ))}
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Uygulama Yolu:</Text>
                     <Text style={styles.resultValue}>{selectedRoute}</Text>
@@ -667,34 +894,41 @@ const ChemotherapyDoseScreen: React.FC = () => {
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Konsantrasyon:</Text>
                     <Text style={styles.resultValue}>
-                      {calculationResult.administration.concentration} ({calculationResult.administration.concentrationMgPerMl} mg/mL)
+                      {chemoResult.administration.concentration} (
+                      {chemoResult.administration.concentrationMgPerMl} mg/mL)
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Gerekli Hacim:</Text>
                     <Text style={styles.resultValue}>
-                      {calculationResult.administration.requiredVolumeMl} mL
+                      {chemoResult.administration.requiredVolumeMl} mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Önerilen Torba:</Text>
                     <Text style={styles.resultValue}>
-                      {calculationResult.administration.solvent} {calculationResult.administration.bagVolumeMl} mL
+                      {chemoResult.administration.solvent}{' '}
+                      {chemoResult.administration.bagVolumeMl} mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Son Konsantrasyon:</Text>
                     <Text style={styles.resultValue}>
-                      {calculationResult.administration.finalConcentrationMgPerMl} mg/mL
+                      {chemoResult.administration.finalConcentrationMgPerMl}{' '}
+                      mg/mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Önerilen Solvent:</Text>
-                    <Text style={styles.resultValue}>{selectedDrugInfo?.dilution.solvent}</Text>
+                    <Text style={styles.resultValue}>
+                      {selectedDrugInfo?.dilution.solvent}
+                    </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Konsantrasyon:</Text>
-                    <Text style={styles.resultValue}>{selectedDrugInfo?.dilution.concentration}</Text>
+                    <Text style={styles.resultValue}>
+                      {selectedDrugInfo?.dilution.concentration}
+                    </Text>
                   </View>
                 </ModernCard>
 
@@ -703,20 +937,29 @@ const ChemotherapyDoseScreen: React.FC = () => {
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Seyreltme:</Text>
                     <Text style={styles.resultValue}>
-                      {calculationResult.calculatedDose.dose} mg ilacı, {calculationResult.administration.bagVolumeMl} mL {calculationResult.administration.solvent} içinde
+                      {chemoResult.calculatedDose.dose} mg ilacı,{' '}
+                      {chemoResult.administration.bagVolumeMl} mL{' '}
+                      {chemoResult.administration.solvent} içinde
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Çekilecek Hacim:</Text>
-                    <Text style={styles.resultValue}>{calculationResult.administration.requiredVolumeMl} mL</Text>
+                    <Text style={styles.resultValue}>
+                      {chemoResult.administration.requiredVolumeMl} mL
+                    </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Son Konsantrasyon:</Text>
-                    <Text style={styles.resultValue}>{calculationResult.administration.finalConcentrationMgPerMl} mg/mL</Text>
+                    <Text style={styles.resultValue}>
+                      {chemoResult.administration.finalConcentrationMgPerMl}{' '}
+                      mg/mL
+                    </Text>
                   </View>
                   <View style={styles.resultRow}>
                     <Text style={styles.resultLabel}>Uygulama Süresi:</Text>
-                    <Text style={styles.resultValue}>{calculationResult.administration.infusionTime}</Text>
+                    <Text style={styles.resultValue}>
+                      {chemoResult.administration.infusionTime}
+                    </Text>
                   </View>
                 </ModernCard>
               </View>

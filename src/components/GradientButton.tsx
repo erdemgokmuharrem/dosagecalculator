@@ -102,7 +102,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
     textStyle,
   ];
 
-  const gradientColors = disabled
+  const gradientColors: readonly [string, string, ...string[]] = disabled
     ? [theme.colors.disabled, theme.colors.disabled]
     : getGradientColors();
 

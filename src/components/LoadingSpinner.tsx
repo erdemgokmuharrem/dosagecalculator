@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  Easing,
-} from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 
 interface LoadingSpinnerProps {

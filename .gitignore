@@ -31,7 +31,34 @@ yarn-error.*
 *.pem
 
 # local env files
-.env*.local
+# `.env` itself was NOT ignored before, so a real Sentry DSN / RevenueCat key
+# committed here would have been published with the repo.
+.env
+.env.*
+!.env.example
+
+# Sentry CLI auth token (used for dSYM / source-map upload).
+sentry.properties
+
+# Store credentials referenced by eas.json / fastlane.
+google-play-service-account.json
+*.keystore
 
 # typescript
 *.tsbuildinfo
+
+# Test coverage output
+coverage/
+
+# Native build output. The android/ and ios/ project directories themselves are
+# committed (they carry the privacy manifest and signing config), but their
+# build artefacts and dependency caches are not.
+ios/Pods/
+ios/build/
+ios/*.xcworkspace/xcuserdata/
+ios/*.xcodeproj/xcuserdata/
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+*.hprof
