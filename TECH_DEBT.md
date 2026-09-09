@@ -104,6 +104,11 @@ secrets üzerinden doldurulmalıdır (bkz. `.env.example`).
 - `DrugDetailScreen` koşullu `useMemo` çağırıyordu → hook sırası ihlali.
 - `ErrorBoundary` "Yeniden Başlat" düğmesi React Native'de var olmayan
   `window.location.reload()` çağırıyordu.
+- `ThemeProvider`, AsyncStorage'dan tema okunana kadar `null` döndürüyordu →
+  splash sonrası boş ekran. Artık ilk frame'de sistem temasıyla render edip
+  kayıtlı tercihi geldiğinde uyguluyor. Context değeri memoize edildi; her
+  ekran `useTheme()` sonucundan StyleSheet kurduğu için her render'da yeni
+  nesne tüm ağacı yeniden stillendiriyordu.
 
 **Kemoterapi motoru**
 

@@ -1,7 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '../constants';
+import { reportError } from '../services/monitoring';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
@@ -115,8 +123,12 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const systemColorScheme = useColorScheme();
+  // Starts on the system preference so the tree renders on the first frame.
+  // Reading AsyncStorage behind a `return null` meant the whole app rendered
+  // empty until storage resolved, which shows as a blank screen after the
+  // splash — most visible on low-end devices, exactly where it matters least
+  // to have one.
   const [themeMode, setThemeModeState] = useState<ThemeMode>('system');
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const isDark =
     themeMode === 'dark' ||
@@ -124,38 +136,49 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const theme = isDark ? darkTheme : lightTheme;
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadTheme = async () => {
       try {
         const savedTheme = await AsyncStorage.getItem('themeMode');
-        if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
+        if (
+          !cancelled &&
+          savedTheme &&
+          ['light', 'dark', 'system'].includes(savedTheme)
+        ) {
           setThemeModeState(savedTheme as ThemeMode);
         }
       } catch (error) {
-        console.error('Error loading theme:', error);
-      } finally {
-        setIsLoaded(true);
+        // A missing preference is not worth blocking startup for; fall back to
+        // the system scheme, which is already what we are rendering.
+        reportError(error, { area: 'theme.load' });
       }
     };
 
     loadTheme();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const setThemeMode = async (mode: ThemeMode) => {
+  const setThemeMode = useCallback(async (mode: ThemeMode) => {
+    // Apply immediately so the toggle feels instant, then persist.
+    setThemeModeState(mode);
     try {
       await AsyncStorage.setItem('themeMode', mode);
-      setThemeModeState(mode);
     } catch (error) {
-      console.error('Error saving theme:', error);
+      reportError(error, { area: 'theme.save' });
     }
-  };
+  }, []);
 
-  if (!isLoaded) {
-    return null; // or a loading spinner
-  }
+  // Memoised: every screen calls useTheme() and rebuilds its StyleSheet from
+  // the result, so a new object each render re-styles the entire tree.
+  const value = useMemo(
+    () => ({ theme, themeMode, setThemeMode, isDark }),
+    [theme, themeMode, setThemeMode, isDark]
+  );
 
   return (
-    <ThemeContext.Provider value={{ theme, themeMode, setThemeMode, isDark }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
