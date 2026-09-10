@@ -215,7 +215,7 @@ const SettingsScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         {/* PRO / SUBSCRIPTION */}
-        <Text style={styles.sectionTitle}>Pro Sürüm</Text>
+        <Text style={styles.sectionTitle}>{t('settings.proVersion')}</Text>
         <TouchableOpacity
           style={styles.proCard}
           onPress={() => navigation.navigate('Subscription')}
@@ -337,7 +337,7 @@ const SettingsScreen: React.FC = () => {
         </View>
 
         {/* APP INFO */}
-        <Text style={styles.sectionTitle}>Uygulama Bilgisi</Text>
+        <Text style={styles.sectionTitle}>{t('settings.appInfo')}</Text>
         <View style={styles.aboutCard}>
           <Text style={{ fontSize: 40, marginBottom: 8 }}>⚕️</Text>
           <Text style={styles.appName}>DozuHesapla!</Text>

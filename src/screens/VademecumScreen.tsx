@@ -397,7 +397,7 @@ const VademecumScreen: React.FC = () => {
               showFavoritesOnly && styles.favoriteFilterTextActive,
             ]}
           >
-            Favoriler
+            {t('vademecum.favorites')}
           </Text>
         </TouchableOpacity>
         <Text style={styles.drugCount}>{filteredDrugs.length} ilaç</Text>

@@ -44,6 +44,8 @@ const jestGlobals = {
   afterAll: 'readonly',
   jest: 'readonly',
   require: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
 };
 
 export default [

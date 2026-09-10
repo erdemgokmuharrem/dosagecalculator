@@ -244,7 +244,9 @@
     "noProductInfo": "Detaylı ürün bilgisi mevcut değil",
     "disclaimer": "Bu bilgiler yalnızca eğitim amaçlıdır. Tedavi kararları için hekim onayı gereklidir.",
     "noFavorites": "Henüz favori ilaç eklemediniz",
-    "noMatches": "Arama kriterlerinize uygun ilaç yok"
+    "noMatches": "Arama kriterlerinize uygun ilaç yok",
+    "noDetails": "Detaylı bilgi mevcut değil",
+    "share": "Paylaş"
   },
   "history": {
     "title": "Hesaplama Geçmişi",
@@ -264,7 +266,9 @@
     "exportPro": "PDF Dışa Aktarım (Pro)",
     "filter": "Filtrele",
     "sortByDate": "Tarihe Göre Sırala",
-    "sortByDrug": "İlaca Göre Sırala"
+    "sortByDrug": "İlaca Göre Sırala",
+    "emptyTitle": "Henüz hesaplama geçmişi yok",
+    "emptySubtitle": "İlaç doz hesaplaması yaptığınızda burada görünecek"
   },
   "settings": {
     "title": "Ayarlar",
@@ -289,7 +293,9 @@
     "restorePurchase": "Satın Almayı Geri Yükle",
     "disclaimer": "Uyarı",
     "disclaimerText": "Bu uygulama yalnızca sağlık profesyonelleri için yardımcı araçtır. Tüm klinik kararlar yetkili hekim tarafından verilmelidir.",
-    "medicalProfessionalOnly": "Yalnızca Sağlık Profesyonelleri İçin"
+    "medicalProfessionalOnly": "Yalnızca Sağlık Profesyonelleri İçin",
+    "proVersion": "Pro Sürüm",
+    "appInfo": "Uygulama Bilgisi"
   },
   "subscription": {
     "title": "Pro Sürüm",
@@ -412,6 +418,18 @@
       "largeBsa": "BSA {{bsa}} m². Birçok protokol BSA’yı 2,0 m² ile sınırlar; kurum protokolünüzü kontrol edin.",
       "unverified": "Bu kemoterapi doz kuralı bağımsız klinik incelemeden geçmemiştir. Kurum protokolü ile doğrulayın.",
       "noCeiling": "Bu ilaç için doğrulanmış mutlak doz tavanı tanımlı değil; doz otomatik sınırlandırılamadı. Kurum protokolünden doğrulayın."
-    }
+    },
+    "title": "Kemoterapi Doz Hesaplama",
+    "subtitle": "Güvenli ve etkili doz hesaplama",
+    "auc": "AUC (Hedef)",
+    "monitoringNeeds": "İzlem Gereksinimleri",
+    "bsa": "BSA",
+    "formula": "Formül",
+    "requiredVolume": "Gerekli Hacim",
+    "recommendedBag": "Önerilen Torba",
+    "finalConcentration": "Son Konsantrasyon",
+    "preparation": "Hazırlama Önerisi",
+    "dilution": "Seyreltme",
+    "volumeToDraw": "Çekilecek Hacim"
   }
 }

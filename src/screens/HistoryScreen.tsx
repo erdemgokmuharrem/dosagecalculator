@@ -287,10 +287,8 @@ const HistoryScreen: React.FC = () => {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <Text style={styles.emptyStateText}>Henüz hesaplama geçmişi yok</Text>
-      <Text style={styles.emptyStateSubtext}>
-        İlaç doz hesaplaması yaptığınızda burada görünecek
-      </Text>
+      <Text style={styles.emptyStateText}>{t('history.emptyTitle')}</Text>
+      <Text style={styles.emptyStateSubtext}>{t('history.emptySubtitle')}</Text>
     </View>
   );
 

@@ -420,10 +420,8 @@ const ChemotherapyDoseScreen: React.FC = () => {
               <Text style={styles.backButtonText}>← Ana Menü</Text>
             </TouchableOpacity>
             <Icon name="syringe" size={32} color={'#ffffff'} />
-            <Text style={styles.headerTitle}>Kemoterapi Doz Hesaplama</Text>
-            <Text style={styles.headerSubtitle}>
-              Güvenli ve etkili doz hesaplama
-            </Text>
+            <Text style={styles.headerTitle}>{t('chemo.title')}</Text>
+            <Text style={styles.headerSubtitle}>{t('chemo.subtitle')}</Text>
           </View>
         </FadeInView>
 
@@ -455,12 +453,12 @@ const ChemotherapyDoseScreen: React.FC = () => {
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
                 <Icon name="user" size={20} color={theme.colors.primary} />{' '}
-                Hasta Bilgileri
+                {t('patient.section')}
               </Text>
 
               <View style={styles.inputRow}>
                 <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Kilo (kg)</Text>
+                  <Text style={styles.inputLabel}>{t('patient.weight')}</Text>
                   <TextInput
                     style={styles.input}
                     value={patientInfo.weight.toString()}
@@ -475,7 +473,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                   />
                 </View>
                 <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Boy (cm)</Text>
+                  <Text style={styles.inputLabel}>{t('patient.height')}</Text>
                   <TextInput
                     style={styles.input}
                     value={patientInfo.height.toString()}
@@ -493,7 +491,56 @@ const ChemotherapyDoseScreen: React.FC = () => {
 
               <View style={styles.inputRow}>
                 <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Yaş</Text>
+                  <Text style={styles.inputLabel}>
+                    {t('patient.serumCreatinine')}
+                  </Text>
+                  <TextInput
+                    testID="creatinine-input"
+                    style={styles.input}
+                    value={(patientInfo.serumCreatinine ?? '').toString()}
+                    onChangeText={text => {
+                      const value = parseFloat(text.replace(',', '.'));
+                      setPatientInfo(prev => ({
+                        ...prev,
+                        serumCreatinine:
+                          Number.isFinite(value) && value > 0
+                            ? value
+                            : undefined,
+                      }));
+                    }}
+                    keyboardType="decimal-pad"
+                    placeholder="1.0"
+                    placeholderTextColor={theme.colors.textSecondary}
+                    accessibilityLabel={t('patient.serumCreatinine')}
+                  />
+                </View>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.inputLabel}>{t('patient.crcl')}</Text>
+                  <TextInput
+                    testID="gfr-input"
+                    style={styles.input}
+                    value={(patientInfo.gfr ?? '').toString()}
+                    onChangeText={text => {
+                      const value = parseFloat(text.replace(',', '.'));
+                      setPatientInfo(prev => ({
+                        ...prev,
+                        gfr:
+                          Number.isFinite(value) && value > 0
+                            ? value
+                            : undefined,
+                      }));
+                    }}
+                    keyboardType="decimal-pad"
+                    placeholder={t('calculation.notChecked')}
+                    placeholderTextColor={theme.colors.textSecondary}
+                    accessibilityLabel={t('patient.crclFull')}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.inputRow}>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.inputLabel}>{t('patient.age')}</Text>
                   <TextInput
                     style={styles.input}
                     value={patientInfo.age.toString()}
@@ -508,7 +555,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                   />
                 </View>
                 <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Cinsiyet</Text>
+                  <Text style={styles.inputLabel}>{t('patient.gender')}</Text>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -533,7 +580,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                             styles.categoryButtonTextActive,
                         ]}
                       >
-                        Erkek
+                        {t('patient.male')}
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -553,7 +600,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                             styles.categoryButtonTextActive,
                         ]}
                       >
-                        Kadın
+                        {t('patient.female')}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -678,7 +725,9 @@ const ChemotherapyDoseScreen: React.FC = () => {
                         {drug.calculationMethod === 'AUC' && (
                           <View style={styles.inputRow}>
                             <View style={styles.inputContainer}>
-                              <Text style={styles.inputLabel}>AUC</Text>
+                              <Text style={styles.inputLabel}>
+                                {t('chemo.auc')}
+                              </Text>
                               <TextInput
                                 style={styles.input}
                                 value={(patientInfo.auc ?? '').toString()}
@@ -764,7 +813,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                                 { marginTop: theme.spacing.md },
                               ]}
                             >
-                              Kontrendikasyonlar:
+                              {t('vademecum.contraindications')}:
                             </Text>
                             {drug.contraindications.map((contra, index) => (
                               <Text key={index} style={styles.infoText}>
@@ -777,7 +826,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                                 { marginTop: theme.spacing.md },
                               ]}
                             >
-                              İzlem Gereksinimleri:
+                              {t('chemo.monitoringNeeds')}:
                             </Text>
                             {drug.monitoring.map((monitor, index) => (
                               <Text key={index} style={styles.infoText}>
@@ -839,26 +888,30 @@ const ChemotherapyDoseScreen: React.FC = () => {
 
                 <ModernCard variant="elevated" style={styles.resultCard}>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>İlaç:</Text>
+                    <Text style={styles.resultLabel}>{t('drug.name')}:</Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.drug.name}
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>BSA:</Text>
+                    <Text style={styles.resultLabel}>{t('chemo.bsa')}:</Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.patientInfo.bsa.toFixed(2)} m²
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Hesaplanan Doz:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('calculation.singleDose')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.calculatedDose.dose}{' '}
                       {chemoResult.calculatedDose.unit}
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Formül:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('chemo.formula')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.calculatedDose.formula}
                     </Text>
@@ -888,44 +941,58 @@ const ChemotherapyDoseScreen: React.FC = () => {
                     </View>
                   ))}
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Uygulama Yolu:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('vademecum.route')}:
+                    </Text>
                     <Text style={styles.resultValue}>{selectedRoute}</Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Konsantrasyon:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('vademecum.concentration')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.administration.concentration} (
                       {chemoResult.administration.concentrationMgPerMl} mg/mL)
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Gerekli Hacim:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('chemo.requiredVolume')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.administration.requiredVolumeMl} mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Önerilen Torba:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('chemo.recommendedBag')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.administration.solvent}{' '}
                       {chemoResult.administration.bagVolumeMl} mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Son Konsantrasyon:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('chemo.finalConcentration')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.administration.finalConcentrationMgPerMl}{' '}
                       mg/mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Önerilen Solvent:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('vademecum.diluent')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {selectedDrugInfo?.dilution.solvent}
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Konsantrasyon:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('vademecum.concentration')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {selectedDrugInfo?.dilution.concentration}
                     </Text>
@@ -933,9 +1000,13 @@ const ChemotherapyDoseScreen: React.FC = () => {
                 </ModernCard>
 
                 <ModernCard variant="outlined" style={styles.resultCard}>
-                  <Text style={styles.resultTitle}>Hazırlama Önerisi</Text>
+                  <Text style={styles.resultTitle}>
+                    {t('chemo.preparation')}
+                  </Text>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Seyreltme:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('chemo.dilution')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.calculatedDose.dose} mg ilacı,{' '}
                       {chemoResult.administration.bagVolumeMl} mL{' '}
@@ -943,20 +1014,26 @@ const ChemotherapyDoseScreen: React.FC = () => {
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Çekilecek Hacim:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('chemo.volumeToDraw')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.administration.requiredVolumeMl} mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Son Konsantrasyon:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('chemo.finalConcentration')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.administration.finalConcentrationMgPerMl}{' '}
                       mg/mL
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
-                    <Text style={styles.resultLabel}>Uygulama Süresi:</Text>
+                    <Text style={styles.resultLabel}>
+                      {t('vademecum.duration')}:
+                    </Text>
                     <Text style={styles.resultValue}>
                       {chemoResult.administration.infusionTime}
                     </Text>

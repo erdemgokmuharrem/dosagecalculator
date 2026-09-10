@@ -244,7 +244,9 @@
     "noProductInfo": "Detaillierte Produktinformation nicht verfügbar",
     "disclaimer": "Diese Informationen dienen nur zu Bildungszwecken. Klinische Entscheidungen erfordern ärztliche Genehmigung.",
     "noFavorites": "Sie haben noch keine Favoriten hinzugefügt",
-    "noMatches": "Kein Arzneimittel entspricht Ihrer Suche"
+    "noMatches": "Kein Arzneimittel entspricht Ihrer Suche",
+    "noDetails": "Keine detaillierten Informationen verfügbar",
+    "share": "Teilen"
   },
   "history": {
     "title": "Berechnungsverlauf",
@@ -264,7 +266,9 @@
     "exportPro": "PDF-Export (Pro)",
     "filter": "Filter",
     "sortByDate": "Nach Datum sortieren",
-    "sortByDrug": "Nach Medikament sortieren"
+    "sortByDrug": "Nach Medikament sortieren",
+    "emptyTitle": "Noch kein Berechnungsverlauf",
+    "emptySubtitle": "Berechnungen erscheinen hier, sobald Sie eine durchführen"
   },
   "settings": {
     "title": "Einstellungen",
@@ -289,7 +293,9 @@
     "restorePurchase": "Kauf wiederherstellen",
     "disclaimer": "Haftungsausschluss",
     "disclaimerText": "Diese App ist nur ein Entscheidungshilfsmittel für medizinisches Fachpersonal.",
-    "medicalProfessionalOnly": "Nur für medizinisches Fachpersonal"
+    "medicalProfessionalOnly": "Nur für medizinisches Fachpersonal",
+    "proVersion": "Pro-Version",
+    "appInfo": "App-Informationen"
   },
   "subscription": {
     "title": "Pro-Version",
@@ -412,6 +418,18 @@
       "largeBsa": "KOF beträgt {{bsa}} m². Viele Protokolle begrenzen die KOF auf 2,0 m²; hausinternes Protokoll prüfen.",
       "unverified": "Diese Chemotherapie-Dosierregel hat keine unabhängige klinische Prüfung durchlaufen. Mit dem hausinternen Protokoll abgleichen.",
       "noCeiling": "Für dieses Arzneimittel ist keine geprüfte absolute Höchstdosis hinterlegt; die Dosis konnte nicht automatisch begrenzt werden. Anhand des hausinternen Protokolls prüfen."
-    }
+    },
+    "title": "Chemotherapie-Dosisberechnung",
+    "subtitle": "Sichere und wirksame Dosisberechnung",
+    "auc": "AUC (Ziel)",
+    "monitoringNeeds": "Überwachungsanforderungen",
+    "bsa": "KOF",
+    "formula": "Formel",
+    "requiredVolume": "Benötigtes Volumen",
+    "recommendedBag": "Empfohlener Beutel",
+    "finalConcentration": "Endkonzentration",
+    "preparation": "Zubereitung",
+    "dilution": "Verdünnung",
+    "volumeToDraw": "Zu entnehmendes Volumen"
   }
 }

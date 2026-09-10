@@ -200,7 +200,7 @@ const ProductInfoScreen: React.FC = () => {
       <ScrollView style={styles.content}>
         <FadeInView delay={0}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Etken Madde</Text>
+            <Text style={styles.cardTitle}>{t('drug.activeIngredient')}</Text>
             <Text style={styles.cardContent}>
               {productInfo.activeIngredient}
             </Text>
@@ -209,7 +209,9 @@ const ProductInfoScreen: React.FC = () => {
 
         <FadeInView delay={100}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Etki Mekanizması</Text>
+            <Text style={styles.cardTitle}>
+              {t('vademecum.mechanismOfAction')}
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.mechanismOfAction}
             </Text>
@@ -218,28 +220,38 @@ const ProductInfoScreen: React.FC = () => {
 
         <FadeInView delay={200}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Farmakokinetik</Text>
-            <Text style={styles.sectionTitle}>Absorpsiyon:</Text>
+            <Text style={styles.cardTitle}>
+              {t('vademecum.pharmacokinetics')}
+            </Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.absorption')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.pharmacokinetics.absorption}
             </Text>
 
-            <Text style={styles.sectionTitle}>Dağılım:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.distribution')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.pharmacokinetics.distribution}
             </Text>
 
-            <Text style={styles.sectionTitle}>Metabolizma:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.metabolism')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.pharmacokinetics.metabolism}
             </Text>
 
-            <Text style={styles.sectionTitle}>Eliminasyon:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.elimination')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.pharmacokinetics.elimination}
             </Text>
 
-            <Text style={styles.sectionTitle}>Yarı Ömür:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.halfLife')}:</Text>
             <Text style={styles.cardContent}>
               {productInfo.pharmacokinetics.halfLife}
             </Text>
@@ -248,57 +260,67 @@ const ProductInfoScreen: React.FC = () => {
 
         <FadeInView delay={300}>
           <ModernCard variant="gradient" style={styles.card}>
-            <Text style={styles.cardTitle}>Uygulama Bilgileri</Text>
-            <Text style={styles.sectionTitle}>Uygulama Yolu:</Text>
+            <Text style={styles.cardTitle}>
+              {t('vademecum.administration')}
+            </Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.route')}:</Text>
             <Text style={styles.cardContent}>
               {productInfo.administration.route}
             </Text>
 
-            <Text style={styles.sectionTitle}>Uygulama Yöntemi:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.method')}:</Text>
             <Text style={styles.cardContent}>
               {productInfo.administration.method}
             </Text>
 
-            <Text style={styles.sectionTitle}>İnfüzyon Süresi:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.duration')}:</Text>
             <Text style={styles.cardContent}>
               {productInfo.administration.duration}
             </Text>
 
-            <Text style={styles.sectionTitle}>Seyreltici:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.diluent')}:</Text>
             <Text style={styles.cardContent}>
               {productInfo.administration.diluent}
             </Text>
 
-            <Text style={styles.sectionTitle}>Konsantrasyon:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.concentration')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.administration.concentration}
             </Text>
 
-            <Text style={styles.sectionTitle}>Uyumlu Solüsyonlar:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.compatibility')}:
+            </Text>
             {renderBulletList(productInfo.administration.compatibility)}
 
-            <Text style={styles.sectionTitle}>Uyumsuz Solüsyonlar:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.incompatibility')}:
+            </Text>
             {renderBulletList(productInfo.administration.incompatibility)}
           </ModernCard>
         </FadeInView>
 
         <FadeInView delay={400}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Endikasyonlar</Text>
+            <Text style={styles.cardTitle}>{t('vademecum.indications')}</Text>
             {renderBulletList(productInfo.indications)}
           </ModernCard>
         </FadeInView>
 
         <FadeInView delay={500}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Kontrendikasyonlar</Text>
+            <Text style={styles.cardTitle}>
+              {t('vademecum.contraindications')}
+            </Text>
             {renderBulletList(productInfo.contraindications)}
           </ModernCard>
         </FadeInView>
 
         <FadeInView delay={600}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Uyarılar</Text>
+            <Text style={styles.cardTitle}>{t('vademecum.warnings')}</Text>
             {renderWarningBox(
               'Dikkat Edilmesi Gerekenler:',
               productInfo.warnings
@@ -308,48 +330,60 @@ const ProductInfoScreen: React.FC = () => {
 
         <FadeInView delay={700}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>İlaç Etkileşimleri</Text>
-            <Text style={styles.sectionTitle}>İlaç Etkileşimleri:</Text>
+            <Text style={styles.cardTitle}>
+              {t('vademecum.drugInteractions')}
+            </Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.drugInteractions')}:
+            </Text>
             {renderBulletList(productInfo.interactions.drugInteractions)}
 
-            <Text style={styles.sectionTitle}>Besin Etkileşimleri:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.foodInteractions')}:
+            </Text>
             {renderBulletList(productInfo.interactions.foodInteractions)}
 
-            <Text style={styles.sectionTitle}>Laboratuvar Etkileşimleri:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.labInteractions')}:
+            </Text>
             {renderBulletList(productInfo.interactions.labInteractions)}
           </ModernCard>
         </FadeInView>
 
         <FadeInView delay={800}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>İzleme</Text>
+            <Text style={styles.cardTitle}>{t('vademecum.monitoring')}</Text>
             <Text style={styles.sectionTitle}>
-              İzlenmesi Gereken Parametreler:
+              {t('vademecum.parameters')}:
             </Text>
             {renderBulletList(productInfo.monitoring.parameters)}
 
-            <Text style={styles.sectionTitle}>İzleme Sıklığı:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.frequency')}:</Text>
             <Text style={styles.cardContent}>
               {productInfo.monitoring.frequency}
             </Text>
 
-            <Text style={styles.sectionTitle}>Özel Durumlar:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.specialConsiderations')}:
+            </Text>
             {renderBulletList(productInfo.monitoring.specialConsiderations)}
           </ModernCard>
         </FadeInView>
 
         <FadeInView delay={900}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Saklama Koşulları</Text>
-            <Text style={styles.sectionTitle}>Sıcaklık:</Text>
+            <Text style={styles.cardTitle}>{t('vademecum.storage')}</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.temperature')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.storage.temperature}
             </Text>
 
-            <Text style={styles.sectionTitle}>Işık:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.light')}:</Text>
             <Text style={styles.cardContent}>{productInfo.storage.light}</Text>
 
-            <Text style={styles.sectionTitle}>Stabilite:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.stability')}:</Text>
             <Text style={styles.cardContent}>
               {productInfo.storage.stability}
             </Text>
@@ -358,27 +392,39 @@ const ProductInfoScreen: React.FC = () => {
 
         <FadeInView delay={1000}>
           <ModernCard variant="elevated" style={styles.card}>
-            <Text style={styles.cardTitle}>Özel Populasyonlar</Text>
-            <Text style={styles.sectionTitle}>Gebelik Kategorisi:</Text>
+            <Text style={styles.cardTitle}>
+              {t('vademecum.specialPopulations')}
+            </Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.pregnancyCategory')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.pregnancyCategory}
             </Text>
 
-            <Text style={styles.sectionTitle}>Emzirme:</Text>
+            <Text style={styles.sectionTitle}>{t('vademecum.lactation')}:</Text>
             <Text style={styles.cardContent}>{productInfo.lactation}</Text>
 
-            <Text style={styles.sectionTitle}>Pediatrik Kullanım:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.pediatricUse')}:
+            </Text>
             <Text style={styles.cardContent}>{productInfo.pediatricUse}</Text>
 
-            <Text style={styles.sectionTitle}>Geriatrik Kullanım:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.geriatricUse')}:
+            </Text>
             <Text style={styles.cardContent}>{productInfo.geriatricUse}</Text>
 
-            <Text style={styles.sectionTitle}>Böbrek Yetmezliği:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.renalAdjustment')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.renalAdjustment}
             </Text>
 
-            <Text style={styles.sectionTitle}>Karaciğer Yetmezliği:</Text>
+            <Text style={styles.sectionTitle}>
+              {t('vademecum.hepaticAdjustment')}:
+            </Text>
             <Text style={styles.cardContent}>
               {productInfo.hepaticAdjustment}
             </Text>

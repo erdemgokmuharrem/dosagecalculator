@@ -5,11 +5,12 @@
     "noUncheckedIndexedAccess": false,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    // @testing-library/jest-native is deprecated and NOT installed. Listing it
-    // here made tsc abort with TS2688 before checking a single file, which is
-    // why type errors in the app went unnoticed. @testing-library/react-native
-    // v13 ships the matchers natively, so only "jest" is needed.
-    "types": ["jest"],
+    // @testing-library/jest-native was listed here but is deprecated and NOT
+    // installed, which made tsc abort with TS2688 before checking a single
+    // file — that is why type errors in the app went unnoticed for so long.
+    // @testing-library/react-native v13 ships those matchers natively.
+    // "node" is needed by the locale key-usage test, which reads the source tree.
+    "types": ["jest", "node"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

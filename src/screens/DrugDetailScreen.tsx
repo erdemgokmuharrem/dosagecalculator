@@ -113,14 +113,14 @@ const DrugDetailScreen: React.FC = () => {
             <h1>${drug?.name}</h1>
             <div class="meta">${drug?.genericName} | ${drug?.category} | ${drug?.dosageForm}</div>
             
-            ${pi?.activeIngredient ? `<div class="section"><span class="label">Etkin Madde:</span> ${pi.activeIngredient}</div>` : ''}
-            ${pi?.mechanismOfAction ? `<div class="section"><span class="label">Etki Mekanizması:</span> ${pi.mechanismOfAction}</div>` : ''}
+            ${pi?.activeIngredient ? `<div class="section"><span class="label">{t('drug.activeIngredient')}:</span> ${pi.activeIngredient}</div>` : ''}
+            ${pi?.mechanismOfAction ? `<div class="section"><span class="label">{t('vademecum.mechanismOfAction')}:</span> ${pi.mechanismOfAction}</div>` : ''}
             
             ${
               pi?.indications?.length
                 ? `
               <div class="section">
-                <h2>Endikasyonlar</h2>
+                <h2>{t('vademecum.indications')}</h2>
                 <ul>${pi.indications.map(i => `<li>${i}</li>`).join('')}</ul>
               </div>
             `
@@ -131,7 +131,7 @@ const DrugDetailScreen: React.FC = () => {
               pi?.contraindications?.length
                 ? `
               <div class="section">
-                <h2>Kontrendikasyonlar</h2>
+                <h2>{t('vademecum.contraindications')}</h2>
                 <ul>${pi.contraindications.map(i => `<li style="color: #dc2626;">${i}</li>`).join('')}</ul>
               </div>
             `
@@ -142,7 +142,7 @@ const DrugDetailScreen: React.FC = () => {
               pi?.warnings?.length
                 ? `
               <div class="section">
-                <h2>Uyarılar ve Önlemler</h2>
+                <h2>{t('vademecum.warnings')}</h2>
                 <ul>${pi.warnings.map(i => `<li>${i}</li>`).join('')}</ul>
               </div>
             `
@@ -498,7 +498,7 @@ const DrugDetailScreen: React.FC = () => {
         </View>
         {pi?.activeIngredient && (
           <View style={styles.activeIngredientCard}>
-            <Text style={styles.aiLabel}>ETKİN MADDE</Text>
+            <Text style={styles.aiLabel}>{t('drug.activeIngredient')}</Text>
             <Text style={styles.aiValue}>{pi.activeIngredient}</Text>
           </View>
         )}
@@ -511,7 +511,9 @@ const DrugDetailScreen: React.FC = () => {
           activeOpacity={0.85}
         >
           <Text style={{ fontSize: 16 }}>⚡</Text>
-          <Text style={styles.actionBtnTextPrimary}>Doz Hesapla</Text>
+          <Text style={styles.actionBtnTextPrimary}>
+            {t('vademecum.calculateDose')}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionBtn, styles.actionBtnSecondary]}
@@ -519,7 +521,9 @@ const DrugDetailScreen: React.FC = () => {
           activeOpacity={0.85}
         >
           <Text style={{ fontSize: 16 }}>📤</Text>
-          <Text style={styles.actionBtnTextSecondary}>Paylaş</Text>
+          <Text style={styles.actionBtnTextSecondary}>
+            {t('vademecum.share')}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -538,7 +542,7 @@ const DrugDetailScreen: React.FC = () => {
                 marginTop: 12,
               }}
             >
-              Detaylı bilgi mevcut değil
+              {t('vademecum.noDetails')}
             </Text>
           </View>
         ) : (
@@ -662,14 +666,16 @@ const DrugDetailScreen: React.FC = () => {
               }
             >
               <Text style={styles.subSectionTitle}>
-                İlaç-İlaç Etkileşimleri
+                {t('vademecum.drugInteractions')}
               </Text>
               {pi.interactions.drugInteractions.map((int, i) => (
                 <ListItem key={i} text={int} type="warning" />
               ))}
               {pi.interactions.foodInteractions.length > 0 && (
                 <>
-                  <Text style={styles.subSectionTitle}>Gıda Etkileşimleri</Text>
+                  <Text style={styles.subSectionTitle}>
+                    {t('vademecum.foodInteractions')}
+                  </Text>
                   {pi.interactions.foodInteractions.map((int, i) => (
                     <ListItem key={i} text={int} />
                   ))}
@@ -678,7 +684,7 @@ const DrugDetailScreen: React.FC = () => {
               {pi.interactions.labInteractions.length > 0 && (
                 <>
                   <Text style={styles.subSectionTitle}>
-                    Laboratuvar Etkileşimleri
+                    {t('vademecum.labInteractions')}
                   </Text>
                   {pi.interactions.labInteractions.map((int, i) => (
                     <ListItem key={i} text={int} />
@@ -713,7 +719,9 @@ const DrugDetailScreen: React.FC = () => {
                 )}
               {pi.administration.compatibility.length > 0 && (
                 <>
-                  <Text style={styles.subSectionTitle}>Uyumlu Solüsyonlar</Text>
+                  <Text style={styles.subSectionTitle}>
+                    {t('vademecum.compatibility')}
+                  </Text>
                   {pi.administration.compatibility.map((c, i) => (
                     <ListItem key={i} text={c} />
                   ))}
@@ -721,7 +729,9 @@ const DrugDetailScreen: React.FC = () => {
               )}
               {pi.administration.incompatibility.length > 0 && (
                 <>
-                  <Text style={styles.subSectionTitle}>Uyumsuz İlaçlar</Text>
+                  <Text style={styles.subSectionTitle}>
+                    {t('vademecum.incompatibility')}
+                  </Text>
                   {pi.administration.incompatibility.map((c, i) => (
                     <ListItem key={i} text={c} type="danger" />
                   ))}
@@ -734,14 +744,18 @@ const DrugDetailScreen: React.FC = () => {
               icon="📋"
               sectionKey="monitoring"
             >
-              <Text style={styles.subSectionTitle}>İzlenecek Parametreler</Text>
+              <Text style={styles.subSectionTitle}>
+                {t('vademecum.parameters')}
+              </Text>
               {pi.monitoring.parameters.map((p, i) => (
                 <ListItem key={i} text={p} />
               ))}
               <InfoRow label="İzlem Sıklığı" value={pi.monitoring.frequency} />
               {pi.monitoring.specialConsiderations.length > 0 && (
                 <>
-                  <Text style={styles.subSectionTitle}>Özel Durumlar</Text>
+                  <Text style={styles.subSectionTitle}>
+                    {t('vademecum.specialConsiderations')}
+                  </Text>
                   {pi.monitoring.specialConsiderations.map((c, i) => (
                     <ListItem key={i} text={c} type="warning" />
                   ))}

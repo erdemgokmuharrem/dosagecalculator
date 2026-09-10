@@ -244,7 +244,9 @@
     "noProductInfo": "暂无详细产品信息",
     "disclaimer": "此信息仅供教育目的。临床决策需要医师批准。",
     "noFavorites": "您尚未添加收藏的药物",
-    "noMatches": "没有符合搜索条件的药物"
+    "noMatches": "没有符合搜索条件的药物",
+    "noDetails": "暂无详细信息",
+    "share": "分享"
   },
   "history": {
     "title": "计算历史",
@@ -264,7 +266,9 @@
     "exportPro": "PDF导出 (Pro)",
     "filter": "筛选",
     "sortByDate": "按日期排序",
-    "sortByDrug": "按药物排序"
+    "sortByDrug": "按药物排序",
+    "emptyTitle": "暂无计算记录",
+    "emptySubtitle": "完成剂量计算后将显示在此处"
   },
   "settings": {
     "title": "设置",
@@ -289,7 +293,9 @@
     "restorePurchase": "恢复购买",
     "disclaimer": "免责声明",
     "disclaimerText": "本应用仅为医疗专业人员提供辅助决策工具。",
-    "medicalProfessionalOnly": "仅供医疗专业人员使用"
+    "medicalProfessionalOnly": "仅供医疗专业人员使用",
+    "proVersion": "专业版",
+    "appInfo": "应用信息"
   },
   "subscription": {
     "title": "专业版",
@@ -412,6 +418,18 @@
       "largeBsa": "体表面积为 {{bsa}} m²。许多方案将体表面积上限设为 2.0 m²；请核对本机构方案。",
       "unverified": "此化疗剂量规则未通过独立临床审核。请对照本机构方案核实。",
       "noCeiling": "该药物未定义经核实的绝对剂量上限，无法自动限制剂量。请对照本机构方案核实。"
-    }
+    },
+    "title": "化疗剂量计算",
+    "subtitle": "安全有效的剂量计算",
+    "auc": "AUC（目标）",
+    "monitoringNeeds": "监测要求",
+    "bsa": "体表面积",
+    "formula": "公式",
+    "requiredVolume": "所需体积",
+    "recommendedBag": "推荐输液袋",
+    "finalConcentration": "最终浓度",
+    "preparation": "配制建议",
+    "dilution": "稀释",
+    "volumeToDraw": "抽取体积"
   }
 }

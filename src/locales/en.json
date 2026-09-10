@@ -240,11 +240,13 @@
     "calculateDose": "Calculate Dose for This Drug",
     "addToFavorites": "Add to Favorites",
     "removeFromFavorites": "Remove from Favorites",
-    "favorites": "Favorites",
+    "favorites": "Favourites",
     "noProductInfo": "Detailed product information not available",
     "disclaimer": "This information is for educational purposes only. Clinical decisions require physician approval.",
     "noFavorites": "You have not added any favourite drugs yet",
-    "noMatches": "No drug matches your search"
+    "noMatches": "No drug matches your search",
+    "noDetails": "No detailed information available",
+    "share": "Share"
   },
   "history": {
     "title": "Calculation History",
@@ -264,7 +266,9 @@
     "exportPro": "Export PDF (Pro)",
     "filter": "Filter",
     "sortByDate": "Sort by Date",
-    "sortByDrug": "Sort by Drug"
+    "sortByDrug": "Sort by Drug",
+    "emptyTitle": "No calculation history yet",
+    "emptySubtitle": "Calculations will appear here once you make one"
   },
   "settings": {
     "title": "Settings",
@@ -289,7 +293,9 @@
     "restorePurchase": "Restore Purchase",
     "disclaimer": "Disclaimer",
     "disclaimerText": "This application is a decision support tool for healthcare professionals only. All clinical decisions must be made by authorized physicians.",
-    "medicalProfessionalOnly": "For Healthcare Professionals Only"
+    "medicalProfessionalOnly": "For Healthcare Professionals Only",
+    "proVersion": "Pro Version",
+    "appInfo": "App Information"
   },
   "subscription": {
     "title": "Pro Version",
@@ -412,6 +418,18 @@
       "largeBsa": "BSA is {{bsa}} m². Many protocols cap BSA at 2.0 m²; check your institutional protocol.",
       "unverified": "This chemotherapy dosing rule has not passed independent clinical review. Verify against your institutional protocol.",
       "noCeiling": "No verified absolute dose ceiling is defined for this drug, so the dose could not be capped automatically. Verify against your institutional protocol."
-    }
+    },
+    "title": "Chemotherapy Dose Calculation",
+    "subtitle": "Safe and effective dose calculation",
+    "auc": "AUC (target)",
+    "monitoringNeeds": "Monitoring Requirements",
+    "bsa": "BSA",
+    "formula": "Formula",
+    "requiredVolume": "Required Volume",
+    "recommendedBag": "Recommended Bag",
+    "finalConcentration": "Final Concentration",
+    "preparation": "Preparation",
+    "dilution": "Dilution",
+    "volumeToDraw": "Volume to Draw"
   }
 }
