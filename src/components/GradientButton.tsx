@@ -21,6 +21,7 @@ interface GradientButtonProps {
   style?: ViewStyle;
   textStyle?: TextStyle;
   fullWidth?: boolean;
+  testID?: string;
 }
 
 const GradientButton: React.FC<GradientButtonProps> = ({
@@ -33,6 +34,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   style,
   textStyle,
   fullWidth = false,
+  testID,
 }) => {
   const { theme } = useTheme();
 
@@ -108,6 +110,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
 
   return (
     <TouchableOpacity
+      testID={testID}
       onPress={onPress}
       disabled={disabled || loading}
       activeOpacity={0.8}

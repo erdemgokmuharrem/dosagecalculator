@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -14,20 +14,22 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   color,
 }) => {
   const { theme } = useTheme();
-  const spinValue = new Animated.Value(0);
+  const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const spin = () => {
-      spinValue.setValue(0);
+    // Animated.loop with cleanup. The previous self-restarting timing callback,
+    // combined with a fresh Animated.Value every render, stacked an extra
+    // endless animation on each render and never stopped any of them.
+    const loop = Animated.loop(
       Animated.timing(spinValue, {
         toValue: 1,
         duration: 1000,
         easing: Easing.linear,
         useNativeDriver: true,
-      }).start(() => spin());
-    };
-
-    spin();
+      })
+    );
+    loop.start();
+    return () => loop.stop();
   }, [spinValue]);
 
   const getSizeStyles = () => {

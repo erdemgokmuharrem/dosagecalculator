@@ -73,7 +73,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
     const unsubscribeError = appOpenAd.addAdEventListener(
       AdEventType.ERROR,
       error => {
-        console.log('App Open Ad Error:', error);
+        if (__DEV__) console.warn('App Open Ad Error:', error);
         setAppOpenLoaded(false);
       }
     );
@@ -109,7 +109,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
     const unsubscribeError = interstitialAd.addAdEventListener(
       AdEventType.ERROR,
       error => {
-        console.log('Interstitial Ad Error:', error);
+        if (__DEV__) console.warn('Interstitial Ad Error:', error);
         setInterstitialLoaded(false);
       }
     );
@@ -132,7 +132,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           appOpenAd.show();
         } catch (e) {
-          console.log('Failed to show App Open ad:', e);
+          if (__DEV__) console.warn('Failed to show App Open ad:', e);
         }
       }
     });

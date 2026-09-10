@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
-import Purchases, { LOG_LEVEL } from 'react-native-purchases';
+import Purchases, {
+  LOG_LEVEL,
+  type CustomerInfo,
+} from 'react-native-purchases';
 import { reportError } from './monitoring';
 import { UserSubscription } from '../types';
 
@@ -19,6 +22,10 @@ const REVENUECAT_APPLE_KEY =
 const REVENUECAT_GOOGLE_KEY =
   process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY?.trim() || '';
 const ENTITLEMENT_ID = 'pro';
+
+/** Maps a store product identifier to the plan type the app understands. */
+const toPlan = (productId: string): 'monthly' | 'lifetime' =>
+  /lifetime/i.test(productId) ? 'lifetime' : 'monthly';
 
 /** True once the RevenueCat SDK has been configured with a real key. */
 export const isPurchasesConfigured = (): boolean =>
@@ -78,14 +85,15 @@ class SubscriptionService {
     }
   }
 
-  private updateStatusFromCustomerInfo(customerInfo: any) {
+  private updateStatusFromCustomerInfo(customerInfo: CustomerInfo) {
     if (
       typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined'
     ) {
       this.subscription = {
         isPro: true,
-        plan: customerInfo.entitlements.active[ENTITLEMENT_ID]
-          .productIdentifier,
+        plan: toPlan(
+          customerInfo.entitlements.active[ENTITLEMENT_ID].productIdentifier
+        ),
         purchasedAt: new Date(
           customerInfo.entitlements.active[ENTITLEMENT_ID].latestPurchaseDate
         ),
@@ -137,8 +145,8 @@ class SubscriptionService {
       this.updateStatusFromCustomerInfo(customerInfo);
 
       return { success: true };
-    } catch (error: any) {
-      if (!error.userCancelled) {
+    } catch (error: unknown) {
+      if (!(error as { userCancelled?: boolean }).userCancelled) {
         reportError(error, { area: 'purchase' });
         return { success: false, error: 'subscription.errors.failed' };
       }
@@ -160,7 +168,7 @@ class SubscriptionService {
           error: 'subscription.errors.nothingToRestore',
         };
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       reportError(error, { area: 'restore' });
       return { success: false, error: 'errors.restoreError' };
     }

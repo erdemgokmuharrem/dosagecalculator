@@ -107,201 +107,205 @@ const VademecumScreen: React.FC = () => {
     );
   }, []);
 
-  const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: theme.colors.background },
-    // Header section
-    headerSection: {
-      backgroundColor: theme.colors.primary,
-      paddingHorizontal: 16,
-      paddingTop: 12,
-      paddingBottom: 16,
-    },
-    headerTitle: {
-      fontSize: 22,
-      fontWeight: '900',
-      color: '#FFFFFF',
-      marginBottom: 2,
-    },
-    headerSubtitle: {
-      fontSize: 13,
-      color: 'rgba(255,255,255,0.75)',
-      marginBottom: 12,
-    },
-    // Search
-    searchBar: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: 'rgba(255,255,255,0.15)',
-      borderRadius: 12,
-      paddingHorizontal: 12,
-      marginBottom: 10,
-    },
-    searchIcon: { fontSize: 15, marginRight: 8 },
-    searchInput: {
-      flex: 1,
-      paddingVertical: 10,
-      fontSize: 14,
-      color: '#FFFFFF',
-    },
-    // Filter bar
-    filterRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-      paddingHorizontal: 16,
-      paddingVertical: 10,
-      backgroundColor: theme.colors.surface,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.border,
-    },
-    favoriteFilterBtn: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 12,
-      paddingVertical: 6,
-      borderRadius: 20,
-      borderWidth: 1.5,
-      borderColor: theme.colors.border,
-      backgroundColor: theme.colors.background,
-      gap: 4,
-    },
-    favoriteFilterBtnActive: {
-      borderColor: '#F59E0B',
-      backgroundColor: '#FEF3C7',
-    },
-    favoriteFilterText: {
-      fontSize: 12,
-      fontWeight: '700',
-      color: theme.colors.textSecondary,
-    },
-    favoriteFilterTextActive: { color: '#92400E' },
-    drugCount: {
-      fontSize: 12,
-      color: theme.colors.textSecondary,
-      marginLeft: 'auto',
-    },
-    // Category scroll
-    catContainer: {
-      backgroundColor: theme.colors.surface,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.border,
-    },
-    catScroll: { paddingHorizontal: 12, paddingVertical: 8 },
-    catChip: {
-      paddingHorizontal: 14,
-      paddingVertical: 7,
-      borderRadius: 20,
-      backgroundColor: theme.colors.background,
-      borderWidth: 1.5,
-      borderColor: theme.colors.border,
-      marginRight: 8,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 5,
-    },
-    catChipActive: {
-      backgroundColor: theme.colors.primary,
-      borderColor: theme.colors.primary,
-    },
-    catChipText: {
-      fontSize: 12,
-      fontWeight: '600',
-      color: theme.colors.textSecondary,
-    },
-    catChipTextActive: { color: '#FFFFFF' },
-    // Drug list
-    listContent: { padding: 12, paddingBottom: 30 },
-    drugCard: {
-      backgroundColor: theme.colors.surface,
-      borderRadius: 16,
-      padding: 14,
-      marginBottom: 10,
-      flexDirection: 'row',
-      alignItems: 'center',
-      shadowColor: theme.colors.shadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.08,
-      shadowRadius: 6,
-      elevation: 3,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-    },
-    drugIconContainer: {
-      width: 50,
-      height: 50,
-      borderRadius: 14,
-      backgroundColor: theme.colors.primary + '15',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 12,
-    },
-    drugIconText: { fontSize: 22 },
-    drugInfo: { flex: 1 },
-    drugName: {
-      fontSize: 15,
-      fontWeight: '800',
-      color: theme.colors.text,
-      marginBottom: 2,
-    },
-    drugGeneric: {
-      fontSize: 12,
-      color: theme.colors.textSecondary,
-      marginBottom: 4,
-    },
-    drugMetaRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 6,
-      flexWrap: 'wrap',
-    },
-    drugCategoryBadge: {
-      paddingHorizontal: 8,
-      paddingVertical: 2,
-      backgroundColor: theme.colors.primary + '15',
-      borderRadius: 8,
-    },
-    drugCategoryText: {
-      fontSize: 10,
-      fontWeight: '700',
-      color: theme.colors.primary,
-    },
-    drugFormBadge: {
-      paddingHorizontal: 8,
-      paddingVertical: 2,
-      backgroundColor: theme.colors.background,
-      borderRadius: 8,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-    },
-    drugFormText: {
-      fontSize: 10,
-      fontWeight: '600',
-      color: theme.colors.textSecondary,
-    },
-    drugActions: { alignItems: 'center', gap: 8 },
-    favoriteBtn: { padding: 6 },
-    favoriteBtnText: { fontSize: 20 },
-    chevron: { fontSize: 16, color: theme.colors.textSecondary },
-    // Empty state
-    emptyState: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: 60,
-    },
-    emptyIcon: { fontSize: 48, marginBottom: 16 },
-    emptyTitle: {
-      fontSize: 18,
-      fontWeight: '700',
-      color: theme.colors.text,
-      marginBottom: 6,
-    },
-    emptySubtitle: {
-      fontSize: 14,
-      color: theme.colors.textSecondary,
-      textAlign: 'center',
-    },
-  });
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: { flex: 1, backgroundColor: theme.colors.background },
+        // Header section
+        headerSection: {
+          backgroundColor: theme.colors.primary,
+          paddingHorizontal: 16,
+          paddingTop: 12,
+          paddingBottom: 16,
+        },
+        headerTitle: {
+          fontSize: 22,
+          fontWeight: '900',
+          color: '#FFFFFF',
+          marginBottom: 2,
+        },
+        headerSubtitle: {
+          fontSize: 13,
+          color: 'rgba(255,255,255,0.75)',
+          marginBottom: 12,
+        },
+        // Search
+        searchBar: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: 'rgba(255,255,255,0.15)',
+          borderRadius: 12,
+          paddingHorizontal: 12,
+          marginBottom: 10,
+        },
+        searchIcon: { fontSize: 15, marginRight: 8 },
+        searchInput: {
+          flex: 1,
+          paddingVertical: 10,
+          fontSize: 14,
+          color: '#FFFFFF',
+        },
+        // Filter bar
+        filterRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          paddingHorizontal: 16,
+          paddingVertical: 10,
+          backgroundColor: theme.colors.surface,
+          borderBottomWidth: 1,
+          borderBottomColor: theme.colors.border,
+        },
+        favoriteFilterBtn: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 12,
+          paddingVertical: 6,
+          borderRadius: 20,
+          borderWidth: 1.5,
+          borderColor: theme.colors.border,
+          backgroundColor: theme.colors.background,
+          gap: 4,
+        },
+        favoriteFilterBtnActive: {
+          borderColor: '#F59E0B',
+          backgroundColor: '#FEF3C7',
+        },
+        favoriteFilterText: {
+          fontSize: 12,
+          fontWeight: '700',
+          color: theme.colors.textSecondary,
+        },
+        favoriteFilterTextActive: { color: '#92400E' },
+        drugCount: {
+          fontSize: 12,
+          color: theme.colors.textSecondary,
+          marginLeft: 'auto',
+        },
+        // Category scroll
+        catContainer: {
+          backgroundColor: theme.colors.surface,
+          borderBottomWidth: 1,
+          borderBottomColor: theme.colors.border,
+        },
+        catScroll: { paddingHorizontal: 12, paddingVertical: 8 },
+        catChip: {
+          paddingHorizontal: 14,
+          paddingVertical: 7,
+          borderRadius: 20,
+          backgroundColor: theme.colors.background,
+          borderWidth: 1.5,
+          borderColor: theme.colors.border,
+          marginRight: 8,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 5,
+        },
+        catChipActive: {
+          backgroundColor: theme.colors.primary,
+          borderColor: theme.colors.primary,
+        },
+        catChipText: {
+          fontSize: 12,
+          fontWeight: '600',
+          color: theme.colors.textSecondary,
+        },
+        catChipTextActive: { color: '#FFFFFF' },
+        // Drug list
+        listContent: { padding: 12, paddingBottom: 30 },
+        drugCard: {
+          backgroundColor: theme.colors.surface,
+          borderRadius: 16,
+          padding: 14,
+          marginBottom: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          shadowColor: theme.colors.shadow,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.08,
+          shadowRadius: 6,
+          elevation: 3,
+          borderWidth: 1,
+          borderColor: theme.colors.border,
+        },
+        drugIconContainer: {
+          width: 50,
+          height: 50,
+          borderRadius: 14,
+          backgroundColor: theme.colors.primary + '15',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 12,
+        },
+        drugIconText: { fontSize: 22 },
+        drugInfo: { flex: 1 },
+        drugName: {
+          fontSize: 15,
+          fontWeight: '800',
+          color: theme.colors.text,
+          marginBottom: 2,
+        },
+        drugGeneric: {
+          fontSize: 12,
+          color: theme.colors.textSecondary,
+          marginBottom: 4,
+        },
+        drugMetaRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+          flexWrap: 'wrap',
+        },
+        drugCategoryBadge: {
+          paddingHorizontal: 8,
+          paddingVertical: 2,
+          backgroundColor: theme.colors.primary + '15',
+          borderRadius: 8,
+        },
+        drugCategoryText: {
+          fontSize: 10,
+          fontWeight: '700',
+          color: theme.colors.primary,
+        },
+        drugFormBadge: {
+          paddingHorizontal: 8,
+          paddingVertical: 2,
+          backgroundColor: theme.colors.background,
+          borderRadius: 8,
+          borderWidth: 1,
+          borderColor: theme.colors.border,
+        },
+        drugFormText: {
+          fontSize: 10,
+          fontWeight: '600',
+          color: theme.colors.textSecondary,
+        },
+        drugActions: { alignItems: 'center', gap: 8 },
+        favoriteBtn: { padding: 6 },
+        favoriteBtnText: { fontSize: 20 },
+        chevron: { fontSize: 16, color: theme.colors.textSecondary },
+        // Empty state
+        emptyState: {
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical: 60,
+        },
+        emptyIcon: { fontSize: 48, marginBottom: 16 },
+        emptyTitle: {
+          fontSize: 18,
+          fontWeight: '700',
+          color: theme.colors.text,
+          marginBottom: 6,
+        },
+        emptySubtitle: {
+          fontSize: 14,
+          color: theme.colors.textSecondary,
+          textAlign: 'center',
+        },
+      }),
+    [theme]
+  );
 
   const renderDrugCard = useCallback(
     ({ item }: { item: Drug }) => {
@@ -354,7 +358,7 @@ const VademecumScreen: React.FC = () => {
         </TouchableOpacity>
       );
     },
-    [favorites, toggleFavorite, navigation]
+    [favorites, toggleFavorite, navigation, styles, t]
   );
 
   return (

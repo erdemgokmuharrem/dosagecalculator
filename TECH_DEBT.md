@@ -63,9 +63,9 @@ secrets üzerinden doldurulmalıdır (bkz. `.env.example`).
 | #   | Konu                    | Not                                                                                                                                                                                                                                                                                                                                    |
 | --- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Klinik içerik çevirisi  | Arayüz metinlerinin tamamı 5 dilde. İlaç verisindeki **klinik içerik** (monograflar, kontrendikasyonlar, yan etkiler, seyreltme solüsyonları) yalnızca Türkçe. Bu kod değil tıbbi çeviri işi; farmakolog incelemesiyle birlikte yapılmalı.                                                                                             |
-| 2   | Ekran testleri          | `CalculatorScreen` ve `ThemeContext` render testli; diğer ekranlarda render testi yok.                                                                                                                                                                                                                                                 |
-| 3   | Erişilebilirlik (kalan) | 38/38 dokunmatik öğede rol/durum var, testle korunuyor. Yapılmadı: Dynamic Type/yazı ölçekleme testi, renk kontrastı denetimi, cihazda VoiceOver/TalkBack turu.                                                                                                                                                                        |
-| 4   | Lint uyarıları          | 39 uyarı (`react-native/no-inline-styles`, `no-explicit-any`, `no-console`). Hata değil.                                                                                                                                                                                                                                               |
+| 2   | Ekran testleri          | `CalculatorScreen`, `ChemotherapyDoseScreen`, `HistoryScreen` ve `ThemeContext` render testli. Vademecum, ilaç detayı, ayarlar, abonelik ve ürün bilgisi ekranlarında render testi yok.                                                                                                                                                |
+| 3   | Erişilebilirlik (kalan) | Rol/durum 38/38 ve renk kontrastı (13 çift × 2 tema, WCAG AA) testle korunuyor. Yapılmadı: Dynamic Type/yazı ölçekleme ve cihazda VoiceOver/TalkBack turu.                                                                                                                                                                             |
+| 4   | Lint uyarıları          | Yalnızca 29 `react-native/no-inline-styles` uyarısı kaldı; hata ve diğer kural uyarıları yok.                                                                                                                                                                                                                                          |
 | 5   | `npm audit`             | 52 bildirim, `--omit=dev` ile 42. Neredeyse tamamı `expo`'nun çektiği CLI/Metro/Babel araç zincirinde, bundle'a girmiyor. Bundle'a giren tek zincir: react-navigation → query-string → decode-uri-component (orta, upstream düzeltme yok; bozuk URI ile DoS, derin bağlantılarda önemli). Expo paketleri `expo install` ile hizalandı. |
 | 6   | OTA hotfix kanalı       | `expo-updates` kurulu değil. Bir doz hatası çıkarsa mağaza incelemesi beklenir.                                                                                                                                                                                                                                                        |
 | 7   | Abonelik yedeği         | RevenueCat başarısız olursa `subscription.ts` AsyncStorage'a düşüyor; cihazda kurcalanabilir.                                                                                                                                                                                                                                          |
@@ -157,3 +157,17 @@ secrets üzerinden doldurulmalıdır (bkz. `.env.example`).
   GFR istediğinden karboplatin çıkmaz sokaktaydı.
 - `react-native-worklets` 0.6.1 kurulmuştu; Expo SDK 54 0.5.1 bekliyor. Hizalandı.
 - v1 → v2 geçmiş göçü test edildi.
+
+**Kontrast ve render testleri turu**
+
+- **Bu çalışmada yarattığım hata:** sonuç panelindeki "Doz Sınırı Aşıldı" /
+  "Güvenli Sınırlar İçinde" bantlarının metnini tema rengine geçirmiş ama
+  arka planı sabit açık renkte bırakmıştım. Koyu temada bant neredeyse
+  görünmüyordu. Arka planlar tema token'ına alındı; 13 metin/zemin çifti iki
+  temada WCAG AA (4.5:1) testiyle korunuyor.
+- Sonuç başlığında beyaz metin mavi zeminde 3.7:1'di (AA altı); 5.2:1'e çıkarıldı.
+- Kemoterapi ekranında hasta değerleri değişince sitotoksik doz ekranda kalıyordu.
+- `LoadingSpinner` her render'da yeni bir sonsuz animasyon döngüsü başlatıyordu.
+- Abonelik servisi `plan` alanına mağaza ürün kimliğini yazıyordu.
+- Vademecum listesi tema ve dil değişiminde eski stil/çeviriyle kalıyordu.
+- Kemoterapi ve geçmiş ekranlarına render testleri eklendi.

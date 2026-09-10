@@ -571,14 +571,14 @@ const CalculatorScreen: React.FC = () => {
       elevation: 8,
     },
     resultHeader: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.primaryDark,
       paddingHorizontal: 20,
       paddingVertical: 14,
     },
     resultHeaderText: {
       fontSize: 14,
       fontWeight: '800',
-      color: 'rgba(255,255,255,0.85)',
+      color: '#FFFFFF',
     },
     resultBody: { padding: 20 },
     resultDoseRow: {
@@ -624,7 +624,7 @@ const CalculatorScreen: React.FC = () => {
     limitOk: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: '#D1FAE5',
+      backgroundColor: theme.colors.safeSurface,
       borderRadius: 10,
       padding: 10,
       marginBottom: 10,
@@ -632,7 +632,7 @@ const CalculatorScreen: React.FC = () => {
     limitWarn: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: '#FEF3C7',
+      backgroundColor: theme.colors.criticalLight,
       borderRadius: 10,
       padding: 10,
       marginBottom: 10,

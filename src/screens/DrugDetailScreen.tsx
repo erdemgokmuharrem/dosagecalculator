@@ -88,7 +88,7 @@ const DrugDetailScreen: React.FC = () => {
         { text: t('common.cancel'), style: 'cancel' },
         {
           text: t('settings.title'),
-          onPress: () => navigation.navigate('MainTabs' as any),
+          onPress: () => navigation.navigate('MainTabs'),
         }, // User navigates to tabs, can switch to Settings manually
       ]);
       return;

@@ -63,7 +63,7 @@ const HistoryScreen: React.FC = () => {
     });
 
     return Array.from(map.entries()).map(([title, data]) => ({ title, data }));
-  }, [calculations, i18n.language]);
+  }, [calculations, i18n.language, t]);
 
   const styles = StyleSheet.create({
     container: {

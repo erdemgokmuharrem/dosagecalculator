@@ -41,7 +41,7 @@ interface Theme {
   };
 }
 
-const lightTheme: Theme = {
+export const lightTheme: Theme = {
   colors: COLORS,
   spacing: {
     xs: 4,
@@ -69,7 +69,7 @@ const lightTheme: Theme = {
   },
 };
 
-const darkTheme: Theme = {
+export const darkTheme: Theme = {
   ...lightTheme,
   colors: {
     ...COLORS,

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -58,6 +58,13 @@ const ChemotherapyDoseScreen: React.FC = () => {
   const chemoResult =
     calculationResult?.status === 'success' ? calculationResult : null;
   const [isCalculating, setIsCalculating] = useState(false);
+
+  // Any patient edit invalidates a displayed dose. The calculator screen already
+  // did this; here a stale cytotoxic dose stayed on screen next to changed
+  // inputs, which is how a wrong number gets drawn up.
+  useEffect(() => {
+    setCalculationResult(null);
+  }, [patientInfo]);
   const [showSideEffects, setShowSideEffects] = useState(false);
   const [showComplications, setShowComplications] = useState(false);
 
@@ -462,6 +469,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                 <View style={styles.inputContainer}>
                   <Text style={styles.inputLabel}>{t('patient.weight')}</Text>
                   <TextInput
+                    testID="chemo-weight-input"
                     style={styles.input}
                     value={patientInfo.weight.toString()}
                     onChangeText={text =>
@@ -477,6 +485,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                 <View style={styles.inputContainer}>
                   <Text style={styles.inputLabel}>{t('patient.height')}</Text>
                   <TextInput
+                    testID="chemo-height-input"
                     style={styles.input}
                     value={patientInfo.height.toString()}
                     onChangeText={text =>
@@ -544,6 +553,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                 <View style={styles.inputContainer}>
                   <Text style={styles.inputLabel}>{t('patient.age')}</Text>
                   <TextInput
+                    testID="chemo-age-input"
                     style={styles.input}
                     value={patientInfo.age.toString()}
                     onChangeText={text =>
@@ -745,6 +755,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                                 {t('chemo.auc')}
                               </Text>
                               <TextInput
+                                testID="chemo-auc-input"
                                 style={styles.input}
                                 value={(patientInfo.auc ?? '').toString()}
                                 onChangeText={text =>
@@ -864,6 +875,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
             <FadeInView delay={300}>
               <GradientButton
                 title={t('calculation.calculate')}
+                testID="chemo-calculate"
                 onPress={handleCalculate}
                 variant="primary"
                 size="large"
@@ -879,7 +891,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
             <FadeInView delay={350}>
               <View style={styles.blockedContainer}>
                 <Text style={styles.blockedTitle}>⛔ {t('blocked.title')}</Text>
-                <Text style={styles.blockedText}>
+                <Text testID="chemo-blocked-message" style={styles.blockedText}>
                   {t(calculationResult.messageCode, {
                     ...(calculationResult.messageParams ?? {}),
                     defaultValue: calculationResult.messageCode,
@@ -919,7 +931,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                     <Text style={styles.resultLabel}>
                       {t('calculation.singleDose')}:
                     </Text>
-                    <Text style={styles.resultValue}>
+                    <Text testID="chemo-result-dose" style={styles.resultValue}>
                       {chemoResult.calculatedDose.dose}{' '}
                       {chemoResult.calculatedDose.unit}
                     </Text>
