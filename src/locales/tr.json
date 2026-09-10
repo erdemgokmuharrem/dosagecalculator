@@ -322,8 +322,6 @@
     "subtitle": "Tüm özelliklere erişin",
     "monthly": "Aylık",
     "lifetime": "Ömür Boyu",
-    "monthlyPrice": "₺149,99/ay",
-    "lifetimePrice": "₺899,99",
     "monthlyBenefit": "İptal edilebilir",
     "lifetimeBenefit": "Bir kez öde, ömür boyu kullan",
     "feature1": "Reklamsız kullanım",
@@ -336,7 +334,6 @@
     "buyLifetime": "Ömür Boyu Satın Al",
     "restorePurchase": "Satın Almayı Geri Yükle",
     "alreadyPro": "Zaten Pro Üyesiniz! 🎉",
-    "terms": "Satın alarak Kullanım Koşullarını kabul edersiniz.",
     "cancelAnytime": "İstediğiniz zaman iptal edebilirsiniz",
     "mostPopular": "En Popüler",
     "bestValue": "En İyi Değer",
@@ -352,7 +349,10 @@
       "failed": "Satın alma tamamlanamadı.",
       "cancelled": "Satın alma iptal edildi.",
       "nothingToRestore": "Geri yüklenecek bir satın alma bulunamadı."
-    }
+    },
+    "monthlyPriceFormat": "{{price}}/ay",
+    "priceUnavailable": "Fiyat şu anda alınamıyor",
+    "autoRenewDisclosure": "Aylık abonelik, dönem bitiminden en az 24 saat önce iptal edilmezse otomatik olarak yenilenir ve ücret mağaza hesabınızdan alınır. Aboneliği mağaza hesabı ayarlarınızdan yönetebilir veya iptal edebilirsiniz. Ömür boyu seçeneği tek seferlik bir satın almadır, abonelik değildir."
   },
   "errors": {
     "networkError": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",

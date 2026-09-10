@@ -322,8 +322,6 @@
     "subtitle": "Alle Funktionen freischalten",
     "monthly": "Monatlich",
     "lifetime": "Lebenslang",
-    "monthlyPrice": "€5,99/Monat",
-    "lifetimePrice": "€34,99",
     "monthlyBenefit": "Jederzeit kündbar",
     "lifetimeBenefit": "Einmal zahlen, lebenslang nutzen",
     "feature1": "Werbefreie Nutzung",
@@ -336,7 +334,6 @@
     "buyLifetime": "Lebenslang kaufen",
     "restorePurchase": "Kauf wiederherstellen",
     "alreadyPro": "Sie sind bereits Pro! 🎉",
-    "terms": "Mit dem Kauf stimmen Sie den Nutzungsbedingungen zu.",
     "cancelAnytime": "Jederzeit kündbar",
     "mostPopular": "Am beliebtesten",
     "bestValue": "Bestes Preis-Leistungs-Verhältnis",
@@ -352,7 +349,10 @@
       "failed": "Der Kauf konnte nicht abgeschlossen werden.",
       "cancelled": "Kauf abgebrochen.",
       "nothingToRestore": "Kein früherer Kauf zum Wiederherstellen gefunden."
-    }
+    },
+    "monthlyPriceFormat": "{{price}}/Monat",
+    "priceUnavailable": "Preis derzeit nicht verfügbar",
+    "autoRenewDisclosure": "Das Monatsabo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ende des laufenden Zeitraums gekündigt wird; die Zahlung wird über Ihr Store-Konto abgerechnet. Sie können das Abo in den Einstellungen Ihres Store-Kontos verwalten oder kündigen. Die lebenslange Option ist ein einmaliger Kauf, kein Abo."
   },
   "errors": {
     "networkError": "Netzwerkfehler. Bitte Verbindung prüfen.",

@@ -67,7 +67,9 @@ politikası bağlantısını hem App Store Connect'te hem uygulama içinde açar
 Alan adını alıp politika ve şart sayfalarını yayımlayın (e-posta için MX kaydı
 gerekir) ya da `src/config/links.ts` içindeki adresleri gerçek adreslerle
 değiştirin. `npm run check:release`, bu adreslerin sunucusu çözülene kadar
-yayını engelliyor.
+yayını engelliyor. Abonelik ekranındaki "Kullanım Şartları" bağlantısı da
+aynı adrese gidiyor. Kendi şartlarınız yoksa iOS için Apple'ın standart son
+kullanıcı lisans sözleşmesi (Standard EULA) kullanılabilir; bu seçim sizin.
 
 ### 7. AdMob gizlilik mesajları (AdMob konsolu)
 
@@ -92,7 +94,7 @@ gerektirdiğinde gizlilik seçenekleri formunu açar.
 | #   | Konu                         | Not                                                                                                                                                                                                                                                                                                                                    |
 | --- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Klinik içerik çevirisi       | Arayüz metinlerinin tamamı 5 dilde. İlaç verisindeki **klinik içerik** (monograflar, kontrendikasyonlar, yan etkiler, seyreltme solüsyonları) yalnızca Türkçe. Bu kod değil tıbbi çeviri işi; farmakolog incelemesiyle birlikte yapılmalı.                                                                                             |
-| 2   | Ekran testleri               | `CalculatorScreen`, `ChemotherapyDoseScreen`, `HistoryScreen`, `SettingsScreen` ve `ThemeContext` render testli. Vademecum, ilaç detayı, abonelik ve ürün bilgisi ekranlarında render testi yok.                                                                                                                                       |
+| 2   | Ekran testleri               | `CalculatorScreen`, `ChemotherapyDoseScreen`, `HistoryScreen`, `SettingsScreen`, `SubscriptionScreen` ve `ThemeContext` render testli. Vademecum, ilaç detayı ve ürün bilgisi ekranlarında render testi yok; ürün bilgisi ekranı kayıtlı ama hiçbir yerden açılmıyor.                                                                  |
 | 3   | Erişilebilirlik (kalan)      | Rol/durum 38/38 ve renk kontrastı (13 çift × 2 tema, WCAG AA) testle korunuyor. Yapılmadı: Dynamic Type/yazı ölçekleme ve cihazda VoiceOver/TalkBack turu.                                                                                                                                                                             |
 | 4   | Lint uyarıları               | Yalnızca 27 `react-native/no-inline-styles` uyarısı kaldı; hata ve diğer kural uyarıları yok.                                                                                                                                                                                                                                          |
 | 5   | `npm audit`                  | 52 bildirim, `--omit=dev` ile 42. Neredeyse tamamı `expo`'nun çektiği CLI/Metro/Babel araç zincirinde, bundle'a girmiyor. Bundle'a giren tek zincir: react-navigation → query-string → decode-uri-component (orta, upstream düzeltme yok; bozuk URI ile DoS, derin bağlantılarda önemli). Expo paketleri `expo install` ile hizalandı. |
@@ -220,6 +222,24 @@ gerektirdiğinde gizlilik seçenekleri formunu açar.
   ATT penceresi çiziliyor, açılışta hata yok.
 - Build uyarılarından hiçbiri bizim native kaynağımızdan gelmiyor; hepsi pod'lar
   ve araç zinciri kaynaklı.
+
+**Abonelik ekranı turu (App Store 3.1.2)**
+
+- **Yanlış ürün satın alma:** Satın alma, istenen paket kimliği eşleşmezse
+  teklifteki ilk paketi alıyordu. RevenueCat'in standart kimlikleri
+  (`$rc_monthly`, `$rc_lifetime`) hiç eşleşmediği için "Ömür Boyu" seçen
+  kullanıcıdan aylık abonelik ücreti alınabiliyordu. Paket artık türüne veya
+  kimliğine göre bulunuyor. Bulunamazsa satın alma yapılmıyor. Eski kodda
+  başarısız olan bir testle korunuyor.
+- **Sabit fiyatlar:** Fiyatlar her dilde çeviri dosyasında sabit yazılıydı
+  (₺149,99, $5.99, €5,99, ₽499, ¥38); ödeme ekranındaki mağaza fiyatıyla
+  uyuşmuyordu. Artık RevenueCat'ten, mağazanın biçimlendirdiği `priceString`
+  olarak geliyor. Fiyat alınamazsa o plan satın alınamıyor. Hiçbir dilde
+  fiyat kalmadığı testle korunuyor.
+- **Eksik açıklamalar:** Otomatik yenileme açıklaması yoktu; Kullanım Şartları
+  ve Gizlilik Politikası'na bağlantı yoktu (yalnızca bağlantısız bir cümle
+  vardı). İkisi de eklendi, 5 dilde. Bağlantıların çalışması alan adına bağlı
+  (madde 6).
 
 **Reklam onayı turu**
 

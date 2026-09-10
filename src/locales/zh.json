@@ -322,8 +322,6 @@
     "subtitle": "解锁所有功能",
     "monthly": "月度",
     "lifetime": "终身",
-    "monthlyPrice": "¥38/月",
-    "lifetimePrice": "¥228",
     "monthlyBenefit": "随时取消",
     "lifetimeBenefit": "一次付费，终身使用",
     "feature1": "无广告体验",
@@ -336,7 +334,6 @@
     "buyLifetime": "购买终身版",
     "restorePurchase": "恢复购买",
     "alreadyPro": "您已是专业用户！🎉",
-    "terms": "购买即表示您同意使用条款。",
     "cancelAnytime": "随时取消",
     "mostPopular": "最受欢迎",
     "bestValue": "最佳性价比",
@@ -352,7 +349,10 @@
       "failed": "购买未能完成。",
       "cancelled": "购买已取消。",
       "nothingToRestore": "未找到可恢复的购买记录。"
-    }
+    },
+    "monthlyPriceFormat": "{{price}}/月",
+    "priceUnavailable": "暂时无法获取价格",
+    "autoRenewDisclosure": "除非在当前周期结束前至少 24 小时取消，否则月度订阅将自动续订，费用从您的商店账户扣除。您可以在商店账户设置中管理或取消订阅。终身版为一次性购买，不是订阅。"
   },
   "errors": {
     "networkError": "网络错误，请检查连接。",

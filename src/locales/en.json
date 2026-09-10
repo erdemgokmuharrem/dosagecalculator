@@ -322,8 +322,6 @@
     "subtitle": "Unlock all features",
     "monthly": "Monthly",
     "lifetime": "Lifetime",
-    "monthlyPrice": "$5.99/month",
-    "lifetimePrice": "$34.99",
     "monthlyBenefit": "Cancel anytime",
     "lifetimeBenefit": "Pay once, use forever",
     "feature1": "Ad-free experience",
@@ -336,7 +334,6 @@
     "buyLifetime": "Buy Lifetime",
     "restorePurchase": "Restore Purchase",
     "alreadyPro": "You're already Pro! 🎉",
-    "terms": "By purchasing you agree to Terms of Service.",
     "cancelAnytime": "Cancel anytime",
     "mostPopular": "Most Popular",
     "bestValue": "Best Value",
@@ -352,7 +349,10 @@
       "failed": "The purchase could not be completed.",
       "cancelled": "Purchase cancelled.",
       "nothingToRestore": "No previous purchase was found to restore."
-    }
+    },
+    "monthlyPriceFormat": "{{price}}/month",
+    "priceUnavailable": "Price unavailable right now",
+    "autoRenewDisclosure": "The monthly subscription renews automatically unless cancelled at least 24 hours before the end of the current period, and payment is charged to your store account. You can manage or cancel it in your store account settings. Lifetime is a one-time purchase, not a subscription."
   },
   "errors": {
     "networkError": "Network error. Please check your connection.",

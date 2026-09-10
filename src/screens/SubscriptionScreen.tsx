@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { subscriptionService, type PlanPrices } from '../services/subscription';
+import { LINKS, openLink } from '../config/links';
 
 const FEATURES = [
   { icon: '🚫', key: 'feature1' },
@@ -39,6 +41,35 @@ const SubscriptionScreen: React.FC = () => {
     'monthly'
   );
   const [purchasing, setPurchasing] = useState(false);
+
+  // Prices come from the store, never from the translations: App Review
+  // compares them with the payment sheet, which charges the user's storefront
+  // price. They used to be hardcoded per language (₺149,99, $5.99, €5,99…).
+  const [prices, setPrices] = useState<PlanPrices | null>(null);
+  useEffect(() => {
+    let active = true;
+    subscriptionService
+      .getPlanPrices()
+      .catch(() => ({ monthly: null, lifetime: null }))
+      .then(result => {
+        if (active) setPrices(result);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  /** Store price for a plan, "…" while loading, or a notice if unavailable. */
+  const priceLabel = (plan: 'monthly' | 'lifetime') => {
+    const price = prices?.[plan];
+    if (price) {
+      return plan === 'monthly'
+        ? t('subscription.monthlyPriceFormat', { price })
+        : price;
+    }
+    return prices ? t('subscription.priceUnavailable') : '…';
+  };
+  const selectedAvailable = Boolean(prices?.[selectedPlan]);
 
   const handlePurchase = async () => {
     setPurchasing(true);
@@ -211,6 +242,18 @@ const SubscriptionScreen: React.FC = () => {
       color: theme.colors.primary,
       fontWeight: '600',
     },
+    legalLinks: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 8,
+    },
+    legalLink: {
+      fontSize: 12,
+      fontWeight: '700',
+      color: theme.colors.primary,
+      textDecorationLine: 'underline',
+    },
     termsText: {
       fontSize: 11,
       color: theme.colors.textSecondary,
@@ -308,7 +351,7 @@ const SubscriptionScreen: React.FC = () => {
               <Text style={s.planType}>
                 {t('subscription.monthly').toUpperCase()}
               </Text>
-              <Text style={s.planPrice}>{t('subscription.monthlyPrice')}</Text>
+              <Text style={s.planPrice}>{priceLabel('monthly')}</Text>
               <Text style={s.planBenefit}>
                 {t('subscription.monthlyBenefit')}
               </Text>
@@ -341,7 +384,7 @@ const SubscriptionScreen: React.FC = () => {
               <Text style={s.planType}>
                 {t('subscription.lifetime').toUpperCase()}
               </Text>
-              <Text style={s.planPrice}>{t('subscription.lifetimePrice')}</Text>
+              <Text style={s.planPrice}>{priceLabel('lifetime')}</Text>
               <Text style={s.planBenefit}>
                 {t('subscription.lifetimeBenefit')}
               </Text>
@@ -360,12 +403,12 @@ const SubscriptionScreen: React.FC = () => {
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityState={{
-              disabled: purchasing || isLoading,
+              disabled: purchasing || isLoading || !selectedAvailable,
               busy: purchasing,
             }}
             style={s.purchaseButton}
             onPress={handlePurchase}
-            disabled={purchasing || isLoading}
+            disabled={purchasing || isLoading || !selectedAvailable}
             activeOpacity={0.85}
           >
             {purchasing ? (
@@ -373,8 +416,9 @@ const SubscriptionScreen: React.FC = () => {
             ) : (
               <Text style={s.purchaseButtonText}>
                 {selectedPlan === 'monthly'
-                  ? `${t('subscription.subscribe')} — ${t('subscription.monthlyPrice')}`
-                  : `${t('subscription.buyLifetime')} — ${t('subscription.lifetimePrice')}`}
+                  ? t('subscription.subscribe')
+                  : t('subscription.buyLifetime')}
+                {selectedAvailable ? ` — ${priceLabel(selectedPlan)}` : ''}
               </Text>
             )}
           </TouchableOpacity>
@@ -391,7 +435,31 @@ const SubscriptionScreen: React.FC = () => {
             </Text>
           </TouchableOpacity>
 
-          <Text style={s.termsText}>{t('subscription.terms')}</Text>
+          {/* Required on the paywall of an auto-renewable subscription (App
+              Store 3.1.2): the renewal terms and working links to the terms of
+              use and the privacy policy. Only unlinked text was shown. */}
+          <Text style={s.termsText}>
+            {t('subscription.autoRenewDisclosure')}
+          </Text>
+          <View style={s.legalLinks}>
+            <Text
+              accessibilityRole="link"
+              style={s.legalLink}
+              onPress={() => openLink(LINKS.terms, t('settings.terms'))}
+            >
+              {t('settings.terms')}
+            </Text>
+            <Text style={s.termsText}>{'  ·  '}</Text>
+            <Text
+              accessibilityRole="link"
+              style={s.legalLink}
+              onPress={() =>
+                openLink(LINKS.privacyPolicy, t('settings.privacy'))
+              }
+            >
+              {t('settings.privacy')}
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

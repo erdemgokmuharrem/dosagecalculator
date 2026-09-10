@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import Purchases, {
   LOG_LEVEL,
   type CustomerInfo,
+  type PurchasesPackage,
 } from 'react-native-purchases';
 import { reportError } from './monitoring';
 import { UserSubscription } from '../types';
@@ -27,6 +28,33 @@ const ENTITLEMENT_ID = 'pro';
 const toPlan = (productId: string): 'monthly' | 'lifetime' =>
   /lifetime/i.test(productId) ? 'lifetime' : 'monthly';
 
+type Plan = 'monthly' | 'lifetime';
+
+/** Store-formatted prices; null for a plan that cannot be bought right now. */
+export interface PlanPrices {
+  monthly: string | null;
+  lifetime: string | null;
+}
+
+const PLAN_PACKAGE: Record<Plan, { type: string; ids: readonly string[] }> = {
+  monthly: { type: 'MONTHLY', ids: ['$rc_monthly', 'monthly'] },
+  lifetime: { type: 'LIFETIME', ids: ['$rc_lifetime', 'lifetime'] },
+};
+
+/**
+ * The offering's package for a plan, matched by RevenueCat's predefined package
+ * type or by its standard or custom identifier. Undefined when there is none.
+ */
+const findPackage = (
+  packages: readonly PurchasesPackage[],
+  plan: Plan
+): PurchasesPackage | undefined => {
+  const { type, ids } = PLAN_PACKAGE[plan];
+  return packages.find(
+    p => String(p.packageType) === type || ids.includes(p.identifier)
+  );
+};
+
 /** True once the RevenueCat SDK has been configured with a real key. */
 export const isPurchasesConfigured = (): boolean =>
   Boolean(Platform.OS === 'ios' ? REVENUECAT_APPLE_KEY : REVENUECAT_GOOGLE_KEY);
@@ -46,8 +74,8 @@ class SubscriptionService {
 
     if (!apiKey) {
       // No key configured: stay on the free tier rather than pretending the
-      // store is reachable. The paywall checks `isPurchasesConfigured()` and
-      // tells the user purchases are unavailable instead of failing mid-flow.
+      // store is reachable. `getPlanPrices()` then returns no prices, so the
+      // paywall shows none and cannot start a purchase.
       if (__DEV__) {
         console.warn(
           '[subscription] RevenueCat key missing — in-app purchases are DISABLED. ' +
@@ -114,32 +142,48 @@ class SubscriptionService {
   }
 
   async purchaseMonthly(): Promise<{ success: boolean; error?: string }> {
-    return this.purchasePackageById('monthly');
+    return this.purchasePlan('monthly');
   }
 
   async purchaseLifetime(): Promise<{ success: boolean; error?: string }> {
-    return this.purchasePackageById('lifetime');
+    return this.purchasePlan('lifetime');
   }
 
-  private async purchasePackageById(
-    identifier: string
+  /**
+   * Prices for the paywall, formatted by the store for the user's storefront.
+   * App Review compares them with the payment sheet, so they must never come
+   * from the app's own strings.
+   */
+  async getPlanPrices(): Promise<PlanPrices> {
+    const none: PlanPrices = { monthly: null, lifetime: null };
+    if (!isPurchasesConfigured()) return none;
+    try {
+      const offerings = await Purchases.getOfferings();
+      const packages = offerings.current?.availablePackages ?? [];
+      return {
+        monthly: findPackage(packages, 'monthly')?.product.priceString ?? null,
+        lifetime:
+          findPackage(packages, 'lifetime')?.product.priceString ?? null,
+      };
+    } catch (error) {
+      reportError(error, { area: 'prices' });
+      return none;
+    }
+  }
+
+  private async purchasePlan(
+    plan: Plan
   ): Promise<{ success: boolean; error?: string }> {
     try {
       const offerings = await Purchases.getOfferings();
-      if (
-        !offerings.current ||
-        offerings.current.availablePackages.length === 0
-      ) {
-        return {
-          success: false,
-          error: 'subscription.errors.noPackages',
-        };
+      const pkg = findPackage(offerings.current?.availablePackages ?? [], plan);
+      // Never substitute another package. This used to fall back to the first
+      // package whenever the identifier did not match — and RevenueCat's
+      // standard identifiers ($rc_monthly, $rc_lifetime) never matched, so
+      // choosing "lifetime" could charge for the monthly subscription.
+      if (!pkg) {
+        return { success: false, error: 'subscription.errors.noPackages' };
       }
-
-      const pkg =
-        offerings.current.availablePackages.find(
-          p => p.identifier === identifier
-        ) || offerings.current.availablePackages[0]; // fallback
 
       const { customerInfo } = await Purchases.purchasePackage(pkg);
       this.updateStatusFromCustomerInfo(customerInfo);
