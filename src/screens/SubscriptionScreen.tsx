@@ -53,7 +53,12 @@ const SubscriptionScreen: React.FC = () => {
         { text: t('common.ok'), onPress: () => navigation.goBack() },
       ]);
     } else {
-      Alert.alert(t('common.error'), result.error || t('errors.purchaseError'));
+      if (result.error !== 'subscription.errors.cancelled') {
+        Alert.alert(
+          t('common.error'),
+          t(result.error ?? 'errors.purchaseError')
+        );
+      }
     }
   };
 
@@ -65,7 +70,7 @@ const SubscriptionScreen: React.FC = () => {
     if (result.success) {
       Alert.alert('🎉', t('subscription.alreadyPro'));
     } else {
-      Alert.alert(t('common.info'), result.error || t('errors.restoreError'));
+      Alert.alert(t('common.info'), t(result.error ?? 'errors.restoreError'));
     }
   };
 
@@ -268,7 +273,9 @@ const SubscriptionScreen: React.FC = () => {
 
         <View style={s.content}>
           {/* Features */}
-          <Text style={s.sectionTitle}>✨ Pro Özellikleri</Text>
+          <Text style={s.sectionTitle}>
+            ✨ {t('subscription.featuresTitle')}
+          </Text>
           <View style={s.featuresGrid}>
             {FEATURES.map(f => (
               <View key={f.key} style={s.featureItem}>
@@ -280,7 +287,7 @@ const SubscriptionScreen: React.FC = () => {
           </View>
 
           {/* Plans */}
-          <Text style={s.sectionTitle}>📋 Plan Seçin</Text>
+          <Text style={s.sectionTitle}>📋 {t('subscription.choosePlan')}</Text>
           <View style={s.plansRow}>
             {/* Monthly */}
             <TouchableOpacity

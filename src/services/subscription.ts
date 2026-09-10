@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import Purchases, { LOG_LEVEL } from 'react-native-purchases';
+import { reportError } from './monitoring';
 import { UserSubscription } from '../types';
 
 const SUBSCRIPTION_STORAGE_KEY = '@user_subscription';
@@ -123,7 +124,7 @@ class SubscriptionService {
       ) {
         return {
           success: false,
-          error: 'Satın alınabilir paket bulunamadı (Sunucuya bağlanılamadı)',
+          error: 'subscription.errors.noPackages',
         };
       }
 
@@ -138,12 +139,10 @@ class SubscriptionService {
       return { success: true };
     } catch (error: any) {
       if (!error.userCancelled) {
-        return {
-          success: false,
-          error: error.message || 'Satın alma iptal edildi veya başarısız oldu',
-        };
+        reportError(error, { area: 'purchase' });
+        return { success: false, error: 'subscription.errors.failed' };
       }
-      return { success: false, error: 'Satın alma iptal edildi' };
+      return { success: false, error: 'subscription.errors.cancelled' };
     }
   }
 
@@ -156,13 +155,14 @@ class SubscriptionService {
         this.updateStatusFromCustomerInfo(customerInfo);
         return { success: true };
       } else {
-        return { success: false, error: 'Önceki bir satın alma bulunamadı' };
+        return {
+          success: false,
+          error: 'subscription.errors.nothingToRestore',
+        };
       }
     } catch (error: any) {
-      return {
-        success: false,
-        error: error.message || 'Geri yükleme başarısız',
-      };
+      reportError(error, { area: 'restore' });
+      return { success: false, error: 'errors.restoreError' };
     }
   }
 

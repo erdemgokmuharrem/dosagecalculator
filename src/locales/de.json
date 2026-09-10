@@ -249,7 +249,19 @@
     "noDetails": "Keine detaillierten Informationen verfügbar",
     "share": "Teilen",
     "addFavorite": "Zu Favoriten hinzufügen",
-    "removeFavorite": "Aus Favoriten entfernen"
+    "removeFavorite": "Aus Favoriten entfernen",
+    "pdfProOnly": "Der PDF-Export ist nur in der Pro-Version verfügbar. Sie können in den Einstellungen upgraden.",
+    "pdfFooterGenerated": "Dieses Dokument wurde von der App Dosage Calculator erstellt.",
+    "pdfFooterNotAdvice": "Nur zur Information; ersetzt keine professionelle medizinische Beratung.",
+    "shareDialogTitle": "Arzneimittelinformation teilen",
+    "pdfError": "Das PDF konnte nicht erstellt werden.",
+    "maxPerDay": "Max.: {{dose}} {{unit}}/Tag",
+    "educationalNotice": "Diese Informationen dienen nur zu Schulungszwecken. Behandlungsentscheidungen erfordern die Freigabe durch eine befugte Ärztin bzw. einen befugten Arzt.",
+    "drugCount": "{{count}} Arzneimittel",
+    "headerCount": "Vademecum — {{count}} Arzneimittel",
+    "searchPlaceholder": "Arzneimittel, Wirkstoff, Kategorie suchen...",
+    "cautions": "Zu beachten:",
+    "shortProductInfo": "Fachinformation (Kurzfassung)"
   },
   "history": {
     "title": "Berechnungsverlauf",
@@ -298,7 +310,11 @@
     "disclaimerText": "Diese App ist nur ein Entscheidungshilfsmittel für medizinisches Fachpersonal.",
     "medicalProfessionalOnly": "Nur für medizinisches Fachpersonal",
     "proVersion": "Pro-Version",
-    "appInfo": "App-Informationen"
+    "appInfo": "App-Informationen",
+    "rateThanksTitle": "Vielen Dank!",
+    "rateThanksMessage": "Sie werden zum App Store weitergeleitet...",
+    "appDescription": "Eine App zur Dosisberechnung und Arzneimittelinformation für Fachpersonal im Gesundheitswesen.",
+    "appStats": "{{count}} Arzneimittel • 5 Sprachen"
   },
   "subscription": {
     "title": "Pro-Version",
@@ -310,7 +326,7 @@
     "monthlyBenefit": "Jederzeit kündbar",
     "lifetimeBenefit": "Einmal zahlen, lebenslang nutzen",
     "feature1": "Werbefreie Nutzung",
-    "feature2": "Alle 180+ Medikamente",
+    "feature2": "Vollzugriff auf die Arzneimittelinformationen",
     "feature3": "PDF-Berechnungsberichte",
     "feature4": "Erweiterte Dosisanpassungen",
     "feature5": "Unbegrenzter Verlauf",
@@ -327,7 +343,15 @@
     "proActive": "Pro aktiv",
     "proExpires": "Läuft ab: {{date}}",
     "upgradePrompt": "Diese Funktion erfordert Pro",
-    "upgradeButton": "Auf Pro upgraden"
+    "upgradeButton": "Auf Pro upgraden",
+    "featuresTitle": "Pro-Funktionen",
+    "choosePlan": "Tarif wählen",
+    "errors": {
+      "noPackages": "Keine kaufbaren Pakete gefunden. Prüfen Sie Ihre Verbindung.",
+      "failed": "Der Kauf konnte nicht abgeschlossen werden.",
+      "cancelled": "Kauf abgebrochen.",
+      "nothingToRestore": "Kein früherer Kauf zum Wiederherstellen gefunden."
+    }
   },
   "errors": {
     "networkError": "Netzwerkfehler. Bitte Verbindung prüfen.",
@@ -433,6 +457,33 @@
     "finalConcentration": "Endkonzentration",
     "preparation": "Zubereitung",
     "dilution": "Verdünnung",
-    "volumeToDraw": "Zu entnehmendes Volumen"
+    "volumeToDraw": "Zu entnehmendes Volumen",
+    "sideEffectsShow": "Nebenwirkungen anzeigen",
+    "sideEffectsHide": "Nebenwirkungen ausblenden",
+    "complicationsShow": "Komplikationen anzeigen",
+    "complicationsHide": "Komplikationen ausblenden",
+    "complications": "Komplikationen und Vorsichtsmaßnahmen",
+    "drugCategory": "Arzneimittelkategorie",
+    "resultTitle": "Berechnungsergebnis",
+    "dilutionSentence": "{{dose}} mg Wirkstoff in {{bag}} ml {{solvent}}",
+    "infusion": {
+      "h2to6": "2–6 Stunden",
+      "m30to60": "30–60 Minuten",
+      "m15to30": "15–30 Minuten",
+      "h3": "3 Stunden",
+      "h1": "1 Stunde",
+      "h2to24": "2–24 Stunden (je nach Protokoll)"
+    },
+    "monitoringFreq": {
+      "cisplatin": "Vor jedem Zyklus: Kreatinin, Audiometrie",
+      "carboplatin": "Vor jedem Zyklus: Blutbild, Kreatinin, GFR",
+      "doxorubicin": "Vor jedem Zyklus: Echokardiographie, Blutbild",
+      "cyclophosphamide": "Vor jedem Zyklus: Blutbild, Urinanalyse",
+      "paclitaxel": "Vor jedem Zyklus: Vitalparameter, neurologische Untersuchung",
+      "docetaxel": "Vor jedem Zyklus: Gewicht, Vitalparameter",
+      "fluorouracil": "Vor jedem Zyklus: Blutbild, Schleimhäute",
+      "methotrexate": "Vor jedem Zyklus: Blutbild, Leberwerte, Kreatinin",
+      "default": "Vor jedem Zyklus: Blutbild, Nierenfunktion"
+    }
   }
 }

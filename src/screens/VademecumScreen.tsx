@@ -361,9 +361,9 @@ const VademecumScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       {/* Header with search */}
       <View style={styles.headerSection}>
-        <Text style={styles.headerTitle}>💊 İlaç Rehberi</Text>
+        <Text style={styles.headerTitle}>💊 {t('vademecum.title')}</Text>
         <Text style={styles.headerSubtitle}>
-          Vademecum — {sampleDrugs.length} ilaç
+          {t('vademecum.headerCount', { count: sampleDrugs.length })}
         </Text>
         <View style={styles.searchBar}>
           <Text style={styles.searchIcon}>🔍</Text>
@@ -371,7 +371,7 @@ const VademecumScreen: React.FC = () => {
             style={styles.searchInput}
             value={searchQuery}
             onChangeText={handleSearchChange}
-            placeholder="İlaç, etken madde, kategori ara..."
+            placeholder={t('vademecum.searchPlaceholder')}
             placeholderTextColor="rgba(255,255,255,0.6)"
           />
           {searchQuery.length > 0 && (
@@ -412,7 +412,9 @@ const VademecumScreen: React.FC = () => {
             {t('vademecum.favorites')}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.drugCount}>{filteredDrugs.length} ilaç</Text>
+        <Text style={styles.drugCount}>
+          {t('vademecum.drugCount', { count: filteredDrugs.length })}
+        </Text>
       </View>
 
       {/* Category chips */}
@@ -437,7 +439,7 @@ const VademecumScreen: React.FC = () => {
                 selectedCategory === 'All' && styles.catChipTextActive,
               ]}
             >
-              🔍 Tümü
+              🔍 {t('common.all')}
             </Text>
           </TouchableOpacity>
           {allCategories.map(cat => (

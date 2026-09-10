@@ -88,12 +88,12 @@ const ChemotherapyDoseScreen: React.FC = () => {
   // Hesaplama yap
   const handleCalculate = useCallback(async () => {
     if (!selectedDrug) {
-      Alert.alert('Hata', 'Lütfen bir ilaç seçin');
+      Alert.alert(t('common.error'), t('drug.noDrugSelected'));
       return;
     }
 
     if (patientInfo.weight <= 0 || patientInfo.height <= 0) {
-      Alert.alert('Hata', 'Geçerli kilo ve boy değerleri girin');
+      Alert.alert(t('common.error'), t('chemo.blocked.invalidPatient'));
       return;
     }
 
@@ -116,7 +116,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
     } finally {
       setIsCalculating(false);
     }
-  }, [selectedDrug, patientInfo]);
+  }, [selectedDrug, patientInfo, t]);
 
   // İlaç seç
   const handleDrugSelect = useCallback((drugId: string) => {
@@ -438,7 +438,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
               />
               <TextInput
                 style={styles.searchInput}
-                placeholder="İlaç ara..."
+                placeholder={t('drug.searchPlaceholder')}
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholderTextColor={theme.colors.textSecondary}
@@ -624,7 +624,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
                 <Icon name="syringe" size={20} color={theme.colors.primary} />{' '}
-                Uygulama Yolu
+                {t('vademecum.route')}
               </Text>
 
               <ScrollView
@@ -662,8 +662,8 @@ const ChemotherapyDoseScreen: React.FC = () => {
           <FadeInView delay={200}>
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                <Icon name="pill" size={20} color={theme.colors.primary} /> İlaç
-                Kategorisi
+                <Icon name="pill" size={20} color={theme.colors.primary} />{' '}
+                {t('chemo.drugCategory')}
               </Text>
 
               <ScrollView
@@ -704,8 +704,8 @@ const ChemotherapyDoseScreen: React.FC = () => {
           <FadeInView delay={250}>
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>
-                <Icon name="pill" size={20} color={theme.colors.primary} /> İlaç
-                Seçimi
+                <Icon name="pill" size={20} color={theme.colors.primary} />{' '}
+                {t('drug.title')}
               </Text>
               <ScrollView style={styles.drugList}>
                 {filteredDrugs.map(drug => (
@@ -764,8 +764,8 @@ const ChemotherapyDoseScreen: React.FC = () => {
                           <GradientButton
                             title={
                               showSideEffects
-                                ? 'Yan Etkileri Gizle'
-                                : 'Yan Etkileri Göster'
+                                ? t('chemo.sideEffectsHide')
+                                : t('chemo.sideEffectsShow')
                             }
                             onPress={() => setShowSideEffects(!showSideEffects)}
                             variant="secondary"
@@ -782,7 +782,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                                 size={16}
                                 color={theme.colors.warning}
                               />{' '}
-                              Yan Etkiler
+                              {t('vademecum.sideEffects')}
                             </Text>
                             {drug.sideEffects.map((effect, index) => (
                               <Text key={index} style={styles.infoText}>
@@ -796,8 +796,8 @@ const ChemotherapyDoseScreen: React.FC = () => {
                           <GradientButton
                             title={
                               showComplications
-                                ? 'Komplikasyonları Gizle'
-                                : 'Komplikasyonları Göster'
+                                ? t('chemo.complicationsHide')
+                                : t('chemo.complicationsShow')
                             }
                             onPress={() =>
                               setShowComplications(!showComplications)
@@ -816,7 +816,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                                 size={16}
                                 color={theme.colors.warning}
                               />{' '}
-                              Komplikasyonlar ve Önlemler
+                              {t('chemo.complications')}
                             </Text>
                             {drug.precautions.map((precaution, index) => (
                               <Text key={index} style={styles.infoText}>
@@ -863,7 +863,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
           {selectedDrug && (
             <FadeInView delay={300}>
               <GradientButton
-                title="Dozu Hesapla"
+                title={t('calculation.calculate')}
                 onPress={handleCalculate}
                 variant="primary"
                 size="large"
@@ -899,7 +899,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                     size={24}
                     color={theme.colors.primary}
                   />{' '}
-                  Hesaplama Sonucu
+                  {t('chemo.resultTitle')}
                 </Text>
 
                 <ModernCard variant="elevated" style={styles.resultCard}>
@@ -1024,9 +1024,11 @@ const ChemotherapyDoseScreen: React.FC = () => {
                       {t('chemo.dilution')}:
                     </Text>
                     <Text style={styles.resultValue}>
-                      {chemoResult.calculatedDose.dose} mg ilacı,{' '}
-                      {chemoResult.administration.bagVolumeMl} mL{' '}
-                      {chemoResult.administration.solvent} içinde
+                      {t('chemo.dilutionSentence', {
+                        dose: chemoResult.calculatedDose.dose,
+                        bag: chemoResult.administration.bagVolumeMl,
+                        solvent: chemoResult.administration.solvent,
+                      })}
                     </Text>
                   </View>
                   <View style={styles.resultRow}>
@@ -1051,7 +1053,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                       {t('vademecum.duration')}:
                     </Text>
                     <Text style={styles.resultValue}>
-                      {chemoResult.administration.infusionTime}
+                      {t(chemoResult.administration.infusionTime)}
                     </Text>
                   </View>
                 </ModernCard>

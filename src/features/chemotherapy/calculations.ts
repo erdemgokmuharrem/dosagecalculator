@@ -366,27 +366,28 @@ export const calculateChemotherapyDose = (
   };
 };
 
-// İnfüzyon süresi belirleme
+// Infusion duration. Returns an i18n key (chemo.infusion.*): this module stays
+// i18n-free, and the screen translates it.
 const getInfusionTime = (drug: ChemotherapyDrug): string => {
   switch (drug.id) {
     case 'cisplatin':
-      return '2-6 saat';
+      return 'chemo.infusion.h2to6';
     case 'carboplatin':
-      return '30-60 dakika';
+      return 'chemo.infusion.m30to60';
     case 'doxorubicin':
-      return '15-30 dakika';
+      return 'chemo.infusion.m15to30';
     case 'cyclophosphamide':
-      return '30-60 dakika';
+      return 'chemo.infusion.m30to60';
     case 'paclitaxel':
-      return '3 saat';
+      return 'chemo.infusion.h3';
     case 'docetaxel':
-      return '1 saat';
+      return 'chemo.infusion.h1';
     case '5-fluorouracil':
-      return '2-24 saat (protokole göre)';
+      return 'chemo.infusion.h2to24';
     case 'methotrexate':
-      return '2-6 saat';
+      return 'chemo.infusion.h2to6';
     default:
-      return '30-60 dakika';
+      return 'chemo.infusion.m30to60';
   }
 };
 
@@ -466,29 +467,21 @@ const chooseBagVolume = (
   return Math.max(minForDrug, byDose, byVolume);
 };
 
-// İzlem sıklığı belirleme
-const getMonitoringFrequency = (drug: ChemotherapyDrug): string => {
-  switch (drug.id) {
-    case 'cisplatin':
-      return 'Her döngü öncesi: Kreatinin, işitme testi';
-    case 'carboplatin':
-      return 'Her döngü öncesi: CBC, kreatinin, GFR';
-    case 'doxorubicin':
-      return 'Her döngü öncesi: Ekokardiyogram, CBC';
-    case 'cyclophosphamide':
-      return 'Her döngü öncesi: CBC, idrar tahlili';
-    case 'paclitaxel':
-      return 'Her döngü öncesi: Vital bulgular, nörolojik muayene';
-    case 'docetaxel':
-      return 'Her döngü öncesi: Kilo, vital bulgular';
-    case '5-fluorouracil':
-      return 'Her döngü öncesi: CBC, mukoz membranlar';
-    case 'methotrexate':
-      return 'Her döngü öncesi: CBC, LFT, kreatinin';
-    default:
-      return 'Her döngü öncesi: CBC, böbrek fonksiyonları';
-  }
+// Monitoring schedule. Returns an i18n key (chemo.monitoringFreq.*) rather than
+// Turkish prose, so the engine stays language-neutral.
+const MONITORING_KEYS: Record<string, string> = {
+  cisplatin: 'cisplatin',
+  carboplatin: 'carboplatin',
+  doxorubicin: 'doxorubicin',
+  cyclophosphamide: 'cyclophosphamide',
+  paclitaxel: 'paclitaxel',
+  docetaxel: 'docetaxel',
+  '5-fluorouracil': 'fluorouracil',
+  methotrexate: 'methotrexate',
 };
+
+const getMonitoringFrequency = (drug: ChemotherapyDrug): string =>
+  `chemo.monitoringFreq.${MONITORING_KEYS[drug.id] ?? 'default'}`;
 
 // Doz azaltım faktörleri
 export const getDoseReductionFactors = (patientInfo: PatientInfo) => {

@@ -249,7 +249,19 @@
     "noDetails": "Detaylı bilgi mevcut değil",
     "share": "Paylaş",
     "addFavorite": "Favorilere ekle",
-    "removeFavorite": "Favorilerden çıkar"
+    "removeFavorite": "Favorilerden çıkar",
+    "pdfProOnly": "PDF olarak dışa aktarma yalnızca Pro sürümde mevcuttur. Ayarlar sayfasından yükseltebilirsiniz.",
+    "pdfFooterGenerated": "Bu belge Dosage Calculator uygulaması tarafından oluşturulmuştur.",
+    "pdfFooterNotAdvice": "Yalnızca bilgilendirme amaçlıdır, profesyonel tıbbi tavsiye yerine geçmez.",
+    "shareDialogTitle": "İlaç Bilgisini Paylaş",
+    "pdfError": "PDF oluşturulurken bir hata oluştu.",
+    "maxPerDay": "Maks: {{dose}} {{unit}}/gün",
+    "educationalNotice": "Bu bilgiler yalnızca eğitim amaçlıdır. Tedavi kararları için yetkili hekim onayı gereklidir.",
+    "drugCount": "{{count}} ilaç",
+    "headerCount": "Vademecum — {{count}} ilaç",
+    "searchPlaceholder": "İlaç, etken madde, kategori ara...",
+    "cautions": "Dikkat Edilmesi Gerekenler:",
+    "shortProductInfo": "Kısa Ürün Bilgisi"
   },
   "history": {
     "title": "Hesaplama Geçmişi",
@@ -298,7 +310,11 @@
     "disclaimerText": "Bu uygulama yalnızca sağlık profesyonelleri için yardımcı araçtır. Tüm klinik kararlar yetkili hekim tarafından verilmelidir.",
     "medicalProfessionalOnly": "Yalnızca Sağlık Profesyonelleri İçin",
     "proVersion": "Pro Sürüm",
-    "appInfo": "Uygulama Bilgisi"
+    "appInfo": "Uygulama Bilgisi",
+    "rateThanksTitle": "Teşekkürler!",
+    "rateThanksMessage": "Uygulama mağazasına yönlendiriliyorsunuz...",
+    "appDescription": "Sağlık profesyonelleri için geliştirilmiş doz hesaplama ve ilaç rehberi uygulaması.",
+    "appStats": "{{count}} ilaç • 5 dil"
   },
   "subscription": {
     "title": "Pro Sürüm",
@@ -310,7 +326,7 @@
     "monthlyBenefit": "İptal edilebilir",
     "lifetimeBenefit": "Bir kez öde, ömür boyu kullan",
     "feature1": "Reklamsız kullanım",
-    "feature2": "Tüm 180+ ilaç bilgisi",
+    "feature2": "Tam ilaç rehberi erişimi",
     "feature3": "PDF hesaplama raporu",
     "feature4": "Gelişmiş doz ayarları",
     "feature5": "Hesaplama geçmişi sınırsız",
@@ -327,7 +343,15 @@
     "proActive": "Pro Aktif",
     "proExpires": "Bitiş: {{date}}",
     "upgradePrompt": "Bu özellik Pro sürümde mevcut",
-    "upgradeButton": "Pro'ya Geç"
+    "upgradeButton": "Pro'ya Geç",
+    "featuresTitle": "Pro Özellikleri",
+    "choosePlan": "Plan Seçin",
+    "errors": {
+      "noPackages": "Satın alınabilir paket bulunamadı. Bağlantınızı kontrol edin.",
+      "failed": "Satın alma tamamlanamadı.",
+      "cancelled": "Satın alma iptal edildi.",
+      "nothingToRestore": "Geri yüklenecek bir satın alma bulunamadı."
+    }
   },
   "errors": {
     "networkError": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",
@@ -433,6 +457,33 @@
     "finalConcentration": "Son Konsantrasyon",
     "preparation": "Hazırlama Önerisi",
     "dilution": "Seyreltme",
-    "volumeToDraw": "Çekilecek Hacim"
+    "volumeToDraw": "Çekilecek Hacim",
+    "sideEffectsShow": "Yan Etkileri Göster",
+    "sideEffectsHide": "Yan Etkileri Gizle",
+    "complicationsShow": "Komplikasyonları Göster",
+    "complicationsHide": "Komplikasyonları Gizle",
+    "complications": "Komplikasyonlar ve Önlemler",
+    "drugCategory": "İlaç Kategorisi",
+    "resultTitle": "Hesaplama Sonucu",
+    "dilutionSentence": "{{dose}} mg ilaç, {{bag}} mL {{solvent}} içinde",
+    "infusion": {
+      "h2to6": "2-6 saat",
+      "m30to60": "30-60 dakika",
+      "m15to30": "15-30 dakika",
+      "h3": "3 saat",
+      "h1": "1 saat",
+      "h2to24": "2-24 saat (protokole göre)"
+    },
+    "monitoringFreq": {
+      "cisplatin": "Her döngü öncesi: kreatinin, işitme testi",
+      "carboplatin": "Her döngü öncesi: CBC, kreatinin, GFR",
+      "doxorubicin": "Her döngü öncesi: ekokardiyogram, CBC",
+      "cyclophosphamide": "Her döngü öncesi: CBC, idrar tahlili",
+      "paclitaxel": "Her döngü öncesi: vital bulgular, nörolojik muayene",
+      "docetaxel": "Her döngü öncesi: kilo, vital bulgular",
+      "fluorouracil": "Her döngü öncesi: CBC, mukoz membranlar",
+      "methotrexate": "Her döngü öncesi: CBC, KCFT, kreatinin",
+      "default": "Her döngü öncesi: CBC, böbrek fonksiyonları"
+    }
   }
 }

@@ -195,7 +195,7 @@ const ProductInfoScreen: React.FC = () => {
           <Icon name="arrow-left" size={24} color={theme.colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
-          {selectedDrug.name} - Kısa Ürün Bilgisi
+          {selectedDrug.name} - {t('vademecum.shortProductInfo')}
         </Text>
       </View>
 
@@ -323,10 +323,7 @@ const ProductInfoScreen: React.FC = () => {
         <FadeInView delay={600}>
           <ModernCard variant="elevated" style={styles.card}>
             <Text style={styles.cardTitle}>{t('vademecum.warnings')}</Text>
-            {renderWarningBox(
-              'Dikkat Edilmesi Gerekenler:',
-              productInfo.warnings
-            )}
+            {renderWarningBox(t('vademecum.cautions'), productInfo.warnings)}
           </ModernCard>
         </FadeInView>
 

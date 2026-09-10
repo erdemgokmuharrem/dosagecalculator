@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
+import { reportError } from '../services/monitoring';
 import { RootStackParamList, SideEffect } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { getDrugById } from '../data/drugs';
@@ -24,13 +25,17 @@ type RoutePropType = RouteProp<RootStackParamList, 'DrugDetail'>;
 
 const SIDE_EFFECT_COLORS: Record<
   string,
-  { bg: string; text: string; label: string }
+  { bg: string; text: string; labelKey: string }
 > = {
-  very_common: { bg: '#FEE2E2', text: '#991B1B', label: 'Çok Sık (>%10)' },
-  common: { bg: '#FEF3C7', text: '#92400E', label: 'Sık (%1-10)' },
-  uncommon: { bg: '#DBEAFE', text: '#1E40AF', label: 'Seyrek (%0.1-1)' },
-  rare: { bg: '#D1FAE5', text: '#065F46', label: 'Nadir (%0.01-0.1)' },
-  very_rare: { bg: '#F3F4F6', text: '#374151', label: 'Çok Nadir (<%0.01)' },
+  very_common: {
+    bg: '#FEE2E2',
+    text: '#991B1B',
+    labelKey: 'vademecum.veryCommon',
+  },
+  common: { bg: '#FEF3C7', text: '#92400E', labelKey: 'vademecum.common' },
+  uncommon: { bg: '#DBEAFE', text: '#1E40AF', labelKey: 'vademecum.uncommon' },
+  rare: { bg: '#D1FAE5', text: '#065F46', labelKey: 'vademecum.rare' },
+  very_rare: { bg: '#F3F4F6', text: '#374151', labelKey: 'vademecum.veryRare' },
 };
 
 const DrugDetailScreen: React.FC = () => {
@@ -79,17 +84,13 @@ const DrugDetailScreen: React.FC = () => {
 
   const handleSharePdf = async () => {
     if (!isPro) {
-      Alert.alert(
-        'Pro Özellik',
-        'PDF olarak dışa aktarma özelliği sadece Pro sürümde mevcuttur. Ayarlar sayfasından yükseltebilirsiniz.',
-        [
-          { text: 'İptal', style: 'cancel' },
-          {
-            text: 'Ayarlar',
-            onPress: () => navigation.navigate('MainTabs' as any),
-          }, // User navigates to tabs, can switch to Settings manually
-        ]
-      );
+      Alert.alert(t('subscription.title'), t('vademecum.pdfProOnly'), [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('settings.title'),
+          onPress: () => navigation.navigate('MainTabs' as any),
+        }, // User navigates to tabs, can switch to Settings manually
+      ]);
       return;
     }
 
@@ -113,14 +114,14 @@ const DrugDetailScreen: React.FC = () => {
             <h1>${drug?.name}</h1>
             <div class="meta">${drug?.genericName} | ${drug?.category} | ${drug?.dosageForm}</div>
             
-            ${pi?.activeIngredient ? `<div class="section"><span class="label">{t('drug.activeIngredient')}:</span> ${pi.activeIngredient}</div>` : ''}
-            ${pi?.mechanismOfAction ? `<div class="section"><span class="label">{t('vademecum.mechanismOfAction')}:</span> ${pi.mechanismOfAction}</div>` : ''}
+            ${pi?.activeIngredient ? `<div class="section"><span class="label">${t('drug.activeIngredient')}:</span> ${pi.activeIngredient}</div>` : ''}
+            ${pi?.mechanismOfAction ? `<div class="section"><span class="label">${t('vademecum.mechanismOfAction')}:</span> ${pi.mechanismOfAction}</div>` : ''}
             
             ${
               pi?.indications?.length
                 ? `
               <div class="section">
-                <h2>{t('vademecum.indications')}</h2>
+                <h2>${t('vademecum.indications')}</h2>
                 <ul>${pi.indications.map(i => `<li>${i}</li>`).join('')}</ul>
               </div>
             `
@@ -131,7 +132,7 @@ const DrugDetailScreen: React.FC = () => {
               pi?.contraindications?.length
                 ? `
               <div class="section">
-                <h2>{t('vademecum.contraindications')}</h2>
+                <h2>${t('vademecum.contraindications')}</h2>
                 <ul>${pi.contraindications.map(i => `<li style="color: #dc2626;">${i}</li>`).join('')}</ul>
               </div>
             `
@@ -142,7 +143,7 @@ const DrugDetailScreen: React.FC = () => {
               pi?.warnings?.length
                 ? `
               <div class="section">
-                <h2>{t('vademecum.warnings')}</h2>
+                <h2>${t('vademecum.warnings')}</h2>
                 <ul>${pi.warnings.map(i => `<li>${i}</li>`).join('')}</ul>
               </div>
             `
@@ -150,8 +151,8 @@ const DrugDetailScreen: React.FC = () => {
             }
             
             <div style="margin-top: 40px; font-size: 10px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 10px;">
-              Bu belge Dosage Calculator uygulaması tarafından oluşturulmuştur.<br/>
-              Sadece bilgilendirme amaçlıdır, profesyonel tıbbi tavsiye yerine geçmez.
+              ${t('vademecum.pdfFooterGenerated')}<br/>
+              ${t('vademecum.pdfFooterNotAdvice')}
             </div>
           </body>
         </html>
@@ -161,11 +162,11 @@ const DrugDetailScreen: React.FC = () => {
       await Sharing.shareAsync(uri, {
         UTI: '.pdf',
         mimeType: 'application/pdf',
-        dialogTitle: 'İlaç Bilgisini Paylaş',
+        dialogTitle: t('vademecum.shareDialogTitle'),
       });
     } catch (error) {
-      Alert.alert('Hata', 'PDF oluşturulurken bir hata oluştu.');
-      console.error(error);
+      Alert.alert(t('common.error'), t('vademecum.pdfError'));
+      reportError(error, { screen: 'DrugDetail', action: 'pdf' });
     }
   };
 
@@ -493,7 +494,10 @@ const DrugDetailScreen: React.FC = () => {
           {drug.maxDailyDose && (
             <View style={styles.metaBadge}>
               <Text style={styles.metaBadgeText}>
-                Max: {drug.maxDailyDose} {drug.unit}/gün
+                {t('vademecum.maxPerDay', {
+                  dose: drug.maxDailyDose,
+                  unit: drug.unit,
+                })}
               </Text>
             </View>
           )}
@@ -552,7 +556,7 @@ const DrugDetailScreen: React.FC = () => {
         ) : (
           <>
             <Accordion
-              title="Etki Mekanizması"
+              title={t('vademecum.mechanismOfAction')}
               icon="⚙️"
               sectionKey="mechanism"
               defaultOpen
@@ -561,7 +565,7 @@ const DrugDetailScreen: React.FC = () => {
             </Accordion>
 
             <Accordion
-              title="Endikasyonlar"
+              title={t('vademecum.indications')}
               icon="✅"
               sectionKey="indications"
               badgeCount={pi.indications.length}
@@ -572,7 +576,7 @@ const DrugDetailScreen: React.FC = () => {
             </Accordion>
 
             <Accordion
-              title="Kontrendikasyonlar"
+              title={t('vademecum.contraindications')}
               icon="🚫"
               sectionKey="contraindications"
               badgeCount={pi.contraindications.length}
@@ -583,7 +587,7 @@ const DrugDetailScreen: React.FC = () => {
             </Accordion>
 
             <Accordion
-              title="Uyarılar ve Önlemler"
+              title={t('vademecum.warnings')}
               icon="⚠️"
               sectionKey="warnings"
               badgeCount={pi.warnings.length}
@@ -593,7 +597,11 @@ const DrugDetailScreen: React.FC = () => {
               ))}
             </Accordion>
 
-            <Accordion title="Yan Etkiler" icon="💢" sectionKey="sideEffects">
+            <Accordion
+              title={t('vademecum.sideEffects')}
+              icon="💢"
+              sectionKey="sideEffects"
+            >
               {groupedSideEffects.plain
                 ? (groupedSideEffects.plain as string[]).map((se, i) => (
                     <ListItem key={i} text={se} type="warning" />
@@ -610,7 +618,7 @@ const DrugDetailScreen: React.FC = () => {
                               { color: cfg.text },
                             ]}
                           >
-                            {cfg.label}
+                            {t(cfg.labelKey)}
                           </Text>
                           <View style={styles.sideEffectChipsRow}>
                             {groupedSideEffects[freq].map(
@@ -640,28 +648,34 @@ const DrugDetailScreen: React.FC = () => {
             </Accordion>
 
             <Accordion
-              title="Farmakokinetik"
+              title={t('vademecum.pharmacokinetics')}
               icon="📊"
               sectionKey="pharmacokinetics"
             >
-              <InfoRow label="Emilim" value={pi.pharmacokinetics.absorption} />
               <InfoRow
-                label="Dağılım"
+                label={t('vademecum.absorption')}
+                value={pi.pharmacokinetics.absorption}
+              />
+              <InfoRow
+                label={t('vademecum.distribution')}
                 value={pi.pharmacokinetics.distribution}
               />
               <InfoRow
-                label="Metabolizma"
+                label={t('vademecum.metabolism')}
                 value={pi.pharmacokinetics.metabolism}
               />
               <InfoRow
-                label="Eliminasyon"
+                label={t('vademecum.elimination')}
                 value={pi.pharmacokinetics.elimination}
               />
-              <InfoRow label="Yarı Ömür" value={pi.pharmacokinetics.halfLife} />
+              <InfoRow
+                label={t('vademecum.halfLife')}
+                value={pi.pharmacokinetics.halfLife}
+              />
             </Accordion>
 
             <Accordion
-              title="İlaç Etkileşimleri"
+              title={t('vademecum.interactions')}
               icon="💊"
               sectionKey="interactions"
               badgeCount={
@@ -698,26 +712,35 @@ const DrugDetailScreen: React.FC = () => {
             </Accordion>
 
             <Accordion
-              title="Uygulama Bilgileri"
+              title={t('vademecum.administration')}
               icon="💉"
               sectionKey="administration"
             >
-              <InfoRow label="Uygulama Yolu" value={pi.administration.route} />
-              <InfoRow label="Yöntem" value={pi.administration.method} />
+              <InfoRow
+                label={t('vademecum.route')}
+                value={pi.administration.route}
+              />
+              <InfoRow
+                label={t('vademecum.method')}
+                value={pi.administration.method}
+              />
               {pi.administration.duration && (
-                <InfoRow label="Süre" value={pi.administration.duration} />
+                <InfoRow
+                  label={t('vademecum.duration')}
+                  value={pi.administration.duration}
+                />
               )}
               {pi.administration.diluent &&
                 pi.administration.diluent !== '-' && (
                   <InfoRow
-                    label="Seyreltici"
+                    label={t('vademecum.diluent')}
                     value={pi.administration.diluent}
                   />
                 )}
               {pi.administration.concentration &&
                 pi.administration.concentration !== '-' && (
                   <InfoRow
-                    label="Konsantrasyon"
+                    label={t('vademecum.concentration')}
                     value={pi.administration.concentration}
                   />
                 )}
@@ -744,7 +767,7 @@ const DrugDetailScreen: React.FC = () => {
             </Accordion>
 
             <Accordion
-              title="İzleme Parametreleri"
+              title={t('vademecum.monitoring')}
               icon="📋"
               sectionKey="monitoring"
             >
@@ -754,7 +777,10 @@ const DrugDetailScreen: React.FC = () => {
               {pi.monitoring.parameters.map((p, i) => (
                 <ListItem key={i} text={p} />
               ))}
-              <InfoRow label="İzlem Sıklığı" value={pi.monitoring.frequency} />
+              <InfoRow
+                label={t('vademecum.frequency')}
+                value={pi.monitoring.frequency}
+              />
               {pi.monitoring.specialConsiderations.length > 0 && (
                 <>
                   <Text style={styles.subSectionTitle}>
@@ -768,38 +794,59 @@ const DrugDetailScreen: React.FC = () => {
             </Accordion>
 
             <Accordion
-              title="Doz Ayarlamaları"
+              title={t('vademecum.dosageAdjustments')}
               icon="⚖️"
               sectionKey="dosageAdj"
             >
-              <InfoRow label="Böbrek Yetmezliği" value={pi.renalAdjustment} />
               <InfoRow
-                label="Karaciğer Yetmezliği"
+                label={t('vademecum.renalAdjustment')}
+                value={pi.renalAdjustment}
+              />
+              <InfoRow
+                label={t('vademecum.hepaticAdjustment')}
                 value={pi.hepaticAdjustment}
               />
             </Accordion>
 
             <Accordion
-              title="Özel Popülasyonlar"
+              title={t('vademecum.specialPopulations')}
               icon="👥"
               sectionKey="populations"
             >
-              <InfoRow label="Gebelik" value={pi.pregnancyCategory} />
-              <InfoRow label="Emzirme" value={pi.lactation} />
-              <InfoRow label="Pediatrik" value={pi.pediatricUse} />
-              <InfoRow label="Geriatrik" value={pi.geriatricUse} />
+              <InfoRow
+                label={t('vademecum.pregnancyCategory')}
+                value={pi.pregnancyCategory}
+              />
+              <InfoRow label={t('vademecum.lactation')} value={pi.lactation} />
+              <InfoRow
+                label={t('vademecum.pediatricUse')}
+                value={pi.pediatricUse}
+              />
+              <InfoRow
+                label={t('vademecum.geriatricUse')}
+                value={pi.geriatricUse}
+              />
             </Accordion>
 
-            <Accordion title="Saklama Koşulları" icon="🏠" sectionKey="storage">
-              <InfoRow label="Sıcaklık" value={pi.storage.temperature} />
-              <InfoRow label="Işık" value={pi.storage.light} />
-              <InfoRow label="Stabilite" value={pi.storage.stability} />
+            <Accordion
+              title={t('vademecum.storage')}
+              icon="🏠"
+              sectionKey="storage"
+            >
+              <InfoRow
+                label={t('vademecum.temperature')}
+                value={pi.storage.temperature}
+              />
+              <InfoRow label={t('vademecum.light')} value={pi.storage.light} />
+              <InfoRow
+                label={t('vademecum.stability')}
+                value={pi.storage.stability}
+              />
             </Accordion>
 
             <View style={styles.disclaimer}>
               <Text style={styles.disclaimerText}>
-                ⚠️ Bu bilgiler yalnızca eğitim amaçlıdır. Tedavi kararları için
-                yetkili hekim onayı gereklidir.
+                ⚠️ {t('vademecum.educationalNotice')}
               </Text>
             </View>
           </>

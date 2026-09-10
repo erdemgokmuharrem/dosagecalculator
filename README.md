@@ -32,7 +32,8 @@ Yayın öncesi zorunlu adımlar için `npm run check:release` çalıştırın.
 - **React Navigation 7** - Navigasyon
 - **Zustand** (AsyncStorage ile kalıcı) - State management
 - **Zod** - Hasta girdisi doğrulama (`src/features/dosage/patientForm.ts`)
-- **i18next** - 5 dil; güvenlik uyarıları dahil tüm metinler çevrilidir
+- **i18next** - 5 dil; güvenlik uyarıları dahil tüm arayüz metinleri çevrilidir.
+  İlaç verisinin klinik içeriği (monograflar, kontrendikasyonlar) şimdilik yalnızca Türkçe.
 - **Jest** + **fast-check** - Birim ve özellik tabanlı testler
 - **Detox** - E2E
 - **ESLint** + **Prettier** + **Husky** - Kod kalitesi

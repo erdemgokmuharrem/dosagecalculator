@@ -249,7 +249,19 @@
     "noDetails": "暂无详细信息",
     "share": "分享",
     "addFavorite": "添加到收藏",
-    "removeFavorite": "从收藏中移除"
+    "removeFavorite": "从收藏中移除",
+    "pdfProOnly": "PDF 导出仅在专业版中提供。您可以在设置中升级。",
+    "pdfFooterGenerated": "本文件由 Dosage Calculator 应用生成。",
+    "pdfFooterNotAdvice": "仅供参考，不能替代专业医疗建议。",
+    "shareDialogTitle": "分享药物信息",
+    "pdfError": "无法生成 PDF。",
+    "maxPerDay": "最大：{{dose}} {{unit}}/日",
+    "educationalNotice": "以上信息仅用于教育目的。治疗决策须经执业医师批准。",
+    "drugCount": "{{count}} 种药物",
+    "headerCount": "药物手册 — {{count}} 种药物",
+    "searchPlaceholder": "搜索药物、活性成分、类别...",
+    "cautions": "注意事项：",
+    "shortProductInfo": "产品特性摘要"
   },
   "history": {
     "title": "计算历史",
@@ -298,7 +310,11 @@
     "disclaimerText": "本应用仅为医疗专业人员提供辅助决策工具。",
     "medicalProfessionalOnly": "仅供医疗专业人员使用",
     "proVersion": "专业版",
-    "appInfo": "应用信息"
+    "appInfo": "应用信息",
+    "rateThanksTitle": "谢谢！",
+    "rateThanksMessage": "正在前往应用商店...",
+    "appDescription": "面向医疗专业人员的剂量计算与药物参考应用。",
+    "appStats": "{{count}} 种药物 • 5 种语言"
   },
   "subscription": {
     "title": "专业版",
@@ -310,7 +326,7 @@
     "monthlyBenefit": "随时取消",
     "lifetimeBenefit": "一次付费，终身使用",
     "feature1": "无广告体验",
-    "feature2": "全部180+药物参考",
+    "feature2": "完整药物手册访问",
     "feature3": "PDF计算报告",
     "feature4": "高级剂量调整",
     "feature5": "无限历史记录",
@@ -327,7 +343,15 @@
     "proActive": "专业版激活",
     "proExpires": "到期：{{date}}",
     "upgradePrompt": "此功能需要专业版",
-    "upgradeButton": "升级到专业版"
+    "upgradeButton": "升级到专业版",
+    "featuresTitle": "专业版功能",
+    "choosePlan": "选择方案",
+    "errors": {
+      "noPackages": "未找到可购买的套餐。请检查网络连接。",
+      "failed": "购买未能完成。",
+      "cancelled": "购买已取消。",
+      "nothingToRestore": "未找到可恢复的购买记录。"
+    }
   },
   "errors": {
     "networkError": "网络错误，请检查连接。",
@@ -433,6 +457,33 @@
     "finalConcentration": "最终浓度",
     "preparation": "配制建议",
     "dilution": "稀释",
-    "volumeToDraw": "抽取体积"
+    "volumeToDraw": "抽取体积",
+    "sideEffectsShow": "显示不良反应",
+    "sideEffectsHide": "隐藏不良反应",
+    "complicationsShow": "显示并发症",
+    "complicationsHide": "隐藏并发症",
+    "complications": "并发症与注意事项",
+    "drugCategory": "药物类别",
+    "resultTitle": "计算结果",
+    "dilutionSentence": "{{dose}} mg 药物溶于 {{bag}} mL {{solvent}}",
+    "infusion": {
+      "h2to6": "2–6 小时",
+      "m30to60": "30–60 分钟",
+      "m15to30": "15–30 分钟",
+      "h3": "3 小时",
+      "h1": "1 小时",
+      "h2to24": "2–24 小时（按方案）"
+    },
+    "monitoringFreq": {
+      "cisplatin": "每周期前：肌酐、听力测试",
+      "carboplatin": "每周期前：血常规、肌酐、GFR",
+      "doxorubicin": "每周期前：超声心动图、血常规",
+      "cyclophosphamide": "每周期前：血常规、尿液分析",
+      "paclitaxel": "每周期前：生命体征、神经系统检查",
+      "docetaxel": "每周期前：体重、生命体征",
+      "fluorouracil": "每周期前：血常规、黏膜",
+      "methotrexate": "每周期前：血常规、肝功能、肌酐",
+      "default": "每周期前：血常规、肾功能"
+    }
   }
 }

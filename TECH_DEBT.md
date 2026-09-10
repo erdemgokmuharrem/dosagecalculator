@@ -60,16 +60,16 @@ secrets üzerinden doldurulmalıdır (bkz. `.env.example`).
 
 ## 🟡 Kalan Teknik Borç
 
-| #   | Konu                   | Not                                                                                                                                |
-| --- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Ekran testleri         | Hesaplama motoru %95 kapsamlı; ekranlarda birim testi yok. `CalculatorScreen` sonuç panelinin render testi eklenmeli.              |
-| 2   | Kemoterapi ekranı i18n | `ChemotherapyDoseScreen` etiketleri hâlâ sabit Türkçe. Güvenlik uyarıları ve red mesajları çevrildi; arayüz etiketleri çevrilmedi. |
-| 3   | Erişilebilirlik        | Hasta formu alanlarına `accessibilityLabel` eklendi; diğer ekranlar taranmadı. Dynamic Type test edilmedi.                         |
-| 4   | Inline style uyarıları | 40 ESLint uyarısı (`react-native/no-inline-styles`, `no-explicit-any`). Hata değil, temizlenmeli.                                  |
-| 5   | `npm audit`            | 51 açık bildiriliyor; çoğu build-time araçlarda. CI'da raporlanır, build'i durdurmaz. Gözden geçirilmeli.                          |
-| 6   | OTA hotfix kanalı      | `expo-updates` kurulu değil. Bir doz hatası çıkarsa mağaza incelemesi beklenir. Tıbbi uygulamada eklenmesi önerilir.               |
-| 7   | Abonelik yedeği        | RevenueCat başarısız olursa `subscription.ts` AsyncStorage'a düşüyor; cihazda kurcalanabilir.                                      |
-| 8   | Detox                  | Spec mevcut akışa göre yeniden yazıldı ve testID'ler eklendi, ancak bir simülatörde henüz çalıştırılmadı.                          |
+| #   | Konu                    | Not                                                                                                                                                                                                                                                                                                                                    |
+| --- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Klinik içerik çevirisi  | Arayüz metinlerinin tamamı 5 dilde. İlaç verisindeki **klinik içerik** (monograflar, kontrendikasyonlar, yan etkiler, seyreltme solüsyonları) yalnızca Türkçe. Bu kod değil tıbbi çeviri işi; farmakolog incelemesiyle birlikte yapılmalı.                                                                                             |
+| 2   | Ekran testleri          | `CalculatorScreen` ve `ThemeContext` render testli; diğer ekranlarda render testi yok.                                                                                                                                                                                                                                                 |
+| 3   | Erişilebilirlik (kalan) | 38/38 dokunmatik öğede rol/durum var, testle korunuyor. Yapılmadı: Dynamic Type/yazı ölçekleme testi, renk kontrastı denetimi, cihazda VoiceOver/TalkBack turu.                                                                                                                                                                        |
+| 4   | Lint uyarıları          | 39 uyarı (`react-native/no-inline-styles`, `no-explicit-any`, `no-console`). Hata değil.                                                                                                                                                                                                                                               |
+| 5   | `npm audit`             | 52 bildirim, `--omit=dev` ile 42. Neredeyse tamamı `expo`'nun çektiği CLI/Metro/Babel araç zincirinde, bundle'a girmiyor. Bundle'a giren tek zincir: react-navigation → query-string → decode-uri-component (orta, upstream düzeltme yok; bozuk URI ile DoS, derin bağlantılarda önemli). Expo paketleri `expo install` ile hizalandı. |
+| 6   | OTA hotfix kanalı       | `expo-updates` kurulu değil. Bir doz hatası çıkarsa mağaza incelemesi beklenir.                                                                                                                                                                                                                                                        |
+| 7   | Abonelik yedeği         | RevenueCat başarısız olursa `subscription.ts` AsyncStorage'a düşüyor; cihazda kurcalanabilir.                                                                                                                                                                                                                                          |
+| 8   | Detox                   | Spec mevcut akışa göre yazıldı, testID'ler var; simülatörde henüz çalıştırılmadı.                                                                                                                                                                                                                                                      |
 
 ---
 
@@ -137,3 +137,23 @@ secrets üzerinden doldurulmalıdır (bkz. `.env.example`).
   silindi. `App.tsx`: 9.587 → 83 satır.
 - Kullanılmayan native bağımlılıklar kaldırıldı (vector-icons, blur, axios,
   react-query).
+
+**Sonraki tur: erişilebilirlik, i18n, doğruluk**
+
+- 38 dokunmatik öğenin hiçbirinde `accessibilityRole` yoktu; ekran okuyucu
+  "düğme"/"seçili" demiyordu. Hepsine rol ve durum, yalnızca simge içerenlere
+  etiket eklendi. Regresyon testi var.
+- Kalan ~110 arayüz metni çevrildi (Alert'ler, placeholder'lar, akordeon
+  başlıkları, kemoterapi hazırlama cümlesi, abonelik hataları). Kemoterapi
+  motoru artık Türkçe metin değil çeviri anahtarı döndürüyor.
+- **Bu çalışmada yarattığım bir hata:** önceki toplu i18n değişimi PDF dışa
+  aktarım şablonundaki 5 başlığı `{t(...)}` yapmıştı; template literal içinde bu
+  düz metin olarak basılırdı. `${t(...)}` olarak onarıldı, testle korunuyor.
+- Ayarlar "180+ ilaç", abonelik "Tüm 180+ ilaç bilgisi" diyordu; katalogda 105
+  ilaç var. Gerçek sayı gösteriliyor (App Review doğruluk ilkesi 2.3).
+- Kullanıcı satın almayı iptal edince "hata" uyarısı çıkıyordu; artık çıkmıyor.
+- Kemoterapi ekranının geri düğmesi kayıtlı olmayan `'Home'` rotasına gidiyordu.
+- Kemoterapi ekranında kreatinin/GFR girişi yoktu; motor Calvert için ölçülmüş
+  GFR istediğinden karboplatin çıkmaz sokaktaydı.
+- `react-native-worklets` 0.6.1 kurulmuştu; Expo SDK 54 0.5.1 bekliyor. Hizalandı.
+- v1 → v2 geçmiş göçü test edildi.

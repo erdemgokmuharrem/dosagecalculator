@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
+import { sampleDrugs } from '../data/drugs';
 import { RootStackParamList } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
@@ -305,8 +306,8 @@ const SettingsScreen: React.FC = () => {
             label={t('settings.rateApp')}
             onPress={() =>
               Alert.alert(
-                'Teşekkürler!',
-                'Uygulama mağazasına yönlendiriliyorsunuz...'
+                t('settings.rateThanksTitle'),
+                t('settings.rateThanksMessage')
               )
             }
           />
@@ -314,7 +315,7 @@ const SettingsScreen: React.FC = () => {
             icon="📧"
             label={t('settings.feedback')}
             onPress={() =>
-              Alert.alert('Geri Bildirim', 'feedback@dozuhesapla.com')
+              Alert.alert(t('settings.feedback'), 'feedback@dozuhesapla.com')
             }
           />
           <SettingsRow
@@ -347,12 +348,13 @@ const SettingsScreen: React.FC = () => {
           <Text style={{ fontSize: 40, marginBottom: 8 }}>⚕️</Text>
           <Text style={styles.appName}>DozuHesapla!</Text>
           <Text style={styles.appVersion}>
-            Sürüm {APP_VERSION}
+            {t('settings.version')} {APP_VERSION}
             {isPro ? ' Pro' : ' Free'}
           </Text>
           <Text style={styles.appDescription}>
-            Sağlık profesyonelleri için geliştirilmiş profesyonel doz hesaplama
-            ve ilaç rehberi uygulaması.{'\n'}180+ ilaç • 5 Dil Desteği
+            {t('settings.appDescription')}
+            {'\n'}
+            {t('settings.appStats', { count: sampleDrugs.length })}
           </Text>
         </View>
 
