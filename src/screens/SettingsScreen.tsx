@@ -5,10 +5,10 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert,
   Switch,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
@@ -16,17 +16,23 @@ import { sampleDrugs } from '../data/drugs';
 import { RootStackParamList } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
+import { useAdManager } from '../contexts/AdContext';
+import { LINKS, mailto, openLink, storeReviewUrl } from '../config/links';
 import { SUPPORTED_LANGUAGES, changeLanguage } from '../locales/i18n';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const APP_VERSION = '2.1.0';
+// From app.json, so Settings shows the version the stores show. It was
+// hardcoded to 2.1.0 while the app shipped as 1.0.0.
+const APP_VERSION = Constants.expoConfig?.version ?? '';
 
 const SettingsScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { t, i18n } = useTranslation();
   const { theme, isDark, setThemeMode } = useTheme();
   const { isPro, subscription } = useSubscription();
+  const { consent, openPrivacyOptions } = useAdManager();
+  const reviewUrl = storeReviewUrl();
 
   const [currentLang, setCurrentLang] = useState(i18n.language);
 
@@ -301,42 +307,65 @@ const SettingsScreen: React.FC = () => {
         {/* ABOUT */}
         <Text style={styles.sectionTitle}>{t('settings.about')}</Text>
         <View style={styles.card}>
-          <SettingsRow
-            icon="⭐"
-            label={t('settings.rateApp')}
-            onPress={() =>
-              Alert.alert(
-                t('settings.rateThanksTitle'),
-                t('settings.rateThanksMessage')
-              )
-            }
-          />
+          {/* Opens the store's review page. It used to show a "thanks for
+              rating" message without opening anything. */}
+          {reviewUrl && (
+            <SettingsRow
+              icon="⭐"
+              label={t('settings.rateApp')}
+              onPress={() => openLink(reviewUrl, t('settings.rateApp'))}
+            />
+          )}
           <SettingsRow
             icon="📧"
             label={t('settings.feedback')}
             onPress={() =>
-              Alert.alert(t('settings.feedback'), 'feedback@dozuhesapla.com')
+              openLink(
+                mailto(LINKS.feedbackEmail),
+                t('settings.feedback'),
+                LINKS.feedbackEmail
+              )
             }
           />
           <SettingsRow
             icon="🔒"
             label={t('settings.privacy')}
-            onPress={() =>
-              Alert.alert(t('settings.privacy'), 'www.dozuhesapla.com/privacy')
-            }
+            onPress={() => openLink(LINKS.privacyPolicy, t('settings.privacy'))}
           />
+          {/* Shows the consent outcome, and the UMP privacy-options form when
+              UMP requires an entry point for revisiting consent. */}
+          {!isPro && consent && (
+            <SettingsRow
+              icon="📢"
+              label={t('settings.adPreferences')}
+              sub={
+                consent.personalized
+                  ? t('settings.adsPersonalized')
+                  : t('settings.adsNonPersonalized')
+              }
+              onPress={
+                consent.privacyOptionsRequired
+                  ? () => {
+                      openPrivacyOptions().catch(() => undefined);
+                    }
+                  : undefined
+              }
+            />
+          )}
           <SettingsRow
             icon="📄"
             label={t('settings.terms')}
-            onPress={() =>
-              Alert.alert(t('settings.terms'), 'www.dozuhesapla.com/terms')
-            }
+            onPress={() => openLink(LINKS.terms, t('settings.terms'))}
           />
           <SettingsRow
             icon="🎧"
             label={t('settings.support')}
             onPress={() =>
-              Alert.alert(t('settings.support'), 'support@dozuhesapla.com')
+              openLink(
+                mailto(LINKS.supportEmail),
+                t('settings.support'),
+                LINKS.supportEmail
+              )
             }
             isLast
           />

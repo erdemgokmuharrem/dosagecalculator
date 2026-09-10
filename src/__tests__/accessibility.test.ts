@@ -111,3 +111,19 @@ describe('accessibility', () => {
     expect(unlabeled).toEqual([]);
   });
 });
+
+describe('bottom tabs', () => {
+  it('give every tab a title, so screen readers do not read the route name', () => {
+    // Labels are drawn inside the icon (`tabBarShowLabel: false`), so the tab's
+    // accessibility label falls back to `title`, then to the route name —
+    // VoiceOver announced "CalculatorTab".
+    const file = join(SRC, 'navigation/AppNavigator.tsx');
+    const source = readFileSync(file, 'utf8');
+    const tabs = [...source.matchAll(/<Tab\.Screen\b/g)].map(m =>
+      openingTag(source, m.index ?? 0)
+    );
+    expect(tabs).toHaveLength(4);
+    const untitled = tabs.filter(tag => !/\btitle:\s*t\(/.test(tag));
+    expect(untitled).toEqual([]);
+  });
+});

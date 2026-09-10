@@ -33,6 +33,29 @@ jest.mock('react-native-google-mobile-ads', () => {
       APP_OPEN: 'test-app-open',
     },
     MaxAdContentRating: { G: 'G', PG: 'PG', T: 'T', MA: 'MA' },
+    AdsConsent: {
+      showPrivacyOptionsForm: jest.fn().mockResolvedValue({}),
+      gatherConsent: jest.fn().mockResolvedValue({
+        status: 'NOT_REQUIRED',
+        canRequestAds: true,
+        isConsentFormAvailable: false,
+      }),
+      getUserChoices: jest.fn().mockResolvedValue({
+        selectPersonalisedAds: false,
+        storeAndAccessInformationOnDevice: false,
+      }),
+    },
+    AdsConsentPrivacyOptionsRequirementStatus: {
+      UNKNOWN: 'UNKNOWN',
+      REQUIRED: 'REQUIRED',
+      NOT_REQUIRED: 'NOT_REQUIRED',
+    },
+    AdsConsentStatus: {
+      UNKNOWN: 'UNKNOWN',
+      REQUIRED: 'REQUIRED',
+      NOT_REQUIRED: 'NOT_REQUIRED',
+      OBTAINED: 'OBTAINED',
+    },
   };
 });
 

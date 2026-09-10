@@ -1,6 +1,6 @@
 # Teknik Borç ve Yayın Öncesi Durum
 
-Son güncelleme: 2026-09-09
+Son güncelleme: 2026-09-11
 
 Bu dosya, kod tabanının **gerçek** durumunu yansıtır. Önceki sürümü, o tarihte
 mevcut olmayan bir mimariyi tarif ediyordu.
@@ -56,22 +56,52 @@ göre düzenleyici danışmanlık alınmalıdır.
 `npm run check:release` şu an 9 eksik anahtar bildiriyor. EAS secrets / GitHub
 secrets üzerinden doldurulmalıdır (bkz. `.env.example`).
 
+### 6. Gizlilik politikası ve destek adresleri — alan adı yok
+
+Uygulamadaki gizlilik politikası, kullanım şartları ve destek/geri bildirim
+e-postaları `dozuhesapla.com` alan adını kullanıyor. Bu alan adı 2026-09-11'de
+**NXDOMAIN** döndürüyordu: kayıtlı değil, A/MX/NS kaydı yok. App Review gizlilik
+politikası bağlantısını hem App Store Connect'te hem uygulama içinde açar
+(Guideline 5.1.1) ve destek iletişiminin çalışmasını bekler (1.5).
+
+Alan adını alıp politika ve şart sayfalarını yayımlayın (e-posta için MX kaydı
+gerekir) ya da `src/config/links.ts` içindeki adresleri gerçek adreslerle
+değiştirin. `npm run check:release`, bu adreslerin sunucusu çözülene kadar
+yayını engelliyor.
+
+### 7. AdMob gizlilik mesajları (AdMob konsolu)
+
+Uygulama onayı Google UMP ile topluyor, ancak UMP yalnızca AdMob konsolunda
+**Privacy & messaging** altında yayımlanmış bir mesajı gösterebilir. Mesaj
+yoksa UMP hata döndürür ve uygulama tasarım gereği kişiselleştirilmemiş
+reklama düşer; ATT penceresi de hiç açılmaz (bkz. aşağıdaki doğrulama notu).
+
+- **Avrupa düzenlemeleri (GDPR) mesajı:** Google, AEA/Birleşik Krallık'ta
+  reklam sunmak için sertifikalı bir CMP şartı koyuyor. Mesaj yayımlanmadan bu
+  bölgelerde yalnızca sınırlı reklam sunulur.
+- **ABD eyalet düzenlemeleri mesajı:** kodda ayrıca ele alınmıyor; UMP mesajı
+  yayımlanırsa aynı akışla gösterilir.
+
+Mesajlar yayımlandıktan sonra Ayarlar → "Reklam tercihleri" satırı, UMP
+gerektirdiğinde gizlilik seçenekleri formunu açar.
+
 ---
 
 ## 🟡 Kalan Teknik Borç
 
-| #   | Konu                                 | Not                                                                                                                                                                                                                                                                                                                                                                                          |
-| --- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Klinik içerik çevirisi               | Arayüz metinlerinin tamamı 5 dilde. İlaç verisindeki **klinik içerik** (monograflar, kontrendikasyonlar, yan etkiler, seyreltme solüsyonları) yalnızca Türkçe. Bu kod değil tıbbi çeviri işi; farmakolog incelemesiyle birlikte yapılmalı.                                                                                                                                                   |
-| 2   | Ekran testleri                       | `CalculatorScreen`, `ChemotherapyDoseScreen`, `HistoryScreen` ve `ThemeContext` render testli. Vademecum, ilaç detayı, ayarlar, abonelik ve ürün bilgisi ekranlarında render testi yok.                                                                                                                                                                                                      |
-| 3   | Erişilebilirlik (kalan)              | Rol/durum 38/38 ve renk kontrastı (13 çift × 2 tema, WCAG AA) testle korunuyor. Yapılmadı: Dynamic Type/yazı ölçekleme ve cihazda VoiceOver/TalkBack turu.                                                                                                                                                                                                                                   |
-| 4   | Lint uyarıları                       | Yalnızca 29 `react-native/no-inline-styles` uyarısı kaldı; hata ve diğer kural uyarıları yok.                                                                                                                                                                                                                                                                                                |
-| 5   | `npm audit`                          | 52 bildirim, `--omit=dev` ile 42. Neredeyse tamamı `expo`'nun çektiği CLI/Metro/Babel araç zincirinde, bundle'a girmiyor. Bundle'a giren tek zincir: react-navigation → query-string → decode-uri-component (orta, upstream düzeltme yok; bozuk URI ile DoS, derin bağlantılarda önemli). Expo paketleri `expo install` ile hizalandı.                                                       |
-| 6   | OTA hotfix kanalı                    | `expo-updates` kurulu değil. Bir doz hatası çıkarsa mağaza incelemesi beklenir.                                                                                                                                                                                                                                                                                                              |
-| 7   | Abonelik yedeği                      | RevenueCat başarısız olursa `subscription.ts` AsyncStorage'a düşüyor; cihazda kurcalanabilir.                                                                                                                                                                                                                                                                                                |
-| 8   | Detox                                | Spec, testID'ler ve `.detoxrc` (iPhone 16 Pro) hazır. Çalıştırılamadı: `applesimutils` kurulumu Homebrew'un "güvenilmeyen tap" kontrolüne takıldı. `brew trust wix/brew` sizin kararınız.                                                                                                                                                                                                    |
-| 9   | ATT ve kişiselleştirme (karar sizde) | Uygulama ATT izni istiyor ama tüm reklam istekleri `requestNonPersonalizedAdsOnly: true`; izin verilse de kullanılmıyor, manifest ise `NSPrivacyTracking: true` diyor. İki tutarlı yol: kişiselleştirmeyi ATT sonucuna bağlamak ya da ATT'yi kaldırıp izlemeyi `false` yapmak. Ayrıca ATT penceresi yasal sorumluluk reddinin üstüne açılıyor ve `mobileAds().initialize()` hiç çağrılmıyor. |
-| 10  | Sekme etiketi                        | Alt sekmede "Hesaplayıcı" etiketi "Hesaplay..." diye kesiliyor.                                                                                                                                                                                                                                                                                                                              |
+| #   | Konu                         | Not                                                                                                                                                                                                                                                                                                                                    |
+| --- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Klinik içerik çevirisi       | Arayüz metinlerinin tamamı 5 dilde. İlaç verisindeki **klinik içerik** (monograflar, kontrendikasyonlar, yan etkiler, seyreltme solüsyonları) yalnızca Türkçe. Bu kod değil tıbbi çeviri işi; farmakolog incelemesiyle birlikte yapılmalı.                                                                                             |
+| 2   | Ekran testleri               | `CalculatorScreen`, `ChemotherapyDoseScreen`, `HistoryScreen`, `SettingsScreen` ve `ThemeContext` render testli. Vademecum, ilaç detayı, abonelik ve ürün bilgisi ekranlarında render testi yok.                                                                                                                                       |
+| 3   | Erişilebilirlik (kalan)      | Rol/durum 38/38 ve renk kontrastı (13 çift × 2 tema, WCAG AA) testle korunuyor. Yapılmadı: Dynamic Type/yazı ölçekleme ve cihazda VoiceOver/TalkBack turu.                                                                                                                                                                             |
+| 4   | Lint uyarıları               | Yalnızca 27 `react-native/no-inline-styles` uyarısı kaldı; hata ve diğer kural uyarıları yok.                                                                                                                                                                                                                                          |
+| 5   | `npm audit`                  | 52 bildirim, `--omit=dev` ile 42. Neredeyse tamamı `expo`'nun çektiği CLI/Metro/Babel araç zincirinde, bundle'a girmiyor. Bundle'a giren tek zincir: react-navigation → query-string → decode-uri-component (orta, upstream düzeltme yok; bozuk URI ile DoS, derin bağlantılarda önemli). Expo paketleri `expo install` ile hizalandı. |
+| 6   | OTA hotfix kanalı            | `expo-updates` kurulu değil. Bir doz hatası çıkarsa mağaza incelemesi beklenir.                                                                                                                                                                                                                                                        |
+| 7   | Abonelik yedeği              | RevenueCat başarısız olursa `subscription.ts` AsyncStorage'a düşüyor; cihazda kurcalanabilir.                                                                                                                                                                                                                                          |
+| 8   | Detox                        | Spec, testID'ler ve `.detoxrc` (iPhone 16 Pro) hazır. Çalıştırılamadı: `applesimutils` kurulumu Homebrew'un "güvenilmeyen tap" kontrolüne takıldı. `brew trust wix/brew` sizin kararınız.                                                                                                                                              |
+| 9   | Onay akışı cihaz testi       | Karar matrisi birim testli (UMP → ATT → SDK sırası, her ret ve hata dalı). AEA'da gerçek UMP formu ve ATT penceresinin birlikte göründüğü uçtan uca akış, AdMob mesajı yayımlanana kadar test edilemez.                                                                                                                                |
+| 10  | `prebuild --clean` gürültüsü | Her yeniden üretim `project.pbxproj` içindeki nesne kimliklerini değiştirir; diff büyük görünür ama anlamsal değişiklik yoktur. Native değişiklikleri `app.json` / config plugin üzerinden yapın, `ios/` içinde elle düzenlemeyin.                                                                                                     |
+| 11  | Android koyu tema            | `userInterfaceStyle: automatic` Android'de `expo-system-ui` olmadan uygulanmıyor (prebuild uyarısı). Tema `DayNight` olduğu için arayüz sistem temasını izliyor; eksik kalan, JS çizilmeden önceki kök arka plan rengi (koyu temada açılışta kısa beyaz parlama). Android'de doğrulanamadığı için native bağımlılık eklenmedi.         |
 
 ---
 
@@ -190,3 +220,51 @@ secrets üzerinden doldurulmalıdır (bkz. `.env.example`).
   ATT penceresi çiziliyor, açılışta hata yok.
 - Build uyarılarından hiçbiri bizim native kaynağımızdan gelmiyor; hepsi pod'lar
   ve araç zinciri kaynaklı.
+
+**Reklam onayı turu**
+
+- ATT izni istenip sonucu hiç kullanılmıyordu: tüm reklam istekleri
+  kişiselleştirilmemişti, manifest ise izleme yapıldığını beyan ediyordu. Artık
+  kişiselleştirme yalnızca UMP (AEA/BK) ve ATT birlikte izin verirse açılıyor;
+  aksi halde kişiselleştirilmemiş reklam isteniyor.
+- Sıra Google'ın önerdiği gibi: UMP → ATT → `mobileAds().initialize()` →
+  reklam isteği. Önceden SDK hiç başlatılmıyordu.
+- ATT penceresi sabit bir zamanlayıcıyla, tıbbi sorumluluk reddinin üstünde
+  açılıyordu. Artık yalnızca sorumluluk reddi kabul edildikten sonra ve yalnızca
+  cevabı kullanılacaksa (UMP kişiselleştirmeye izin verdiyse) soruluyor. Pro
+  kullanıcılara hiç sorulmuyor.
+- Sorumluluk reddi, kayıtlı durumu okunamadığında gösterilmiyordu; artık
+  gösteriliyor (fail-closed). Kayıt yazılamazsa da artık kilitlenmiyor.
+- Ayarlar'a "Reklam tercihleri" satırı eklendi: onay sonucunu gösterir, UMP
+  gerektirdiğinde gizlilik seçenekleri formunu açar ve reklamları yeni seçimle
+  yeniden kurar.
+- Onay sonucunun kimlik bilgisi içermeyen özeti `@ad_consent_state` anahtarına
+  yazılıyor. Release build konsola log basmıyor ve Sentry DSN'i yok; bu kayıt
+  olmadan başarısız bir onay akışı görünmezdi.
+- Reklam SDK'sının ölçümü onaydan önce başlayabiliyordu
+  (`GADDelayAppMeasurementInit=false`). `delayAppMeasurementInit: true`
+  ayarlandı; iOS'ta Info.plist'e, Android'de manifest'e işlendi. Yayın
+  hazırlık betiği bu ayarın hem `app.json`'da hem native projede olmasını
+  zorunlu tutuyor.
+- Alt sekmede "Hesaplayıcı" "Hesaplay…" diye kesiliyordu: etiket 60pt'ye
+  sabitti. Artık sekme genişliğini alıyor, uzun çeviriler kesilmek yerine
+  küçülüyor. Sekmelerin `title`'ı yoktu, bu yüzden VoiceOver rota adını
+  ("CalculatorTab") okuyordu. Başlıklar eklendi ve testle korunuyor.
+- Ayarlar'daki gizlilik politikası, şartlar ve destek satırları adresi yalnızca
+  Alert içinde düz metin olarak gösteriyordu. Artık bağlantıyı açıyorlar
+  (e-postalar `mailto:` ile). Açılamazsa adres gösteriliyor. Adresler
+  `src/config/links.ts` içinde toplandı.
+- Ayarlar sürümü `2.1.0` olarak sabit yazılmıştı, uygulama ise `1.0.0` olarak
+  çıkıyor. Artık `app.json`'dan okunuyor (Release paketinde gömülü
+  `app.config` sürümü doğrulandı).
+- "Uygulamayı değerlendir" satırı hiçbir şey açmadan teşekkür mesajı
+  gösteriyordu. Artık mağazanın değerlendirme sayfasını açıyor. iOS'ta
+  `EXPO_PUBLIC_APP_STORE_ID` tanımlanana kadar bu satır gizli.
+- Info.plist'e Google'ın 50 SKAdNetwork kimliği eklendi (Google'ın yayımladığı
+  listeden birebir alındı).
+- Release build'de simülatörde doğrulandı: ilk açılışta yalnızca sorumluluk
+  reddi görünüyor ve reklam/onay sunucusuna bağlantı yok. Kabulden sonra akış
+  çalışıyor ve kaydedilen sonuç, UMP'nin
+  `no form(s) configured for the input app ID` hatası verdiğini gösteriyor. Bu
+  yüzden ATT sorulmadı ve reklamlar kişiselleştirilmemiş kaldı; tasarlanan
+  davranış bu. Çözümü AdMob konsolunda (bkz. madde 7).

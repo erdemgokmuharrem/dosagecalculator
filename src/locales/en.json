@@ -311,10 +311,11 @@
     "medicalProfessionalOnly": "For Healthcare Professionals Only",
     "proVersion": "Pro Version",
     "appInfo": "App Information",
-    "rateThanksTitle": "Thank you!",
-    "rateThanksMessage": "Taking you to the app store...",
     "appDescription": "A dose calculation and drug reference app for healthcare professionals.",
-    "appStats": "{{count}} drugs • 5 languages"
+    "appStats": "{{count}} drugs • 5 languages",
+    "adPreferences": "Ad preferences",
+    "adsPersonalized": "Personalised ads on",
+    "adsNonPersonalized": "Non-personalised ads only"
   },
   "subscription": {
     "title": "Pro Version",

@@ -1,10 +1,11 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useState,
+  useMemo,
   useRef,
-  useCallback,
+  useState,
 } from 'react';
 import { AppState } from 'react-native';
 import {
@@ -14,51 +15,118 @@ import {
 } from 'react-native-google-mobile-ads';
 import { useSubscription } from './SubscriptionContext';
 import { ADMOB_CONFIG } from '../config/admob';
+import {
+  openPrivacyOptions as showPrivacyOptionsForm,
+  resolveAdConsent,
+  type AdConsentResult,
+} from '../services/adConsent';
 
 /**
- * Ad objects exist only for slots with a configured unit id.
+ * Ads and advertising consent.
  *
- * The SDK throws when the unit id is not a string, and ADMOB_CONFIG resolves to
- * null for every slot in a release build without the EXPO_PUBLIC_ADMOB_*
- * variables. These used to be created unconditionally at module scope behind an
- * `as string` cast, so merely importing this file crashed the app at launch.
+ * Nothing ad-related happens until the clinician has accepted the medical
+ * disclaimer. Only then is consent gathered (Google UMP, then App Tracking
+ * Transparency on iOS) and the SDK initialised. Ads are requested personalised
+ * only when every applicable consent allows it, otherwise non-personalised.
+ * Pro users never see ads and are never asked to consent.
+ *
+ * Ad objects are built from the consent result rather than at module scope, so
+ * their request options carry the user's actual choice. They are built only for
+ * slots with a configured unit id: the SDK throws on a non-string id, which is
+ * what previously left release builds on a blank white screen at launch.
  */
-const appOpenAd = ADMOB_CONFIG.APP_OPEN_ID
-  ? AppOpenAd.createForAdRequest(ADMOB_CONFIG.APP_OPEN_ID, {
-      requestNonPersonalizedAdsOnly: true,
-    })
-  : null;
-const interstitialAd = ADMOB_CONFIG.INTERSTITIAL_ID
-  ? InterstitialAd.createForAdRequest(ADMOB_CONFIG.INTERSTITIAL_ID, {
-      requestNonPersonalizedAdsOnly: true,
-    })
-  : null;
 
 interface AdContextType {
   showInterstitialAd: (callback?: () => void) => void;
+  /** Call once the medical disclaimer has been accepted. */
+  requestAdConsent: () => void;
+  /** Shows UMP's privacy-options form and applies the new choice. */
+  openPrivacyOptions: () => Promise<void>;
+  /** Null until consent has resolved. No ad may be requested before then. */
+  consent: AdConsentResult | null;
 }
 
 const AdContext = createContext<AdContextType>({
   showInterstitialAd: cb => {
     if (cb) cb();
   },
+  requestAdConsent: () => undefined,
+  openPrivacyOptions: async () => undefined,
+  consent: null,
 });
 
 export const useAdManager = () => useContext(AdContext);
 
+/** Request options for every ad slot, derived from the consent result. */
+export const adRequestOptions = (consent: AdConsentResult) => ({
+  requestNonPersonalizedAdsOnly: !consent.personalized,
+});
+
 export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { isPro } = useSubscription();
+  const { isPro, isLoading } = useSubscription();
+  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
+  const [consent, setConsent] = useState<AdConsentResult | null>(null);
   const [appOpenLoaded, setAppOpenLoaded] = useState(false);
   const [interstitialLoaded, setInterstitialLoaded] = useState(false);
 
   // Track how many actions have occurred to show ad periodically
   const actionCountRef = useRef(0);
 
+  const requestAdConsent = useCallback(() => setDisclaimerAccepted(true), []);
+
+  // Lets the user revisit their consent (required by UMP in the EEA/UK). The new
+  // result replaces the old one, which rebuilds the ads with the new options.
+  const openPrivacyOptions = useCallback(async () => {
+    setConsent(await showPrivacyOptionsForm());
+  }, []);
+
+  // Consent runs after the disclaimer, once the subscription state is known,
+  // and never for Pro users: requesting a tracking permission that is never
+  // used is exactly what App Review objects to.
+  useEffect(() => {
+    if (!disclaimerAccepted || isLoading || isPro || consent) return;
+    let cancelled = false;
+    resolveAdConsent()
+      .then(result => {
+        if (!cancelled) setConsent(result);
+      })
+      .catch(() => {
+        // resolveAdConsent handles its own failures; nothing else to do.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [disclaimerAccepted, isLoading, isPro, consent]);
+
+  const adsAllowed = !isPro && consent?.canRequestAds === true;
+
+  const appOpenAd = useMemo(
+    () =>
+      adsAllowed && consent && ADMOB_CONFIG.APP_OPEN_ID
+        ? AppOpenAd.createForAdRequest(
+            ADMOB_CONFIG.APP_OPEN_ID,
+            adRequestOptions(consent)
+          )
+        : null,
+    [adsAllowed, consent]
+  );
+
+  const interstitialAd = useMemo(
+    () =>
+      adsAllowed && consent && ADMOB_CONFIG.INTERSTITIAL_ID
+        ? InterstitialAd.createForAdRequest(
+            ADMOB_CONFIG.INTERSTITIAL_ID,
+            adRequestOptions(consent)
+          )
+        : null,
+    [adsAllowed, consent]
+  );
+
   // App Open Ad Event Listeners
   useEffect(() => {
-    if (isPro || !appOpenAd) return;
+    if (!appOpenAd) return;
 
     const unsubscribeLoaded = appOpenAd.addAdEventListener(
       AdEventType.LOADED,
@@ -89,12 +157,13 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
       unsubscribeLoaded();
       unsubscribeClosed();
       unsubscribeError();
+      setAppOpenLoaded(false);
     };
-  }, [isPro]);
+  }, [appOpenAd]);
 
   // Interstitial Ad Event Listeners
   useEffect(() => {
-    if (isPro || !interstitialAd) return;
+    if (!interstitialAd) return;
 
     const unsubscribeLoaded = interstitialAd.addAdEventListener(
       AdEventType.LOADED,
@@ -125,12 +194,13 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
       unsubscribeLoaded();
       unsubscribeClosed();
       unsubscribeError();
+      setInterstitialLoaded(false);
     };
-  }, [isPro]);
+  }, [interstitialAd]);
 
   // AppState listener for App Open Ads
   useEffect(() => {
-    if (isPro || !appOpenAd) return;
+    if (!appOpenAd) return;
 
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active' && appOpenLoaded) {
@@ -145,7 +215,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => {
       subscription.remove();
     };
-  }, [isPro, appOpenLoaded]);
+  }, [appOpenAd, appOpenLoaded]);
 
   // Function to show interstitial ad (e.g. every 3 actions)
   const showInterstitialAd = useCallback(
@@ -194,12 +264,18 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
         if (callback) callback();
       }
     },
-    [isPro, interstitialLoaded]
+    [isPro, interstitialLoaded, interstitialAd]
   );
 
-  return (
-    <AdContext.Provider value={{ showInterstitialAd }}>
-      {children}
-    </AdContext.Provider>
+  const value = useMemo(
+    () => ({
+      showInterstitialAd,
+      requestAdConsent,
+      openPrivacyOptions,
+      consent,
+    }),
+    [showInterstitialAd, requestAdConsent, openPrivacyOptions, consent]
   );
+
+  return <AdContext.Provider value={value}>{children}</AdContext.Provider>;
 };

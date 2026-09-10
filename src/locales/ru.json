@@ -311,10 +311,11 @@
     "medicalProfessionalOnly": "Только для медицинских работников",
     "proVersion": "Pro-версия",
     "appInfo": "О приложении",
-    "rateThanksTitle": "Спасибо!",
-    "rateThanksMessage": "Переход в магазин приложений...",
     "appDescription": "Приложение для расчёта доз и справочник препаратов для медицинских специалистов.",
-    "appStats": "Препаратов: {{count}} • 5 языков"
+    "appStats": "Препаратов: {{count}} • 5 языков",
+    "adPreferences": "Настройки рекламы",
+    "adsPersonalized": "Персонализированная реклама включена",
+    "adsNonPersonalized": "Только неперсонализированная реклама"
   },
   "subscription": {
     "title": "Pro версия",

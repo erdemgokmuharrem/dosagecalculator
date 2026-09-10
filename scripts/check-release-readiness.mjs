@@ -13,6 +13,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { lookup } from 'node:dns/promises';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
@@ -132,6 +133,18 @@ if (existsSync(join(ROOT, plistPath))) {
   if (encryption !== undefined && plistValue('ITSAppUsesNonExemptEncryption') !== String(encryption)) {
     drift.push('Info.plist is missing ITSAppUsesNonExemptEncryption as declared in app.json');
   }
+  // Ad measurement must wait for consent: the SDK is initialised only after UMP
+  // and ATT, and this flag stops it measuring before that.
+  const adsPlugin = (appJson.plugins ?? []).find(
+    (p) => Array.isArray(p) && p[0] === 'react-native-google-mobile-ads'
+  );
+  const delayMeasurement = adsPlugin?.[1]?.delayAppMeasurementInit;
+  if (adsPlugin && delayMeasurement !== true) {
+    fail('app.json: react-native-google-mobile-ads must set delayAppMeasurementInit: true so ad measurement waits for consent.');
+  }
+  if (delayMeasurement !== undefined && plistValue('GADDelayAppMeasurementInit') !== String(delayMeasurement)) {
+    drift.push(`Info.plist GADDelayAppMeasurementInit is "${plistValue('GADDelayAppMeasurementInit')}", app.json expects "${delayMeasurement}"`);
+  }
   for (const lang of Object.keys(appJson.locales ?? {})) {
     if (!existsSync(join(ROOT, `ios/DosageCalculator/Supporting/${lang}.lproj/InfoPlist.strings`))) {
       drift.push(`localised Info.plist strings missing for "${lang}"`);
@@ -155,10 +168,42 @@ for (const d of drift) {
 }
 
 // ---------------------------------------------------------------------------
+// 3c. Public links must exist.
+//
+// App Review opens the privacy policy (5.1.1) and the support contact (1.5)
+// from Settings. The domain in src/config/links.ts did not exist (NXDOMAIN)
+// when first checked. Only a definite "no such host" blocks; being offline
+// (EAI_AGAIN, timeouts) only warns, so the gate stays usable without network.
+// ---------------------------------------------------------------------------
+const linkHosts = [
+  ...new Set(
+    [...read('src/config/links.ts').matchAll(/(?:https:\/\/|@)([a-z0-9.-]+\.[a-z]{2,})/gi)].map((m) => m[1])
+  ),
+];
+for (const host of linkHosts) {
+  try {
+    await lookup(host);
+  } catch (error) {
+    if (error.code === 'ENOTFOUND') {
+      fail(`${host} (src/config/links.ts) does not resolve — the privacy policy, terms and support contact must be live before review.`);
+    } else {
+      warn(`Could not check ${host}: ${error.code ?? error.message}.`);
+    }
+  }
+}
+if (!process.env.EXPO_PUBLIC_APP_STORE_ID?.trim()) {
+  warn('EXPO_PUBLIC_APP_STORE_ID is not set — the "Rate the app" row stays hidden on iOS until it is.');
+}
+
+// ---------------------------------------------------------------------------
 // 4. ATT must actually be requested, not merely declared.
 // ---------------------------------------------------------------------------
-const appSource = read('App.tsx');
-if (!appSource.includes('requestTrackingPermissionsAsync')) {
+// ATT is requested by the consent flow, after the medical disclaimer.
+const attSources = ['App.tsx', 'src/services/adConsent.ts']
+  .filter((f) => existsSync(join(ROOT, f)))
+  .map(read)
+  .join('\n');
+if (!attSources.includes('requestTrackingPermissionsAsync')) {
   fail(
     'App never calls requestTrackingPermissionsAsync() although NSUserTrackingUsageDescription ' +
       'is declared — App Review rejects this under guideline 5.1.2.'

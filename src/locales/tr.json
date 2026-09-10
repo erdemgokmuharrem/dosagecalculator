@@ -311,10 +311,11 @@
     "medicalProfessionalOnly": "Yalnızca Sağlık Profesyonelleri İçin",
     "proVersion": "Pro Sürüm",
     "appInfo": "Uygulama Bilgisi",
-    "rateThanksTitle": "Teşekkürler!",
-    "rateThanksMessage": "Uygulama mağazasına yönlendiriliyorsunuz...",
     "appDescription": "Sağlık profesyonelleri için geliştirilmiş doz hesaplama ve ilaç rehberi uygulaması.",
-    "appStats": "{{count}} ilaç • 5 dil"
+    "appStats": "{{count}} ilaç • 5 dil",
+    "adPreferences": "Reklam tercihleri",
+    "adsPersonalized": "Kişiselleştirilmiş reklamlar açık",
+    "adsNonPersonalized": "Yalnızca kişiselleştirilmemiş reklamlar"
   },
   "subscription": {
     "title": "Pro Sürüm",

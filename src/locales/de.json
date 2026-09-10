@@ -311,10 +311,11 @@
     "medicalProfessionalOnly": "Nur für medizinisches Fachpersonal",
     "proVersion": "Pro-Version",
     "appInfo": "App-Informationen",
-    "rateThanksTitle": "Vielen Dank!",
-    "rateThanksMessage": "Sie werden zum App Store weitergeleitet...",
     "appDescription": "Eine App zur Dosisberechnung und Arzneimittelinformation für Fachpersonal im Gesundheitswesen.",
-    "appStats": "{{count}} Arzneimittel • 5 Sprachen"
+    "appStats": "{{count}} Arzneimittel • 5 Sprachen",
+    "adPreferences": "Werbeeinstellungen",
+    "adsPersonalized": "Personalisierte Werbung an",
+    "adsNonPersonalized": "Nur nicht personalisierte Werbung"
   },
   "subscription": {
     "title": "Pro-Version",

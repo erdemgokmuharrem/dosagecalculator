@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Platform,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -29,28 +35,42 @@ interface TabIconProps {
   color: string;
 }
 
-const TabIcon: React.FC<TabIconProps> = ({ focused, icon, label, color }) => (
-  <View
-    style={{ alignItems: 'center', justifyContent: 'center', minWidth: 60 }}
-  >
-    <Text style={{ fontSize: 22, marginBottom: 2, lineHeight: 26 }}>
-      {icon}
-    </Text>
-    <Text
-      style={{
-        fontSize: 10,
-        fontWeight: focused ? '800' : '600',
-        color,
-        letterSpacing: 0,
-        textAlign: 'center',
-        includeFontPadding: false,
-      }}
-      numberOfLines={1}
-    >
-      {label}
-    </Text>
-  </View>
-);
+const TAB_COUNT = 4;
+
+const TabIcon: React.FC<TabIconProps> = ({ focused, icon, label, color }) => {
+  // The icon slot is only as wide as its content, so the label needs an explicit
+  // width. It used to be 60pt, which cut "Hesaplayıcı" to "Hesaplay…"; longer
+  // translations (ru "Калькулятор") shrink to fit rather than truncate.
+  const { width } = useWindowDimensions();
+  const labelWidth = Math.floor(width / TAB_COUNT) - 8;
+  return (
+    <View style={[tabStyles.container, { width: labelWidth }]}>
+      <Text style={tabStyles.icon}>{icon}</Text>
+      <Text
+        style={[
+          tabStyles.label,
+          { color, fontWeight: focused ? '800' : '600' },
+        ]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+      >
+        {label}
+      </Text>
+    </View>
+  );
+};
+
+const tabStyles = StyleSheet.create({
+  container: { alignItems: 'center', justifyContent: 'center' },
+  icon: { fontSize: 22, marginBottom: 2, lineHeight: 26 },
+  label: {
+    fontSize: 10,
+    letterSpacing: 0,
+    textAlign: 'center',
+    includeFontPadding: false,
+  },
+});
 
 const TabNavigator: React.FC = () => {
   const { theme } = useTheme();
@@ -80,6 +100,7 @@ const TabNavigator: React.FC = () => {
         name="CalculatorTab"
         component={CalculatorScreen}
         options={{
+          title: t('navigation.calculator'),
           tabBarIcon: ({ focused }) => (
             <TabIcon
               focused={focused}
@@ -96,6 +117,7 @@ const TabNavigator: React.FC = () => {
         name="VademecumTab"
         component={VademecumScreen}
         options={{
+          title: t('navigation.vademecum'),
           tabBarIcon: ({ focused }) => (
             <TabIcon
               focused={focused}
@@ -112,6 +134,7 @@ const TabNavigator: React.FC = () => {
         name="HistoryTab"
         component={HistoryScreen}
         options={{
+          title: t('navigation.history'),
           tabBarIcon: ({ focused }) => (
             <TabIcon
               focused={focused}
@@ -128,6 +151,7 @@ const TabNavigator: React.FC = () => {
         name="SettingsTab"
         component={SettingsScreen}
         options={{
+          title: t('navigation.settings'),
           tabBarIcon: ({ focused }) => (
             <TabIcon
               focused={focused}

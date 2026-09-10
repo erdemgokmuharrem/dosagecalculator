@@ -311,10 +311,11 @@
     "medicalProfessionalOnly": "仅供医疗专业人员使用",
     "proVersion": "专业版",
     "appInfo": "应用信息",
-    "rateThanksTitle": "谢谢！",
-    "rateThanksMessage": "正在前往应用商店...",
     "appDescription": "面向医疗专业人员的剂量计算与药物参考应用。",
-    "appStats": "{{count}} 种药物 • 5 种语言"
+    "appStats": "{{count}} 种药物 • 5 种语言",
+    "adPreferences": "广告偏好",
+    "adsPersonalized": "个性化广告已开启",
+    "adsNonPersonalized": "仅显示非个性化广告"
   },
   "subscription": {
     "title": "专业版",

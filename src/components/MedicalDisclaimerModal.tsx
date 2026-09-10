@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal,
   View,
@@ -11,11 +11,26 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
+import { reportError } from '../services/monitoring';
 
 const DISCLAIMER_ACCEPTED_KEY = '@medical_disclaimer_accepted';
 
-export const MedicalDisclaimerModal: React.FC = () => {
+interface MedicalDisclaimerModalProps {
+  /**
+   * Called once the disclaimer has been accepted, immediately on mount when it
+   * was accepted in an earlier session. Anything that must not happen before the
+   * clinician has seen the disclaimer (such as the tracking prompt) hangs off this.
+   */
+  onAccepted?: () => void;
+}
+
+export const MedicalDisclaimerModal: React.FC<MedicalDisclaimerModalProps> = ({
+  onAccepted,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
+  // Held in a ref so the mount-only storage check calls the latest callback.
+  const onAcceptedRef = useRef(onAccepted);
+  onAcceptedRef.current = onAccepted;
   const { t } = useTranslation();
   const { theme } = useTheme();
 
@@ -23,11 +38,16 @@ export const MedicalDisclaimerModal: React.FC = () => {
     const checkDisclaimer = async () => {
       try {
         const accepted = await AsyncStorage.getItem(DISCLAIMER_ACCEPTED_KEY);
-        if (accepted !== 'true') {
+        if (accepted === 'true') {
+          onAcceptedRef.current?.();
+        } else {
           setIsVisible(true);
         }
       } catch (error) {
-        console.error('Failed to read disclaimer status', error);
+        // Fail closed: if we cannot tell whether it was accepted, show it. The
+        // previous version showed nothing on a read error.
+        reportError(error, { area: 'disclaimer.read' });
+        setIsVisible(true);
       }
     };
     checkDisclaimer();
@@ -36,10 +56,13 @@ export const MedicalDisclaimerModal: React.FC = () => {
   const handleAccept = async () => {
     try {
       await AsyncStorage.setItem(DISCLAIMER_ACCEPTED_KEY, 'true');
-      setIsVisible(false);
     } catch (error) {
-      console.error('Failed to save disclaimer status', error);
+      // Could not persist: the disclaimer will simply show again next launch.
+      // Previously a failed write left the modal open with no way forward.
+      reportError(error, { area: 'disclaimer.save' });
     }
+    setIsVisible(false);
+    onAcceptedRef.current?.();
   };
 
   if (!isVisible) return null;
