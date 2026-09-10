@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Patient, DosageCalculation, Drug, DoseWarning } from '../types';
+import { LEGACY_WARNING } from '../features/dosage/warnings';
 
 interface AppState {
   // Patient state
@@ -42,22 +43,33 @@ interface AppState {
  * to structured `DoseWarning[]` so history follows the UI language. Existing
  * entries are wrapped so old records still render.
  */
-const STORE_VERSION = 2;
+export const STORE_VERSION = 2;
 
-type PersistedShape = {
+export type PersistedShape = {
   patients?: Patient[];
   calculations?: Array<
     Omit<DosageCalculation, 'warnings'> & { warnings?: unknown }
   >;
 };
 
+/**
+ * Wraps a v1 warning (a pre-translated string) as a structured warning.
+ *
+ * The text is carried in `params.text` under the LEGACY_WARNING sentinel rather
+ * than being used as the code, so rendering old history never depends on an
+ * i18next lookup keyed by translated prose (':' is i18next's namespace
+ * separator). `formatWarning` returns the text verbatim.
+ */
 const toWarning = (value: unknown): DoseWarning =>
   typeof value === 'string'
-    ? // Legacy entry: the text was already translated when it was saved.
-      { code: value, severity: 'warning', params: {} }
+    ? { code: LEGACY_WARNING, severity: 'warning', params: { text: value } }
     : (value as DoseWarning);
 
-const migrateState = (persisted: unknown, version: number): PersistedShape => {
+/** Exported for tests: migrating user history wrongly loses real records. */
+export const migrateState = (
+  persisted: unknown,
+  version: number
+): PersistedShape => {
   const state = (persisted ?? {}) as PersistedShape;
   if (version >= STORE_VERSION) return state;
 

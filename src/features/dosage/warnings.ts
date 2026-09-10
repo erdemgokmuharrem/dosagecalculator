@@ -24,11 +24,25 @@ export const ICON_BY_SEVERITY: Record<DoseWarning['severity'], string> = {
 };
 
 /**
+ * Sentinel for warnings restored from a pre-v2 history entry, where the text was
+ * already translated when it was saved. Such text is rendered verbatim instead
+ * of being passed through an i18next lookup as if it were a key.
+ */
+export const LEGACY_WARNING = '__legacy__';
+
+/**
  * Translates a warning. Falls back to the raw code if the key is missing so a
  * translation gap degrades to a visible identifier rather than an empty banner.
  */
-export const formatWarning = (t: TFunction, warning: DoseWarning): string =>
-  t(warning.code, { ...warning.params, defaultValue: warning.code }) as string;
+export const formatWarning = (t: TFunction, warning: DoseWarning): string => {
+  if (warning.code === LEGACY_WARNING) {
+    return String(warning.params.text ?? '');
+  }
+  return t(warning.code, {
+    ...warning.params,
+    defaultValue: warning.code,
+  }) as string;
+};
 
 export const formatBlockedReason = (
   t: TFunction,
