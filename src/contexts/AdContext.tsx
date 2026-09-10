@@ -15,19 +15,24 @@ import {
 import { useSubscription } from './SubscriptionContext';
 import { ADMOB_CONFIG } from '../config/admob';
 
-const appOpenAd = AppOpenAd.createForAdRequest(
-  ADMOB_CONFIG.APP_OPEN_ID as string,
-  {
-    requestNonPersonalizedAdsOnly: true,
-  }
-);
-
-const interstitialAd = InterstitialAd.createForAdRequest(
-  ADMOB_CONFIG.INTERSTITIAL_ID as string,
-  {
-    requestNonPersonalizedAdsOnly: true,
-  }
-);
+/**
+ * Ad objects exist only for slots with a configured unit id.
+ *
+ * The SDK throws when the unit id is not a string, and ADMOB_CONFIG resolves to
+ * null for every slot in a release build without the EXPO_PUBLIC_ADMOB_*
+ * variables. These used to be created unconditionally at module scope behind an
+ * `as string` cast, so merely importing this file crashed the app at launch.
+ */
+const appOpenAd = ADMOB_CONFIG.APP_OPEN_ID
+  ? AppOpenAd.createForAdRequest(ADMOB_CONFIG.APP_OPEN_ID, {
+      requestNonPersonalizedAdsOnly: true,
+    })
+  : null;
+const interstitialAd = ADMOB_CONFIG.INTERSTITIAL_ID
+  ? InterstitialAd.createForAdRequest(ADMOB_CONFIG.INTERSTITIAL_ID, {
+      requestNonPersonalizedAdsOnly: true,
+    })
+  : null;
 
 interface AdContextType {
   showInterstitialAd: (callback?: () => void) => void;
@@ -53,7 +58,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // App Open Ad Event Listeners
   useEffect(() => {
-    if (isPro) return;
+    if (isPro || !appOpenAd) return;
 
     const unsubscribeLoaded = appOpenAd.addAdEventListener(
       AdEventType.LOADED,
@@ -89,7 +94,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Interstitial Ad Event Listeners
   useEffect(() => {
-    if (isPro) return;
+    if (isPro || !interstitialAd) return;
 
     const unsubscribeLoaded = interstitialAd.addAdEventListener(
       AdEventType.LOADED,
@@ -125,7 +130,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // AppState listener for App Open Ads
   useEffect(() => {
-    if (isPro) return;
+    if (isPro || !appOpenAd) return;
 
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active' && appOpenLoaded) {
@@ -153,7 +158,11 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({
       actionCountRef.current += 1;
 
       // Show ad every 3 actions
-      if (actionCountRef.current % 3 === 0 && interstitialLoaded) {
+      if (
+        actionCountRef.current % 3 === 0 &&
+        interstitialLoaded &&
+        interstitialAd
+      ) {
         let callbackCalled = false;
         const safeCallback = () => {
           if (!callbackCalled && callback) {

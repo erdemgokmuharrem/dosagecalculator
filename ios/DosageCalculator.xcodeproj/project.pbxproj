@@ -7,26 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		044B3EFAB4700EE10C549F33 /* libPods-DosageCalculator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5303C149AC2C5047F76CF57A /* libPods-DosageCalculator.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		2D95E0E0B33745CD059CF262 /* libPods-DosageCalculator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61408012DA07210EEA5AAD38 /* libPods-DosageCalculator.a */; };
+		2B68201201EB04A3FD465E95 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ED4095B5EDCBEC8487225B /* ExpoModulesProvider.swift */; };
+		31B89562350F44BF8DE630BC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49ABD820DBA84B24A7C2B802 /* InfoPlist.strings */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		5C65A2B22FA0476CDA00DF5A /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C049ABD5001DC5C09F4FBC /* ExpoModulesProvider.swift */; };
-		6DF4C80570BBA0A37F67805B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0489D090C2DF064D5C2F2533 /* PrivacyInfo.xcprivacy */; };
+		5850B7D5B23F497AB8FD3E96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 82A5582F711649DF816BEC9E /* InfoPlist.strings */; };
+		5A755E3CE5DB4E54A056A95D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C4AF248EE1C94B808C936FEF /* PrivacyInfo.xcprivacy */; };
+		A714FBD96D3142DE87848038 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8072F115D1654D6FA9EF1596 /* InfoPlist.strings */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		D0B3BF02168040BBB4D5164B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE901B9EFC0D4CE397355E56 /* InfoPlist.strings */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		FA46BA5BE9FB4B92990261BD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 041CFB3F0EF74738BD752B1F /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0489D090C2DF064D5C2F2533 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = DosageCalculator/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		041CFB3F0EF74738BD752B1F /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* DosageCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DosageCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DosageCalculator/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DosageCalculator/Info.plist; sourceTree = "<group>"; };
-		1C50985D1225646DDADC82BA /* Pods-DosageCalculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DosageCalculator.debug.xcconfig"; path = "Target Support Files/Pods-DosageCalculator/Pods-DosageCalculator.debug.xcconfig"; sourceTree = "<group>"; };
-		61408012DA07210EEA5AAD38 /* libPods-DosageCalculator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DosageCalculator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		63C049ABD5001DC5C09F4FBC /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-DosageCalculator/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		216FE88E362EE3B769FD93A0 /* Pods-DosageCalculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DosageCalculator.debug.xcconfig"; path = "Target Support Files/Pods-DosageCalculator/Pods-DosageCalculator.debug.xcconfig"; sourceTree = "<group>"; };
+		49ABD820DBA84B24A7C2B802 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5303C149AC2C5047F76CF57A /* libPods-DosageCalculator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DosageCalculator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8072F115D1654D6FA9EF1596 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		82A5582F711649DF816BEC9E /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		84ED4095B5EDCBEC8487225B /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-DosageCalculator/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		8EB41928A3E774B9FA41428F /* Pods-DosageCalculator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DosageCalculator.release.xcconfig"; path = "Target Support Files/Pods-DosageCalculator/Pods-DosageCalculator.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = DosageCalculator/SplashScreen.storyboard; sourceTree = "<group>"; };
-		ADDF13B86EB945A1E11E5BF2 /* Pods-DosageCalculator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DosageCalculator.release.xcconfig"; path = "Target Support Files/Pods-DosageCalculator/Pods-DosageCalculator.release.xcconfig"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		C4AF248EE1C94B808C936FEF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PrivacyInfo.xcprivacy; path = DosageCalculator/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		CE901B9EFC0D4CE397355E56 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = DosageCalculator/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* DosageCalculator-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "DosageCalculator-Bridging-Header.h"; path = "DosageCalculator/DosageCalculator-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -37,21 +47,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D95E0E0B33745CD059CF262 /* libPods-DosageCalculator.a in Frameworks */,
+				044B3EFAB4700EE10C549F33 /* libPods-DosageCalculator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0BD303FD05886EB8715AC691 /* DosageCalculator */ = {
-			isa = PBXGroup;
-			children = (
-				63C049ABD5001DC5C09F4FBC /* ExpoModulesProvider.swift */,
-			);
-			name = DosageCalculator;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* DosageCalculator */ = {
 			isa = PBXGroup;
 			children = (
@@ -61,7 +63,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				0489D090C2DF064D5C2F2533 /* PrivacyInfo.xcprivacy */,
+				C4AF248EE1C94B808C936FEF /* PrivacyInfo.xcprivacy */,
 			);
 			name = DosageCalculator;
 			sourceTree = "<group>";
@@ -70,19 +72,44 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				61408012DA07210EEA5AAD38 /* libPods-DosageCalculator.a */,
+				5303C149AC2C5047F76CF57A /* libPods-DosageCalculator.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6FDBADDE541A5B2DA57E40CD /* Pods */ = {
+		5C9E37BF8A69114E4E012420 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				1C50985D1225646DDADC82BA /* Pods-DosageCalculator.debug.xcconfig */,
-				ADDF13B86EB945A1E11E5BF2 /* Pods-DosageCalculator.release.xcconfig */,
+				5EC8CD4B294357AF00E44056 /* DosageCalculator */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		5EC8CD4B294357AF00E44056 /* DosageCalculator */ = {
+			isa = PBXGroup;
+			children = (
+				84ED4095B5EDCBEC8487225B /* ExpoModulesProvider.swift */,
+			);
+			name = DosageCalculator;
+			sourceTree = "<group>";
+		};
+		71DB6392DFE869962D153449 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				216FE88E362EE3B769FD93A0 /* Pods-DosageCalculator.debug.xcconfig */,
+				8EB41928A3E774B9FA41428F /* Pods-DosageCalculator.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		7A5DE10B97F247599B6CC751 /* ru.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				82A5582F711649DF816BEC9E /* InfoPlist.strings */,
+			);
+			name = ru.lproj;
+			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -99,8 +126,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				6FDBADDE541A5B2DA57E40CD /* Pods */,
-				E35D72558FC26E5FE9205478 /* ExpoModulesProviders */,
+				71DB6392DFE869962D153449 /* Pods */,
+				5C9E37BF8A69114E4E012420 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -115,21 +142,54 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9CB5E64D4D574495AC6948EC /* de.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				8072F115D1654D6FA9EF1596 /* InfoPlist.strings */,
+			);
+			name = de.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
+				D35F7964E3CF485999655335 /* en.lproj */,
+				E99D5C92A55045C0A9D0F0D3 /* tr.lproj */,
+				9CB5E64D4D574495AC6948EC /* de.lproj */,
+				7A5DE10B97F247599B6CC751 /* ru.lproj */,
+				D3BE039AAD254AB7BD989213 /* zh.lproj */,
 			);
 			name = Supporting;
 			path = DosageCalculator/Supporting;
 			sourceTree = "<group>";
 		};
-		E35D72558FC26E5FE9205478 /* ExpoModulesProviders */ = {
+		D35F7964E3CF485999655335 /* en.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				0BD303FD05886EB8715AC691 /* DosageCalculator */,
+				CE901B9EFC0D4CE397355E56 /* InfoPlist.strings */,
 			);
-			name = ExpoModulesProviders;
+			name = en.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
+		D3BE039AAD254AB7BD989213 /* zh.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				041CFB3F0EF74738BD752B1F /* InfoPlist.strings */,
+			);
+			name = zh.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
+		E99D5C92A55045C0A9D0F0D3 /* tr.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				49ABD820DBA84B24A7C2B802 /* InfoPlist.strings */,
+			);
+			name = tr.lproj;
+			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,14 +200,14 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DosageCalculator" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				8723111F1B8B5E65F07F12ED /* [Expo] Configure project */,
+				77DEEA39447B9D8F68DEBDCB /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				A884BD08E287A138F671BD48 /* [CP] Embed Pods Frameworks */,
-				141C2BAB9844265D70A7FDA7 /* [CP-User] [RNGoogleMobileAds] Configuration */,
+				9A775D357215381A339F462B /* [CP] Embed Pods Frameworks */,
+				7F7AEA26591206821B255392 /* [CP-User] [RNGoogleMobileAds] Configuration */,
 			);
 			buildRules = (
 			);
@@ -197,7 +257,12 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				6DF4C80570BBA0A37F67805B /* PrivacyInfo.xcprivacy in Resources */,
+				5A755E3CE5DB4E54A056A95D /* PrivacyInfo.xcprivacy in Resources */,
+				D0B3BF02168040BBB4D5164B /* InfoPlist.strings in Resources */,
+				31B89562350F44BF8DE630BC /* InfoPlist.strings in Resources */,
+				A714FBD96D3142DE87848038 /* InfoPlist.strings in Resources */,
+				5850B7D5B23F497AB8FD3E96 /* InfoPlist.strings in Resources */,
+				FA46BA5BE9FB4B92990261BD /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,7 +308,31 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		141C2BAB9844265D70A7FDA7 /* [CP-User] [RNGoogleMobileAds] Configuration */ = {
+		77DEEA39447B9D8F68DEBDCB /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env",
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/DosageCalculator/DosageCalculator.entitlements",
+				"$(SRCROOT)/Pods/Target Support Files/Pods-DosageCalculator/expo-configure-project.sh",
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Pods/Target Support Files/Pods-DosageCalculator/ExpoModulesProvider.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-DosageCalculator/expo-configure-project.sh\"\n";
+		};
+		7F7AEA26591206821B255392 /* [CP-User] [RNGoogleMobileAds] Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -270,25 +359,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUserMessagingPlatform/UserMessagingPlatformResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/PurchasesHybridCommon/PurchasesHybridCommon.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage_resources.bundle",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RevenueCat/RevenueCat.bundle",
@@ -305,25 +375,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UserMessagingPlatformResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PurchasesHybridCommon.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNCAsyncStorage_resources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome6_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome6_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome6_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RevenueCat.bundle",
@@ -336,31 +387,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DosageCalculator/Pods-DosageCalculator-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8723111F1B8B5E65F07F12ED /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/.xcode.env",
-				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/DosageCalculator/DosageCalculator.entitlements",
-				"$(SRCROOT)/Pods/Target Support Files/Pods-DosageCalculator/expo-configure-project.sh",
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/Pods/Target Support Files/Pods-DosageCalculator/ExpoModulesProvider.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-DosageCalculator/expo-configure-project.sh\"\n";
-		};
-		A884BD08E287A138F671BD48 /* [CP] Embed Pods Frameworks */ = {
+		9A775D357215381A339F462B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -390,7 +417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				5C65A2B22FA0476CDA00DF5A /* ExpoModulesProvider.swift in Sources */,
+				2B68201201EB04A3FD465E95 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,7 +426,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1C50985D1225646DDADC82BA /* Pods-DosageCalculator.debug.xcconfig */;
+			baseConfigurationReference = 216FE88E362EE3B769FD93A0 /* Pods-DosageCalculator.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -435,7 +462,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ADDF13B86EB945A1E11E5BF2 /* Pods-DosageCalculator.release.xcconfig */;
+			baseConfigurationReference = 8EB41928A3E774B9FA41428F /* Pods-DosageCalculator.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

@@ -1,0 +1,3 @@
+<resources>
+  <string name="NSUserTrackingUsageDescription">"This app requests access to your device identifier so it can show you more relevant ads. All dose-calculation features work whether or not you allow it."</string>
+</resources>
