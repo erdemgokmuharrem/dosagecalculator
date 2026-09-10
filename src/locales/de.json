@@ -23,7 +23,8 @@
     "selectAll": "Alle auswählen",
     "noData": "Keine Daten gefunden",
     "required": "Erforderlich",
-    "optional": "Optional"
+    "optional": "Optional",
+    "clearSearch": "Suche löschen"
   },
   "category": {
     "Antibiotics": "Antibiotika",
@@ -246,7 +247,9 @@
     "noFavorites": "Sie haben noch keine Favoriten hinzugefügt",
     "noMatches": "Kein Arzneimittel entspricht Ihrer Suche",
     "noDetails": "Keine detaillierten Informationen verfügbar",
-    "share": "Teilen"
+    "share": "Teilen",
+    "addFavorite": "Zu Favoriten hinzufügen",
+    "removeFavorite": "Aus Favoriten entfernen"
   },
   "history": {
     "title": "Berechnungsverlauf",

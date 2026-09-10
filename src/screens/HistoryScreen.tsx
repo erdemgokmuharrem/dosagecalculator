@@ -378,6 +378,7 @@ const HistoryScreen: React.FC = () => {
           )}
 
           <TouchableOpacity
+            accessibilityRole="button"
             style={styles.detailCloseButton}
             onPress={() => setSelectedCalculation(null)}
           >

@@ -380,6 +380,8 @@ const DrugDetailScreen: React.FC = () => {
     return (
       <View style={styles.accordion}>
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityState={{ expanded: !!openSections[sectionKey] }}
           style={styles.accordionHeader}
           onPress={() => toggleSection(sectionKey)}
           activeOpacity={0.7}
@@ -506,6 +508,7 @@ const DrugDetailScreen: React.FC = () => {
 
       <View style={styles.actionRow}>
         <TouchableOpacity
+          accessibilityRole="button"
           style={[styles.actionBtn, styles.actionBtnPrimary]}
           onPress={() => navigation.navigate('MainTabs')}
           activeOpacity={0.85}
@@ -516,6 +519,7 @@ const DrugDetailScreen: React.FC = () => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          accessibilityRole="button"
           style={[styles.actionBtn, styles.actionBtnSecondary]}
           onPress={handleSharePdf}
           activeOpacity={0.85}

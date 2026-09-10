@@ -112,6 +112,9 @@ const GradientButton: React.FC<GradientButtonProps> = ({
       disabled={disabled || loading}
       activeOpacity={0.8}
       style={buttonStyle}
+      accessibilityRole="button"
+      accessibilityLabel={title}
+      accessibilityState={{ disabled: disabled || loading, busy: loading }}
     >
       <LinearGradient
         colors={gradientColors}

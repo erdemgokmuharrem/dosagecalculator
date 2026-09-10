@@ -23,7 +23,8 @@
     "selectAll": "Select All",
     "noData": "No data found",
     "required": "Required",
-    "optional": "Optional"
+    "optional": "Optional",
+    "clearSearch": "Clear search"
   },
   "category": {
     "Antibiotics": "Antibiotics",
@@ -246,7 +247,9 @@
     "noFavorites": "You have not added any favourite drugs yet",
     "noMatches": "No drug matches your search",
     "noDetails": "No detailed information available",
-    "share": "Share"
+    "share": "Share",
+    "addFavorite": "Add to favourites",
+    "removeFavorite": "Remove from favourites"
   },
   "history": {
     "title": "Calculation History",

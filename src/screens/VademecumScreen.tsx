@@ -308,6 +308,7 @@ const VademecumScreen: React.FC = () => {
       const isFav = favorites.includes(item.id);
       return (
         <TouchableOpacity
+          accessibilityRole="button"
           style={styles.drugCard}
           onPress={() => navigation.navigate('DrugDetail', { drugId: item.id })}
           activeOpacity={0.8}
@@ -335,6 +336,13 @@ const VademecumScreen: React.FC = () => {
 
           <View style={styles.drugActions}>
             <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityLabel={
+                isFav
+                  ? t('vademecum.removeFavorite')
+                  : t('vademecum.addFavorite')
+              }
+              accessibilityState={{ selected: isFav }}
               style={styles.favoriteBtn}
               onPress={() => toggleFavorite(item.id)}
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
@@ -368,6 +376,8 @@ const VademecumScreen: React.FC = () => {
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityLabel={t('common.clearSearch')}
               onPress={() => {
                 setSearchQuery('');
                 setDebouncedQuery('');
@@ -384,6 +394,8 @@ const VademecumScreen: React.FC = () => {
       {/* Filter row */}
       <View style={styles.filterRow}>
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityState={{ selected: showFavoritesOnly }}
           style={[
             styles.favoriteFilterBtn,
             showFavoritesOnly && styles.favoriteFilterBtnActive,
@@ -411,6 +423,8 @@ const VademecumScreen: React.FC = () => {
           contentContainerStyle={styles.catScroll}
         >
           <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={{ selected: selectedCategory === 'All' }}
             style={[
               styles.catChip,
               selectedCategory === 'All' && styles.catChipActive,
@@ -428,6 +442,8 @@ const VademecumScreen: React.FC = () => {
           </TouchableOpacity>
           {allCategories.map(cat => (
             <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityState={{ selected: selectedCategory === cat }}
               key={cat}
               style={[
                 styles.catChip,

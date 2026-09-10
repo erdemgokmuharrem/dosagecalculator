@@ -23,7 +23,8 @@
     "selectAll": "全选",
     "noData": "未找到数据",
     "required": "必填",
-    "optional": "可选"
+    "optional": "可选",
+    "clearSearch": "清除搜索"
   },
   "category": {
     "Antibiotics": "抗生素",
@@ -246,7 +247,9 @@
     "noFavorites": "您尚未添加收藏的药物",
     "noMatches": "没有符合搜索条件的药物",
     "noDetails": "暂无详细信息",
-    "share": "分享"
+    "share": "分享",
+    "addFavorite": "添加到收藏",
+    "removeFavorite": "从收藏中移除"
   },
   "history": {
     "title": "计算历史",

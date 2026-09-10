@@ -187,6 +187,8 @@ const ProductInfoScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel={t('common.back')}
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >

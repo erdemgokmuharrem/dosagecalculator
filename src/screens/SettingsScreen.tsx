@@ -193,6 +193,8 @@ const SettingsScreen: React.FC = () => {
     isLast?: boolean;
   }> = ({ icon, label, sub, value, onPress, rightContent, isLast }) => (
     <TouchableOpacity
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !onPress && !rightContent }}
       style={[styles.row, isLast && styles.rowLast]}
       onPress={onPress}
       disabled={!onPress && !rightContent}
@@ -217,6 +219,7 @@ const SettingsScreen: React.FC = () => {
         {/* PRO / SUBSCRIPTION */}
         <Text style={styles.sectionTitle}>{t('settings.proVersion')}</Text>
         <TouchableOpacity
+          accessibilityRole="button"
           style={styles.proCard}
           onPress={() => navigation.navigate('Subscription')}
           activeOpacity={0.85}
@@ -245,6 +248,8 @@ const SettingsScreen: React.FC = () => {
           <View style={styles.langGrid}>
             {SUPPORTED_LANGUAGES.map(lang => (
               <TouchableOpacity
+                accessibilityRole="radio"
+                accessibilityState={{ checked: currentLang === lang.code }}
                 key={lang.code}
                 style={[
                   styles.langBtn,

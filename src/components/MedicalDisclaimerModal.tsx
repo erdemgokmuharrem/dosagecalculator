@@ -139,6 +139,7 @@ export const MedicalDisclaimerModal: React.FC = () => {
               style={[styles.footer, { borderTopColor: theme.colors.border }]}
             >
               <TouchableOpacity
+                accessibilityRole="button"
                 testID="disclaimer-accept"
                 style={[
                   styles.acceptButton,

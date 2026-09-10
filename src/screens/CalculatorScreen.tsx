@@ -884,6 +884,8 @@ const CalculatorScreen: React.FC = () => {
             {/* Gender Toggle */}
             <View style={styles.toggleRow}>
               <TouchableOpacity
+                accessibilityRole="radio"
+                accessibilityState={{ checked: patient.gender === 'male' }}
                 style={[
                   styles.toggleBtn,
                   patient.gender === 'male' && styles.toggleBtnActive,
@@ -900,6 +902,8 @@ const CalculatorScreen: React.FC = () => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                accessibilityRole="radio"
+                accessibilityState={{ checked: patient.gender === 'female' }}
                 style={[
                   styles.toggleBtn,
                   patient.gender === 'female' && styles.toggleBtnActive,
@@ -921,6 +925,10 @@ const CalculatorScreen: React.FC = () => {
             <View style={styles.pillRow}>
               {patientTypes.map(pt => (
                 <TouchableOpacity
+                  accessibilityRole="radio"
+                  accessibilityState={{
+                    checked: patient.patientType === pt.key,
+                  }}
                   key={pt.key}
                   style={[
                     styles.pill,
@@ -1011,6 +1019,7 @@ const CalculatorScreen: React.FC = () => {
               <Text style={styles.sectionTitle}>{t('drug.section')}</Text>
               {selectedDrug && !showDrugList && (
                 <TouchableOpacity
+                  accessibilityRole="button"
                   style={styles.changeDrugBtn}
                   onPress={() => setShowDrugList(true)}
                 >
@@ -1060,6 +1069,8 @@ const CalculatorScreen: React.FC = () => {
                   />
                   {searchQuery.length > 0 && (
                     <TouchableOpacity
+                      accessibilityRole="button"
+                      accessibilityLabel={t('common.clearSearch')}
                       onPress={() => {
                         setSearchQuery('');
                         setDebouncedQuery('');
@@ -1084,6 +1095,10 @@ const CalculatorScreen: React.FC = () => {
                   style={styles.catScroll}
                 >
                   <TouchableOpacity
+                    accessibilityRole="button"
+                    accessibilityState={{
+                      selected: selectedCategory === 'All',
+                    }}
                     style={[
                       styles.catChip,
                       selectedCategory === 'All' && styles.catChipActive,
@@ -1101,6 +1116,10 @@ const CalculatorScreen: React.FC = () => {
                   </TouchableOpacity>
                   {allCategories.map(cat => (
                     <TouchableOpacity
+                      accessibilityRole="button"
+                      accessibilityState={{
+                        selected: selectedCategory === cat,
+                      }}
                       key={cat}
                       style={[
                         styles.catChip,
@@ -1171,6 +1190,7 @@ const CalculatorScreen: React.FC = () => {
 
           {/* ═══ CALCULATE BUTTON ═══ */}
           <TouchableOpacity
+            accessibilityRole="button"
             style={styles.calculateBtn}
             testID="calculate-button"
             onPress={() => calculateDose()}
@@ -1380,6 +1400,7 @@ const CalculatorScreen: React.FC = () => {
                 {/* Actions */}
                 <View style={styles.resultActions}>
                   <TouchableOpacity
+                    accessibilityRole="button"
                     style={[styles.actionBtn, styles.actionBtnPrimary]}
                     onPress={handleSaveCalculation}
                   >
@@ -1395,6 +1416,7 @@ const CalculatorScreen: React.FC = () => {
 
                   {selectedDrug?.productInfo && (
                     <TouchableOpacity
+                      accessibilityRole="button"
                       style={[styles.actionBtn, styles.actionBtnSecondary]}
                       onPress={() => openDrugDetail(selectedDrug.id)}
                     >

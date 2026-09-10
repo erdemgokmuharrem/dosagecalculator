@@ -414,10 +414,12 @@ const ChemotherapyDoseScreen: React.FC = () => {
         <FadeInView delay={0}>
           <View style={styles.header}>
             <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityLabel={t('common.back')}
               style={styles.backButton}
-              onPress={() => navigation.navigate('Home' as never)}
+              onPress={() => navigation.goBack()}
             >
-              <Text style={styles.backButtonText}>← Ana Menü</Text>
+              <Text style={styles.backButtonText}>← {t('common.back')}</Text>
             </TouchableOpacity>
             <Icon name="syringe" size={32} color={'#ffffff'} />
             <Text style={styles.headerTitle}>{t('chemo.title')}</Text>
@@ -563,6 +565,10 @@ const ChemotherapyDoseScreen: React.FC = () => {
                     }}
                   >
                     <TouchableOpacity
+                      accessibilityRole="radio"
+                      accessibilityState={{
+                        checked: patientInfo.gender === 'male',
+                      }}
                       style={[
                         styles.categoryButton,
                         patientInfo.gender === 'male' &&
@@ -584,6 +590,10 @@ const ChemotherapyDoseScreen: React.FC = () => {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                      accessibilityRole="radio"
+                      accessibilityState={{
+                        checked: patientInfo.gender === 'female',
+                      }}
                       style={[
                         styles.categoryButton,
                         patientInfo.gender === 'female' &&
@@ -624,6 +634,8 @@ const ChemotherapyDoseScreen: React.FC = () => {
               >
                 {ADMINISTRATION_ROUTES.map(route => (
                   <TouchableOpacity
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: selectedRoute === route }}
                     key={route}
                     style={[
                       styles.categoryButton,
@@ -661,6 +673,10 @@ const ChemotherapyDoseScreen: React.FC = () => {
               >
                 {CHEMOTHERAPY_CATEGORIES.map(category => (
                   <TouchableOpacity
+                    accessibilityRole="button"
+                    accessibilityState={{
+                      selected: selectedCategory === category,
+                    }}
                     key={category}
                     style={[
                       styles.categoryButton,

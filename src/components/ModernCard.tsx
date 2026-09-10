@@ -104,6 +104,7 @@ const ModernCard: React.FC<ModernCardProps> = ({
         style={cardStyle}
         onPress={onPress}
         activeOpacity={0.95}
+        accessibilityRole="button"
         {...touchableProps}
       >
         {renderContent()}

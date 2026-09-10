@@ -284,6 +284,8 @@ const SubscriptionScreen: React.FC = () => {
           <View style={s.plansRow}>
             {/* Monthly */}
             <TouchableOpacity
+              accessibilityRole="radio"
+              accessibilityState={{ checked: selectedPlan === 'monthly' }}
               style={[
                 s.planCard,
                 selectedPlan === 'monthly' && s.planCardSelected,
@@ -315,6 +317,8 @@ const SubscriptionScreen: React.FC = () => {
 
             {/* Lifetime */}
             <TouchableOpacity
+              accessibilityRole="radio"
+              accessibilityState={{ checked: selectedPlan === 'lifetime' }}
               style={[
                 s.planCard,
                 selectedPlan === 'lifetime' && s.planCardSelected,
@@ -347,6 +351,11 @@ const SubscriptionScreen: React.FC = () => {
 
           {/* Purchase Button */}
           <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={{
+              disabled: purchasing || isLoading,
+              busy: purchasing,
+            }}
             style={s.purchaseButton}
             onPress={handlePurchase}
             disabled={purchasing || isLoading}
@@ -364,6 +373,8 @@ const SubscriptionScreen: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={{ disabled: purchasing }}
             style={s.restoreButton}
             onPress={handleRestore}
             disabled={purchasing}

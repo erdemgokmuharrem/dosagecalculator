@@ -23,7 +23,8 @@
     "selectAll": "Tümünü Seç",
     "noData": "Veri bulunamadı",
     "required": "Zorunlu",
-    "optional": "Opsiyonel"
+    "optional": "Opsiyonel",
+    "clearSearch": "Aramayı temizle"
   },
   "category": {
     "Antibiotics": "Antibiyotikler",
@@ -246,7 +247,9 @@
     "noFavorites": "Henüz favori ilaç eklemediniz",
     "noMatches": "Arama kriterlerinize uygun ilaç yok",
     "noDetails": "Detaylı bilgi mevcut değil",
-    "share": "Paylaş"
+    "share": "Paylaş",
+    "addFavorite": "Favorilere ekle",
+    "removeFavorite": "Favorilerden çıkar"
   },
   "history": {
     "title": "Hesaplama Geçmişi",
