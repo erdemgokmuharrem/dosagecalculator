@@ -66,6 +66,8 @@ const HistoryScreen: React.FC = () => {
   }, [calculations, i18n.language, t]);
 
   const styles = StyleSheet.create({
+    warningCritical: { fontWeight: '700' },
+    warningNormal: { fontWeight: '400' },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
@@ -364,9 +366,10 @@ const HistoryScreen: React.FC = () => {
                           warning.severity === 'critical'
                             ? theme.colors.critical
                             : theme.colors.warning,
-                        fontWeight:
-                          warning.severity === 'critical' ? '700' : '400',
                       },
+                      warning.severity === 'critical'
+                        ? styles.warningCritical
+                        : styles.warningNormal,
                     ]}
                   >
                     {ICON_BY_SEVERITY[warning.severity]}{' '}

@@ -296,6 +296,11 @@ const CalculatorScreen: React.FC = () => {
   }, [result, selectedDrug, patient, addCalculation, t]);
 
   const styles = StyleSheet.create({
+    flex: { flex: 1 },
+    clearSearchIcon: { color: theme.colors.textSecondary, fontSize: 16 },
+    emptyList: { padding: 20, alignItems: 'center' },
+    limitIcon: { fontSize: 16 },
+    bannerWrap: { marginHorizontal: 12, marginBottom: 8 },
     container: { flex: 1, backgroundColor: theme.colors.background },
     scrollContent: { paddingBottom: 40 },
     // Section styles
@@ -801,7 +806,7 @@ const CalculatorScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
@@ -1076,14 +1081,7 @@ const CalculatorScreen: React.FC = () => {
                         setDebouncedQuery('');
                       }}
                     >
-                      <Text
-                        style={{
-                          color: theme.colors.textSecondary,
-                          fontSize: 16,
-                        }}
-                      >
-                        ✕
-                      </Text>
+                      <Text style={styles.clearSearchIcon}>✕</Text>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -1176,7 +1174,7 @@ const CalculatorScreen: React.FC = () => {
                       </TouchableOpacity>
                     )}
                     ListEmptyComponent={
-                      <View style={{ padding: 20, alignItems: 'center' }}>
+                      <View style={styles.emptyList}>
                         <Text style={{ color: theme.colors.textSecondary }}>
                           {t('drug.noResults')}
                         </Text>
@@ -1329,7 +1327,7 @@ const CalculatorScreen: React.FC = () => {
                     breached OR could not be verified — never a bare "safe". */}
                 {success.isWithinLimits ? (
                   <View style={styles.limitOk}>
-                    <Text style={{ fontSize: 16 }}>✅</Text>
+                    <Text style={styles.limitIcon}>✅</Text>
                     <Text
                       style={[
                         styles.limitText,
@@ -1341,7 +1339,7 @@ const CalculatorScreen: React.FC = () => {
                   </View>
                 ) : (
                   <View style={styles.limitWarn}>
-                    <Text style={{ fontSize: 16 }}>⚠️</Text>
+                    <Text style={styles.limitIcon}>⚠️</Text>
                     <Text
                       style={[
                         styles.limitText,
@@ -1436,7 +1434,7 @@ const CalculatorScreen: React.FC = () => {
           )}
 
           {/* Ad Banner */}
-          <View style={{ marginHorizontal: 12, marginBottom: 8 }}>
+          <View style={styles.bannerWrap}>
             <AdBanner />
           </View>
 

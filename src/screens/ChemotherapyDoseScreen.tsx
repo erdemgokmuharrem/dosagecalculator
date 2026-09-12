@@ -140,6 +140,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
   }, []);
 
   const styles = StyleSheet.create({
+    genderRow: { flexDirection: 'row', marginTop: theme.spacing.sm },
     container: {
       flex: 1,
       backgroundColor: '#dc2626',
@@ -568,12 +569,7 @@ const ChemotherapyDoseScreen: React.FC = () => {
                 </View>
                 <View style={styles.inputContainer}>
                   <Text style={styles.inputLabel}>{t('patient.gender')}</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: theme.spacing.sm,
-                    }}
-                  >
+                  <View style={styles.genderRow}>
                     <TouchableOpacity
                       accessibilityRole="radio"
                       accessibilityState={{

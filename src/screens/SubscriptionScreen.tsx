@@ -106,6 +106,7 @@ const SubscriptionScreen: React.FC = () => {
   };
 
   const s = StyleSheet.create({
+    featureCheck: { color: '#10B981', fontSize: 18 },
     container: { flex: 1, backgroundColor: theme.colors.background },
     header: {
       paddingTop: 20,
@@ -324,7 +325,7 @@ const SubscriptionScreen: React.FC = () => {
               <View key={f.key} style={s.featureItem}>
                 <Text style={s.featureIcon}>{f.icon}</Text>
                 <Text style={s.featureText}>{t(`subscription.${f.key}`)}</Text>
-                <Text style={{ color: '#10B981', fontSize: 18 }}>✓</Text>
+                <Text style={s.featureCheck}>✓</Text>
               </View>
             ))}
           </View>

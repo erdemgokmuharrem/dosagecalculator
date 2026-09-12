@@ -49,7 +49,8 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, label, color }) => {
       <Text
         style={[
           tabStyles.label,
-          { color, fontWeight: focused ? '800' : '600' },
+          focused ? tabStyles.labelFocused : tabStyles.labelIdle,
+          { color },
         ]}
         numberOfLines={1}
         adjustsFontSizeToFit
@@ -62,6 +63,8 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, label, color }) => {
 };
 
 const tabStyles = StyleSheet.create({
+  labelFocused: { fontWeight: '800' },
+  labelIdle: { fontWeight: '600' },
   container: { alignItems: 'center', justifyContent: 'center' },
   icon: { fontSize: 22, marginBottom: 2, lineHeight: 26 },
   label: {

@@ -22,6 +22,23 @@ type ProductInfoScreenNavigationProp = NativeStackNavigationProp<
   'ProductInfo'
 >;
 
+/** Styles for the empty state, which renders before `styles` is built. */
+const guardStyles = StyleSheet.create({
+  screen: { flex: 1 },
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  message: {
+    marginTop: 12,
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+});
+
 const ProductInfoScreen: React.FC = () => {
   const navigation = useNavigation<ProductInfoScreenNavigationProp>();
   const { t } = useTranslation();
@@ -35,26 +52,14 @@ const ProductInfoScreen: React.FC = () => {
   if (!selectedDrug || !selectedDrug.productInfo) {
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: theme.colors.background }}
+        style={[
+          guardStyles.screen,
+          { backgroundColor: theme.colors.background },
+        ]}
       >
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 24,
-          }}
-        >
+        <View style={guardStyles.centered}>
           <Icon name="alert-circle" size={48} color={theme.colors.error} />
-          <Text
-            style={{
-              marginTop: 12,
-              fontSize: 15,
-              fontWeight: '600',
-              textAlign: 'center',
-              color: theme.colors.text,
-            }}
-          >
+          <Text style={[guardStyles.message, { color: theme.colors.text }]}>
             {t('drug.noDrugSelected')}
           </Text>
         </View>

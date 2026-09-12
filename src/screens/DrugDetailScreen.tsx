@@ -171,6 +171,26 @@ const DrugDetailScreen: React.FC = () => {
   };
 
   const styles = StyleSheet.create({
+    centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+    emptyEmoji: { fontSize: 48 },
+    emptyTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: theme.colors.text,
+      marginTop: 12,
+    },
+    actionIcon: { fontSize: 16 },
+    noDetails: { alignItems: 'center', padding: 40 },
+    noDetailsEmoji: { fontSize: 40 },
+    noDetailsTitle: {
+      fontSize: 16,
+      fontWeight: '700',
+      color: theme.colors.text,
+      marginTop: 12,
+    },
+    bulletDanger: { color: '#DC2626' },
+    bulletWarning: { color: '#D97706' },
+    bulletNormal: { color: theme.colors.primary },
     container: { flex: 1, backgroundColor: theme.colors.background },
     headerCard: {
       backgroundColor: theme.colors.primary,
@@ -411,14 +431,11 @@ const DrugDetailScreen: React.FC = () => {
       <Text
         style={[
           styles.listBullet,
-          {
-            color:
-              type === 'danger'
-                ? '#DC2626'
-                : type === 'warning'
-                  ? '#D97706'
-                  : theme.colors.primary,
-          },
+          type === 'danger'
+            ? styles.bulletDanger
+            : type === 'warning'
+              ? styles.bulletWarning
+              : styles.bulletNormal,
         ]}
       >
         •
@@ -448,20 +465,9 @@ const DrugDetailScreen: React.FC = () => {
   if (!drug) {
     return (
       <SafeAreaView style={styles.container}>
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Text style={{ fontSize: 48 }}>💊</Text>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: '700',
-              color: theme.colors.text,
-              marginTop: 12,
-            }}
-          >
-            {t('drug.noResults')}
-          </Text>
+        <View style={styles.centered}>
+          <Text style={styles.emptyEmoji}>💊</Text>
+          <Text style={styles.emptyTitle}>{t('drug.noResults')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -517,7 +523,7 @@ const DrugDetailScreen: React.FC = () => {
           onPress={() => navigation.navigate('MainTabs')}
           activeOpacity={0.85}
         >
-          <Text style={{ fontSize: 16 }}>⚡</Text>
+          <Text style={styles.actionIcon}>⚡</Text>
           <Text style={styles.actionBtnTextPrimary}>
             {t('vademecum.calculateDose')}
           </Text>
@@ -528,7 +534,7 @@ const DrugDetailScreen: React.FC = () => {
           onPress={handleSharePdf}
           activeOpacity={0.85}
         >
-          <Text style={{ fontSize: 16 }}>📤</Text>
+          <Text style={styles.actionIcon}>📤</Text>
           <Text style={styles.actionBtnTextSecondary}>
             {t('vademecum.share')}
           </Text>
@@ -540,16 +546,9 @@ const DrugDetailScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         {!pi ? (
-          <View style={{ alignItems: 'center', padding: 40 }}>
-            <Text style={{ fontSize: 40 }}>📋</Text>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: '700',
-                color: theme.colors.text,
-                marginTop: 12,
-              }}
-            >
+          <View style={styles.noDetails}>
+            <Text style={styles.noDetailsEmoji}>📋</Text>
+            <Text style={styles.noDetailsTitle}>
               {t('vademecum.noDetails')}
             </Text>
           </View>

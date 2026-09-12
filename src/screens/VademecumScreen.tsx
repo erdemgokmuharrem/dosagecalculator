@@ -110,6 +110,7 @@ const VademecumScreen: React.FC = () => {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        clearSearchIcon: { color: 'rgba(255,255,255,0.8)', fontSize: 16 },
         container: { flex: 1, backgroundColor: theme.colors.background },
         // Header section
         headerSection: {
@@ -387,9 +388,7 @@ const VademecumScreen: React.FC = () => {
                 setDebouncedQuery('');
               }}
             >
-              <Text style={{ color: 'rgba(255,255,255,0.8)', fontSize: 16 }}>
-                ✕
-              </Text>
+              <Text style={styles.clearSearchIcon}>✕</Text>
             </TouchableOpacity>
           )}
         </View>

@@ -42,6 +42,7 @@ const SettingsScreen: React.FC = () => {
   };
 
   const styles = StyleSheet.create({
+    aboutEmoji: { fontSize: 40, marginBottom: 8 },
     container: { flex: 1, backgroundColor: theme.colors.background },
     scrollContent: { padding: 16, paddingBottom: 40 },
     // Section
@@ -251,7 +252,7 @@ const SettingsScreen: React.FC = () => {
 
         {/* LANGUAGE */}
         <Text style={styles.sectionTitle}>{t('settings.language')}</Text>
-        <View style={[styles.card, { marginBottom: 6 }]}>
+        <View style={styles.card}>
           <View style={styles.langGrid}>
             {SUPPORTED_LANGUAGES.map(lang => (
               <TouchableOpacity
@@ -374,7 +375,7 @@ const SettingsScreen: React.FC = () => {
         {/* APP INFO */}
         <Text style={styles.sectionTitle}>{t('settings.appInfo')}</Text>
         <View style={styles.aboutCard}>
-          <Text style={{ fontSize: 40, marginBottom: 8 }}>⚕️</Text>
+          <Text style={styles.aboutEmoji}>⚕️</Text>
           <Text style={styles.appName}>DozuHesapla!</Text>
           <Text style={styles.appVersion}>
             {t('settings.version')} {APP_VERSION}

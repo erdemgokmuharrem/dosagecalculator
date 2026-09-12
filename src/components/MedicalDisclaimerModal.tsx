@@ -103,12 +103,7 @@ export const MedicalDisclaimerModal: React.FC<MedicalDisclaimerModalProps> = ({
               style={styles.content}
               showsVerticalScrollIndicator={false}
             >
-              <View
-                style={[
-                  styles.warningBox,
-                  { backgroundColor: '#FEF3C7', borderColor: '#F59E0B' },
-                ]}
-              >
+              <View style={[styles.warningBox, styles.warningBoxAmber]}>
                 <Text style={styles.warningText}>
                   {t(
                     'disclaimer.text1',
@@ -117,12 +112,7 @@ export const MedicalDisclaimerModal: React.FC<MedicalDisclaimerModalProps> = ({
                 </Text>
               </View>
 
-              <View
-                style={[
-                  styles.warningBox,
-                  { backgroundColor: '#FEE2E2', borderColor: '#EF4444' },
-                ]}
-              >
+              <View style={[styles.warningBox, styles.warningBoxRed]}>
                 <Text style={styles.warningText}>
                   {t(
                     'disclaimer.text2',
@@ -184,6 +174,8 @@ export const MedicalDisclaimerModal: React.FC<MedicalDisclaimerModalProps> = ({
 };
 
 const styles = StyleSheet.create({
+  warningBoxAmber: { backgroundColor: '#FEF3C7', borderColor: '#F59E0B' },
+  warningBoxRed: { backgroundColor: '#FEE2E2', borderColor: '#EF4444' },
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.65)',

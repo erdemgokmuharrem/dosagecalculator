@@ -66,7 +66,13 @@ politikası bağlantısını hem App Store Connect'te hem uygulama içinde açar
 
 Alan adını alıp politika ve şart sayfalarını yayımlayın (e-posta için MX kaydı
 gerekir) ya da `src/config/links.ts` içindeki adresleri gerçek adreslerle
-değiştirin. `npm run check:release`, bu adreslerin sunucusu çözülene kadar
+değiştirin. Yayına hazır gizlilik politikası sayfaları `docs/` klasöründe
+duruyor (Türkçe ve İngilizce); GitHub Pages'i bu klasörden açarsanız adres
+`https://erdemgokmuharrem.github.io/dosagecalculator/privacy.html` olur ve
+`src/config/links.ts` buna göre güncellenmelidir. Sayfalardaki köşeli
+parantezli alanlar (veri sorumlusu, iletişim e-postası, adres) doldurulmalı ve
+metin bir hukukçuya incelettirilmelidir. Kullanım şartları metni henüz yok.
+`npm run check:release`, bu adreslerin sunucusu çözülene kadar
 yayını engelliyor. Abonelik ekranındaki "Kullanım Şartları" bağlantısı da
 aynı adrese gidiyor. Kendi şartlarınız yoksa iOS için Apple'ın standart son
 kullanıcı lisans sözleşmesi (Standard EULA) kullanılabilir; bu seçim sizin.
@@ -96,13 +102,12 @@ gerektirdiğinde gizlilik seçenekleri formunu açar.
 | 1   | Klinik içerik çevirisi       | Arayüz metinlerinin tamamı 5 dilde. İlaç verisindeki **klinik içerik** (monograflar, kontrendikasyonlar, yan etkiler, seyreltme solüsyonları) yalnızca Türkçe. Bu kod değil tıbbi çeviri işi; farmakolog incelemesiyle birlikte yapılmalı.                                                                                                                                     |
 | 2   | Ekran testleri               | `CalculatorScreen`, `ChemotherapyDoseScreen`, `HistoryScreen`, `SettingsScreen`, `SubscriptionScreen`, `VademecumScreen`, `DrugDetailScreen` ve `ThemeContext` render testli. Testi olmayan tek ekran `ProductInfoScreen`; o ekran kayıtlı ama hiçbir yerden açılmıyor ve beslendiği `selectedDrug` alanı hiç yazılmıyor. Bağlanması mı kaldırılması mı gerektiği ürün kararı. |
 | 3   | Erişilebilirlik (kalan)      | Rol/durum 38/38 ve renk kontrastı (13 çift × 2 tema, WCAG AA) testle korunuyor. Yapılmadı: Dynamic Type/yazı ölçekleme ve cihazda VoiceOver/TalkBack turu.                                                                                                                                                                                                                     |
-| 4   | Lint uyarıları               | Yalnızca 27 `react-native/no-inline-styles` uyarısı kaldı; hata ve diğer kural uyarıları yok.                                                                                                                                                                                                                                                                                  |
-| 5   | `npm audit`                  | 52 bildirim, `--omit=dev` ile 42. Neredeyse tamamı `expo`'nun çektiği CLI/Metro/Babel araç zincirinde, bundle'a girmiyor. Bundle'a giren tek zincir: react-navigation → query-string → decode-uri-component (orta, upstream düzeltme yok; bozuk URI ile DoS, derin bağlantılarda önemli). Expo paketleri `expo install` ile hizalandı.                                         |
-| 6   | OTA hotfix kanalı            | `expo-updates` kurulu değil. Bir doz hatası çıkarsa mağaza incelemesi beklenir.                                                                                                                                                                                                                                                                                                |
-| 7   | Detox                        | Spec, testID'ler ve `.detoxrc` (iPhone 16 Pro) hazır. Çalıştırılamadı: `applesimutils` kurulumu Homebrew'un "güvenilmeyen tap" kontrolüne takıldı. `brew trust wix/brew` sizin kararınız.                                                                                                                                                                                      |
-| 8   | Onay akışı cihaz testi       | Karar matrisi birim testli (UMP → ATT → SDK sırası, her ret ve hata dalı). AEA'da gerçek UMP formu ve ATT penceresinin birlikte göründüğü uçtan uca akış, AdMob mesajı yayımlanana kadar test edilemez.                                                                                                                                                                        |
-| 9   | `prebuild --clean` gürültüsü | Her yeniden üretim `project.pbxproj` içindeki nesne kimliklerini değiştirir; diff büyük görünür ama anlamsal değişiklik yoktur. Native değişiklikleri `app.json` / config plugin üzerinden yapın, `ios/` içinde elle düzenlemeyin.                                                                                                                                             |
-| 10  | Android koyu tema            | `userInterfaceStyle: automatic` Android'de `expo-system-ui` olmadan uygulanmıyor (prebuild uyarısı). Tema `DayNight` olduğu için arayüz sistem temasını izliyor; eksik kalan, JS çizilmeden önceki kök arka plan rengi (koyu temada açılışta kısa beyaz parlama). Android'de doğrulanamadığı için native bağımlılık eklenmedi.                                                 |
+| 4   | `npm audit`                  | 52 bildirim, `--omit=dev` ile 42. Neredeyse tamamı `expo`'nun çektiği CLI/Metro/Babel araç zincirinde, bundle'a girmiyor. Bundle'a giren tek zincir: react-navigation → query-string → decode-uri-component (orta, upstream düzeltme yok; bozuk URI ile DoS, derin bağlantılarda önemli). Expo paketleri `expo install` ile hizalandı.                                         |
+| 5   | OTA hotfix kanalı            | `expo-updates` kurulu değil. Bir doz hatası çıkarsa mağaza incelemesi beklenir.                                                                                                                                                                                                                                                                                                |
+| 6   | Detox                        | Spec, testID'ler ve `.detoxrc` (iPhone 16 Pro) hazır. Çalıştırılamadı: `applesimutils` kurulumu Homebrew'un "güvenilmeyen tap" kontrolüne takıldı. `brew trust wix/brew` sizin kararınız.                                                                                                                                                                                      |
+| 7   | Onay akışı cihaz testi       | Karar matrisi birim testli (UMP → ATT → SDK sırası, her ret ve hata dalı). AEA'da gerçek UMP formu ve ATT penceresinin birlikte göründüğü uçtan uca akış, AdMob mesajı yayımlanana kadar test edilemez.                                                                                                                                                                        |
+| 8   | `prebuild --clean` gürültüsü | Her yeniden üretim `project.pbxproj` içindeki nesne kimliklerini değiştirir; diff büyük görünür ama anlamsal değişiklik yoktur. Native değişiklikleri `app.json` / config plugin üzerinden yapın, `ios/` içinde elle düzenlemeyin.                                                                                                                                             |
+| 9   | Android koyu tema            | `userInterfaceStyle: automatic` Android'de `expo-system-ui` olmadan uygulanmıyor (prebuild uyarısı). Tema `DayNight` olduğu için arayüz sistem temasını izliyor; eksik kalan, JS çizilmeden önceki kök arka plan rengi (koyu temada açılışta kısa beyaz parlama). Android'de doğrulanamadığı için native bağımlılık eklenmedi.                                                 |
 
 ---
 
@@ -221,6 +226,14 @@ gerektirdiğinde gizlilik seçenekleri formunu açar.
   ATT penceresi çiziliyor, açılışta hata yok.
 - Build uyarılarından hiçbiri bizim native kaynağımızdan gelmiyor; hepsi pod'lar
   ve araç zinciri kaynaklı.
+
+**Satır içi stiller**
+
+- Kalan 27 `react-native/no-inline-styles` uyarısının tamamı giderildi; lint
+  artık 0 uyarı 0 hata veriyor. Koşullu olanlar (sekme etiketinin kalınlığı,
+  kritik uyarının kalınlığı, ilaç detayındaki madde işareti rengi) ayrı stil
+  girdilerine ayrıldı. Ürün bilgisi ekranındaki boş durum, aşağıda tanımlanan
+  `styles`'a erişemediği için modül seviyesinde kendi stil tablosunu aldı.
 
 **Abonelik hakkının kaynağı**
 
