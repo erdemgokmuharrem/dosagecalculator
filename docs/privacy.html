@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dozu Hesapla — Gizlilik Politikası</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #ffffff;
+        --fg: #1a1f26;
+        --muted: #5b6472;
+        --line: #e3e7ec;
+        --accent: #2563eb;
+        --note-bg: #fff8e1;
+        --note-line: #f0c040;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14181d;
+          --fg: #e8ecf1;
+          --muted: #9aa4b2;
+          --line: #2a313a;
+          --accent: #7aa7ff;
+          --note-bg: #2a2415;
+          --note-line: #7a6420;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 32px 20px 72px;
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      main { max-width: 760px; margin: 0 auto; }
+      h1 { font-size: 28px; line-height: 1.25; margin: 0 0 8px; }
+      h2 { font-size: 20px; margin: 36px 0 10px; }
+      h3 { font-size: 17px; margin: 24px 0 6px; }
+      p, li { overflow-wrap: anywhere; }
+      ul { padding-left: 22px; }
+      a { color: var(--accent); }
+      .meta { color: var(--muted); font-size: 14px; margin: 0 0 4px; }
+      .lang { margin: 16px 0 28px; font-size: 14px; }
+      .note {
+        background: var(--note-bg);
+        border: 1px solid var(--note-line);
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin: 24px 0;
+      }
+      .note p { margin: 6px 0; }
+      table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 15px; }
+      th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+      th { font-weight: 700; }
+      .wrap { overflow-x: auto; }
+      footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Dozu Hesapla — Gizlilik Politikası</h1>
+      <p class="meta">Yürürlük tarihi: 13 Eylül 2026</p>
+      <p class="meta">Son güncelleme: 13 Eylül 2026</p>
+      <p class="lang"><a href="./privacy-en.html">English version</a></p>
+
+      <div class="note">
+        <p><strong>Yayımlamadan önce doldurulması gerekenler:</strong></p>
+        <p>
+          <code>[VERİ SORUMLUSU]</code> (gerçek kişi veya şirket adı),
+          <code>[İLETİŞİM E-POSTASI]</code> ve varsa <code>[ADRES]</code>.
+          Bu metin bir taslaktır; yayımlamadan önce bir hukukçuya
+          incelettirmeniz önerilir.
+        </p>
+      </div>
+
+      <h2>Kısaca</h2>
+      <ul>
+        <li>
+          Uygulamaya girdiğiniz <strong>hasta bilgileri cihazınızdan çıkmaz</strong>.
+          Bizim sunucumuz yoktur ve bu verileri toplamayız.
+        </li>
+        <li>
+          Uygulama ücretsiz sürümde reklam gösterir. Reklamlar için
+          <strong>izninize bağlı olarak</strong> Google'a sınırlı veri gider.
+        </li>
+        <li>
+          Satın alma işlemleri mağaza (App Store / Google Play) ve RevenueCat
+          üzerinden yürür; kart bilgileriniz bize hiç ulaşmaz.
+        </li>
+        <li>Hesap oluşturmanız gerekmez; kayıt veya giriş yoktur.</li>
+      </ul>
+
+      <h2>1. Veri sorumlusu</h2>
+      <p>
+        Bu uygulamanın veri sorumlusu <code>[VERİ SORUMLUSU]</code>'dur.
+        Sorularınız için: <code>[İLETİŞİM E-POSTASI]</code>
+        <span>(adres: <code>[ADRES]</code>)</span>.
+      </p>
+
+      <h2>2. Cihazınızda kalan veriler</h2>
+      <p>
+        Aşağıdaki veriler yalnızca cihazınızın uygulama alanında saklanır.
+        Tarafımıza iletilmez, bir sunucuya yüklenmez ve yedeklenmez:
+      </p>
+      <ul>
+        <li>Hesaplama için girdiğiniz yaş, kilo, boy ve serum kreatinin değerleri</li>
+        <li>Hesaplama geçmişiniz ve seçtiğiniz ilaçlar</li>
+        <li>Dil ve tema tercihiniz</li>
+        <li>Tıbbi sorumluluk reddini onayladığınız bilgisi</li>
+        <li>
+          Reklam onayı sonucunun kimlik bilgisi içermeyen özeti (yalnızca
+          "kişiselleştirilmiş reklam açık/kapalı" gibi durum bilgisi)
+        </li>
+      </ul>
+      <p>
+        Bu verileri uygulama içinden geçmişi silerek veya uygulamayı kaldırarak
+        tamamen silebilirsiniz.
+      </p>
+
+      <h2>3. Üçüncü taraflara giden veriler</h2>
+      <div class="wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Hizmet</th>
+              <th>Amaç</th>
+              <th>İşlenen veriler</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Google AdMob ve Google Kullanıcı Mesajlaşma Platformu (UMP)</td>
+              <td>Ücretsiz sürümde reklam göstermek ve reklam onayınızı almak</td>
+              <td>
+                Reklam kimliği (yalnızca izin verdiyseniz), IP adresi, cihaz ve
+                işletim sistemi bilgisi, reklam gösterim/tıklama bilgisi,
+                dolandırıcılık önleme verileri, onay tercihiniz
+              </td>
+            </tr>
+            <tr>
+              <td>RevenueCat ve mağaza (App Store / Google Play)</td>
+              <td>Pro aboneliğini doğrulamak ve geri yüklemek</td>
+              <td>
+                Anonim uygulama kullanıcı kimliği, satın alma ve abonelik
+                durumu, ülke ve cihaz bilgisi. Ödeme bilgileriniz mağaza
+                tarafından işlenir, bize iletilmez
+              </td>
+            </tr>
+            <tr>
+              <td>Sentry (çökme raporlama)</td>
+              <td>Uygulama çökmelerini ve hatalarını gidermek</td>
+              <td>
+                Hata mesajı ve teknik yığın izi, uygulama sürümü, cihaz modeli
+                ve işletim sistemi sürümü. Kişisel veri gönderimi kapalıdır;
+                hasta ölçümüne benzeyen sayılar gönderilmeden önce metinden
+                temizlenir
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Uygulamanın kendi kodunda başka hiçbir ağ isteği yoktur. İlaç
+        veritabanı uygulamanın içinde yerleşiktir; arama ve hesaplama
+        çevrimdışı çalışır.
+      </p>
+
+      <h3>PDF dışa aktarma</h3>
+      <p>
+        İlaç bilgisini PDF olarak paylaştığınızda dosya cihazınızda oluşturulur
+        ve yalnızca sizin seçtiğiniz uygulamaya gönderilir. Bu dosya bize
+        ulaşmaz.
+      </p>
+
+      <h2>4. Reklam onayı ve izleme izni</h2>
+      <p>
+        Reklamlar yalnızca ücretsiz sürümde gösterilir. Kişiselleştirilmiş
+        reklam, <strong>yalnızca</strong> hem Google'ın onay ekranında izin
+        vermeniz hem de iOS'ta izleme izni ("App Tracking Transparency")
+        vermeniz hâlinde gösterilir. İkisinden biri eksikse
+        kişiselleştirilmemiş reklam gösterilir.
+      </p>
+      <ul>
+        <li>
+          Onayınızı, gerekli olduğu bölgelerde uygulama içinden
+          <em>Ayarlar → Reklam tercihleri</em> ile değiştirebilirsiniz.
+        </li>
+        <li>
+          iOS'ta izleme iznini <em>Ayarlar → Gizlilik ve Güvenlik → İzleme</em>
+          bölümünden geri alabilirsiniz.
+        </li>
+        <li>
+          Android'de reklam kimliğinizi <em>Ayarlar → Google → Reklamlar</em>
+          bölümünden sıfırlayabilir veya silebilirsiniz.
+        </li>
+        <li>
+          İzin vermemeniz uygulamanın hiçbir hesaplama özelliğini kısıtlamaz.
+        </li>
+      </ul>
+
+      <h2>5. Hukuki dayanak</h2>
+      <p>
+        KVKK ve GDPR kapsamında; reklam kişiselleştirmesi ve izleme
+        <strong>açık rızanıza</strong> dayanır. Satın alma doğrulaması
+        sözleşmenin ifası için, çökme raporlaması ise uygulamanın güvenli ve
+        çalışır durumda tutulmasına yönelik meşru menfaate dayanır.
+      </p>
+
+      <h2>6. Saklama süresi</h2>
+      <p>
+        Cihazınızdaki veriler siz silene kadar cihazınızda kalır. Üçüncü
+        taraflara giden veriler, ilgili hizmetin kendi saklama politikasına
+        göre saklanır (aşağıdaki bağlantılara bakınız).
+      </p>
+
+      <h2>7. Haklarınız</h2>
+      <p>
+        Size ait verilere erişme, düzeltme, silme ve işlemeye itiraz etme
+        haklarınız vardır. Cihazdaki veriler için bu işlemleri doğrudan
+        uygulama içinden yapabilirsiniz. Diğer talepleriniz için
+        <code>[İLETİŞİM E-POSTASI]</code> adresine yazabilirsiniz.
+      </p>
+
+      <h2>8. Çocuklar</h2>
+      <p>
+        Bu uygulama sağlık profesyonellerine yöneliktir ve çocuklara yönelik
+        değildir. Bilerek çocuklardan veri toplamayız.
+      </p>
+
+      <h2>9. Üçüncü taraf gizlilik politikaları</h2>
+      <ul>
+        <li><a href="https://policies.google.com/privacy">Google (AdMob, UMP)</a></li>
+        <li><a href="https://www.revenuecat.com/privacy">RevenueCat</a></li>
+        <li><a href="https://sentry.io/privacy/">Sentry</a></li>
+        <li><a href="https://www.apple.com/legal/privacy/">Apple</a></li>
+      </ul>
+
+      <h2>10. Değişiklikler</h2>
+      <p>
+        Bu politika değişirse bu sayfadaki "son güncelleme" tarihi
+        güncellenir. Önemli değişiklikleri uygulama içinde de bildiririz.
+      </p>
+
+      <h2>11. İletişim</h2>
+      <p><code>[İLETİŞİM E-POSTASI]</code></p>
+
+      <footer>
+        Dozu Hesapla bir tıbbi cihaz değildir; yalnızca sağlık
+        profesyonellerine yardımcı bir araçtır. Tüm doz kararlarının
+        sorumluluğu uygulayan sağlık profesyonelindedir.
+      </footer>
+    </main>
+  </body>
+</html>
