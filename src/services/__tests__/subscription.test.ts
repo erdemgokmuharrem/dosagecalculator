@@ -7,6 +7,8 @@
  * "lifetime" could therefore charge for the monthly subscription.
  */
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 jest.mock('../monitoring', () => ({ reportError: jest.fn() }));
 
 type Pkg = {
@@ -23,6 +25,8 @@ const MONTHLY = pkg('$rc_monthly', 'MONTHLY', '₺129,99');
 const LIFETIME = pkg('$rc_lifetime', 'LIFETIME', '₺799,99');
 
 type Purchases = {
+  configure: jest.Mock;
+  getCustomerInfo: jest.Mock;
   getOfferings: jest.Mock;
   purchasePackage: jest.Mock;
 };
@@ -135,5 +139,72 @@ describe('store prices', () => {
       monthly: '₺129,99',
       lifetime: null,
     });
+  });
+});
+
+describe('entitlement source', () => {
+  it('stays free when the store cannot be reached, whatever the device holds', async () => {
+    // The entitlement used to be read back from the app's own AsyncStorage
+    // whenever RevenueCat failed to start, so editing that file granted Pro.
+    await AsyncStorage.setItem(
+      '@user_subscription',
+      JSON.stringify({ isPro: true, plan: 'lifetime' })
+    );
+    const { service, Purchases } = load({
+      EXPO_PUBLIC_REVENUECAT_IOS_KEY: 'appl_test',
+      EXPO_PUBLIC_REVENUECAT_ANDROID_KEY: 'goog_test',
+    });
+    Purchases.configure.mockImplementation(() => {
+      throw new Error('invalid key');
+    });
+
+    await service.initialize();
+
+    expect(service.isPro()).toBe(false);
+    expect(service.getSubscription()).toEqual({ isPro: false });
+  });
+
+  it('grants Pro from the store entitlement', async () => {
+    const { service, Purchases } = load({
+      EXPO_PUBLIC_REVENUECAT_IOS_KEY: 'appl_test',
+      EXPO_PUBLIC_REVENUECAT_ANDROID_KEY: 'goog_test',
+    });
+    Purchases.getCustomerInfo.mockResolvedValue({
+      entitlements: {
+        active: {
+          pro: {
+            productIdentifier: 'dozi.lifetime',
+            latestPurchaseDate: '2026-01-02T03:04:05Z',
+          },
+        },
+      },
+    });
+
+    await service.initialize();
+
+    expect(service.isPro()).toBe(true);
+    expect(service.getSubscription().plan).toBe('lifetime');
+  });
+
+  it('writes no entitlement copy of its own to the device', async () => {
+    await AsyncStorage.removeItem('@user_subscription');
+    const { service, Purchases } = load({
+      EXPO_PUBLIC_REVENUECAT_IOS_KEY: 'appl_test',
+      EXPO_PUBLIC_REVENUECAT_ANDROID_KEY: 'goog_test',
+    });
+    Purchases.getCustomerInfo.mockResolvedValue({
+      entitlements: {
+        active: {
+          pro: {
+            productIdentifier: 'dozi.monthly',
+            latestPurchaseDate: '2026-01-02T03:04:05Z',
+          },
+        },
+      },
+    });
+
+    await service.initialize();
+
+    expect(await AsyncStorage.getItem('@user_subscription')).toBeNull();
   });
 });

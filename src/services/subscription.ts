@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import Purchases, {
   LOG_LEVEL,
@@ -8,15 +7,15 @@ import Purchases, {
 import { reportError } from './monitoring';
 import { UserSubscription } from '../types';
 
-const SUBSCRIPTION_STORAGE_KEY = '@user_subscription';
-
 /**
  * RevenueCat publishable SDK keys, supplied via the environment.
  *
  * These were previously the literal placeholders `appl_YOUR_APPLE_KEY` /
  * `goog_YOUR_GOOGLE_KEY`, which made `Purchases.configure` throw. The failure
- * was caught and the service silently fell back to AsyncStorage, so purchases
- * appeared "working" in testing while no store transaction ever took place.
+ * was caught and the entitlement was read back from the app's own AsyncStorage,
+ * so purchases appeared "working" while no store transaction ever took place —
+ * and editing that file was enough to become Pro. Entitlements now come from
+ * RevenueCat alone; anything else leaves the user on the free tier.
  */
 const REVENUECAT_APPLE_KEY =
   process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY?.trim() || '';
@@ -101,15 +100,12 @@ class SubscriptionService {
         this.updateStatusFromCustomerInfo(info);
       });
     } catch (error) {
-      console.warn(
-        'RevenueCat init error. Using local storage fallback.',
-        error
-      );
-      // Fallback logic
-      const stored = await AsyncStorage.getItem(SUBSCRIPTION_STORAGE_KEY);
-      if (stored) {
-        this.subscription = JSON.parse(stored);
-      }
+      // Stay on the free tier. This used to read the entitlement back from the
+      // app's own AsyncStorage, so anyone who edited that file became Pro. A
+      // paying user is unaffected: RevenueCat caches the real entitlement and
+      // `getCustomerInfo()` returns it offline.
+      reportError(error, { area: 'subscription.init' });
+      this.subscription = DEFAULT_SUBSCRIPTION;
     }
   }
 
@@ -129,7 +125,6 @@ class SubscriptionService {
     } else {
       this.subscription = DEFAULT_SUBSCRIPTION;
     }
-    this.saveSubscription();
     this.notifyListeners();
   }
 
@@ -218,13 +213,6 @@ class SubscriptionService {
     }
   }
 
-  private async saveSubscription(): Promise<void> {
-    await AsyncStorage.setItem(
-      SUBSCRIPTION_STORAGE_KEY,
-      JSON.stringify(this.subscription)
-    );
-  }
-
   subscribe(listener: (sub: UserSubscription) => void): () => void {
     this.listeners.push(listener);
     return () => {
@@ -244,14 +232,12 @@ class SubscriptionService {
       purchasedAt: new Date(),
     };
     this.subscription = newSub;
-    await this.saveSubscription();
     this.notifyListeners();
   }
 
   // Dev-only: reset to free
   async devResetToFree(): Promise<void> {
     this.subscription = DEFAULT_SUBSCRIPTION;
-    await this.saveSubscription();
     this.notifyListeners();
   }
 }
