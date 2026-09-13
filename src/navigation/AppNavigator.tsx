@@ -45,7 +45,9 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, label, color }) => {
   const labelWidth = Math.floor(width / TAB_COUNT) - 8;
   return (
     <View style={[tabStyles.container, { width: labelWidth }]}>
-      <Text style={tabStyles.icon}>{icon}</Text>
+      <Text style={tabStyles.icon} maxFontSizeMultiplier={1.2}>
+        {icon}
+      </Text>
       <Text
         style={[
           tabStyles.label,
@@ -55,6 +57,7 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, label, color }) => {
         numberOfLines={1}
         adjustsFontSizeToFit
         minimumFontScale={0.8}
+        maxFontSizeMultiplier={1.3}
       >
         {label}
       </Text>
@@ -78,6 +81,10 @@ const tabStyles = StyleSheet.create({
 const TabNavigator: React.FC = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  // Give the bar a little more room when the system text is enlarged, so the
+  // capped labels still sit under their icons instead of over them.
+  const { fontScale } = useWindowDimensions();
+  const extraHeight = Math.round((Math.min(fontScale, 1.3) - 1) * 24);
 
   return (
     <Tab.Navigator
@@ -88,7 +95,7 @@ const TabNavigator: React.FC = () => {
           backgroundColor: theme.colors.surface,
           borderTopColor: theme.colors.border,
           borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 84 : 64,
+          height: (Platform.OS === 'ios' ? 84 : 64) + extraHeight,
           paddingTop: 8,
           paddingBottom: Platform.OS === 'ios' ? 28 : 8,
           shadowColor: '#000',

@@ -17,6 +17,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -295,6 +296,11 @@ const CalculatorScreen: React.FC = () => {
     Alert.alert('✓', t('calculation.savedSuccess'));
   }, [result, selectedDrug, patient, addCalculation, t]);
 
+  const { fontScale } = useWindowDimensions();
+  // At accessibility text sizes three fields side by side clipped their values
+  // ("170" rendered as "1…"), so the row becomes a column instead.
+  const stackedInputs = fontScale > 1.3;
+
   const styles = StyleSheet.create({
     flex: { flex: 1 },
     clearSearchIcon: { color: theme.colors.textSecondary, fontSize: 16 },
@@ -330,6 +336,7 @@ const CalculatorScreen: React.FC = () => {
     },
     // Patient form
     inlineRow: { flexDirection: 'row', gap: 10, marginBottom: 10 },
+    inlineRowStacked: { flexDirection: 'column' },
     inputGroup: { flex: 1 },
     inputLabel: {
       fontSize: 11,
@@ -823,7 +830,12 @@ const CalculatorScreen: React.FC = () => {
             </View>
 
             {/* Age, Weight, Height */}
-            <View style={styles.inlineRow}>
+            <View
+              style={[
+                styles.inlineRow,
+                stackedInputs && styles.inlineRowStacked,
+              ]}
+            >
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>{t('patient.age')}</Text>
                 <TextInput
