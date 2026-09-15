@@ -695,6 +695,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '6',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), WARFARIN SODIUM tablet - Dosage and Administration 2.1/2.3, Boxed Warning, 8.4 Pediatric Use | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1b766b1-0327-48cd-ab01-e85038cf365f',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Warfarin',
     genericName: 'Warfarin',
     category: 'Anticoagulants',
@@ -808,6 +815,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '7',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), HUMULIN R (insulin human injection) - Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9ec3e28a-cea9-4e45-9057-e5bf8e37014c',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Insulin Regular',
     genericName: 'Insulin Human',
     category: 'Antidiabetics',
@@ -921,6 +935,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '8',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), PREDNISOLONE SODIUM PHOSPHATE oral solution - Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a0d74ae0-7b2d-4d36-9211-c76f5063b5a9',
     name: 'Prednisolone',
     genericName: 'Prednisolone',
     category: 'Corticosteroids',
@@ -1045,6 +1063,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '9',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), LASIX (furosemide) tablet - Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c9b4d8f-0770-482d-a9e6-9c616a440b1a',
     name: 'Furosemide',
     genericName: 'Furosemide',
     category: 'Diuretics',
@@ -1199,6 +1221,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '10',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), PRILOSEC (omeprazole magnesium) - Dosage and Administration, paediatric weight-band tables | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b6761f84-53ac-4745-a8c8-1e5427d7e179',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Omeprazole',
     genericName: 'Omeprazole',
     category: 'Proton Pump Inhibitors',
@@ -1305,6 +1334,10 @@ const baseDrugs: Drug[] = [
   // Additional drugs for performance testing
   {
     id: '11',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA OTC Drug Facts (DailyMed), ASPIRIN 325 MG tablet - Warnings and Directions; corroborated by Medsafe NZ / NZ Formulary for Children | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=28c48336-c238-0141-e054-00144ff8d46c',
     name: 'Aspirin',
     genericName: 'Acetylsalicylic Acid',
     category: 'Analgesics',
@@ -1422,6 +1455,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '12',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - GLUCOPHAGE / GLUCOPHAGE XR (metformin hydrochloride) tablets, Dosage and Administration + Contraindications | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=4a0166c7-7097-4e4a-9036-6c9a60d08fc6',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Metformin',
     genericName: 'Metformin',
     category: 'Antidiabetics',
@@ -1530,6 +1570,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '13',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - lisinopril tablets, Dosage and Administration (adult hypertension, renal impairment, pediatric hypertension) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=80221abf-6e01-c8c2-e053-2a91aa0a82b8&type=display',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Lisinopril',
     genericName: 'Lisinopril',
     category: 'Antihypertensives',
@@ -1633,6 +1680,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '14',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - LIPITOR (atorvastatin calcium) tablets, Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=10a7ba02-42d6-4cae-8904-b256e2da5496&type=display',
     name: 'Atorvastatin',
     genericName: 'Atorvastatin',
     category: 'Statins',
@@ -1853,6 +1904,13 @@ const baseDrugs: Drug[] = [
   // Comprehensive Antibiotics List
   {
     id: '16',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - meropenem for injection (Hikma), Dosage and Administration tables for adult and pediatric patients and for renal impairment | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=d54fdbad-ca93-467c-92d7-c1bd88f3bbe3&type=display',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Meropenem',
     genericName: 'Meropenem',
     category: 'Antibiotics',
@@ -1965,6 +2023,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '17',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - PRIMAXIN IV (imipenem and cilastatin sodium) for injection, Dosage and Administration and Warnings (seizures / renal function) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=f41d8abd-7792-4918-1b93-bd83ea01955e&type=display',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Imipenem/Cilastatin',
     genericName: 'Imipenem/Cilastatin',
     category: 'Antibiotics',
@@ -2074,6 +2139,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '18',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - INVANZ (ertapenem for injection), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=33f3b99b-fa82-42e0-26bf-f49891ae3d22',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Ertapenem',
     genericName: 'Ertapenem',
     category: 'Antibiotics',
@@ -2294,6 +2366,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '20',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, cefepime for injection (DailyMed), section 2 Dosage and Administration Table 1/Table 2 and section 5.2 Neurotoxicity | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e80c27e2-164d-4836-ba24-c160d75dc5d3',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Cefepime',
     genericName: 'Cefepime',
     category: 'Antibiotics',
@@ -2394,6 +2473,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '21',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, ZOSYN (piperacillin and tazobactam) injection (DailyMed), section 2 Dosage and Administration including the paediatric dosage table and the renal impai… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=8db6bd91-2106-4bfd-8cc8-38aaf1e18d17&type=display',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Piperacillin/Tazobactam',
     genericName: 'Piperacillin/Tazobactam',
     category: 'Antibiotics',
@@ -2506,6 +2592,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '22',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, vancomycin injection (DailyMed), section 2 Dosage and Administration and Use in Specific Populations / renal impairment; corroborated by the 2020 ASHP/… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=99e523d8-9bde-43cb-8434-497015e5dcbd&type=display',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Vancomycin',
     genericName: 'Vancomycin',
     category: 'Antibiotics',
@@ -2748,6 +2841,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '24',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, levofloxacin tablets (DailyMed), section 2 Dosage and Administration, Table 1 (adults, CLCR at least 50 mL/min), Table 2 (paediatric patients 30 kg or… | https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=dabedb15-5b55-3853-e053-2995a90aa44e',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Levofloxacin',
     genericName: 'Levofloxacin',
     category: 'Antibiotics',
@@ -2976,6 +3076,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '26',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, amikacin sulfate injection (DailyMed), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=c0f57839-1c9b-49e5-8c7a-708e2d16495d',
+    clinicalReviewNote:
+      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Amikacin',
     genericName: 'Amikacin',
     category: 'Antibiotics',
@@ -3070,6 +3177,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '27',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, ZITHROMAX (azithromycin) tablets and oral suspension (DailyMed), Dosage and Administration - adult and paediatric dosage tables | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3ddecd25-dc32-a2af-e063-6294a90a526d',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Azithromycin',
     genericName: 'Azithromycin',
     category: 'Antibiotics',
@@ -3156,6 +3270,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '28',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - clarithromycin for oral suspension / tablets | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=22457862-0f88-4be8-b507-1c8f264269f2',
     name: 'Clarithromycin',
     genericName: 'Clarithromycin',
     category: 'Antibiotics',
@@ -3244,6 +3362,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '29',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - doxycycline hyclate tablets | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=f234f419-42da-4a6d-82c6-92106cd77c67',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Doxycycline',
     genericName: 'Doxycycline',
     category: 'Antibiotics',
@@ -3343,6 +3468,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '30',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label - Cleocin Phosphate injection (Pfizer) and Cleocin HCl capsules (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=df9a2a41-b132-4f43-8940-b2d773b1369a',
     name: 'Clindamycin',
     genericName: 'Clindamycin',
     category: 'Antibiotics',
@@ -3535,6 +3664,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '32',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - ZYVOX (linezolid) injection, granules, tablets | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6e70e63b-bfd5-478d-a8ee-8ba22c9efabd',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Linezolid',
     genericName: 'Linezolid',
     category: 'Antibiotics',
@@ -3637,6 +3773,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '33',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) - daptomycin for injection (CUBICIN) | https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=4cdf4099-db58-43b8-9fbc-afd997ccfa4b',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Daptomycin',
     genericName: 'Daptomycin',
     category: 'Antibiotics',
@@ -3806,6 +3949,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '35',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label - TYGACIL (tigecycline), Pfizer prescribing information | https://www.pfizermedical.com/tygacil/dosage-admin',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Tigecycline',
     genericName: 'Tigecycline',
     category: 'Antibiotics',
@@ -3892,6 +4042,13 @@ const baseDrugs: Drug[] = [
   // Additional Beta-lactam Antibiotics
   {
     id: '36',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, FORTAZ (ceftazidime for injection), Table 3 Recommended Dosage Schedule; Table 4 renal insufficiency | https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/050578s062lbl.pdf',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Ceftazidime',
     genericName: 'Ceftazidime',
     category: 'Antibiotics',
@@ -3983,6 +4140,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '37',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, CLAFORAN (cefotaxime for injection), DOSAGE AND ADMINISTRATION - Adults table and ’Neonates, Infants, and Children’ | https://www.accessdata.fda.gov/drugsatfda_docs/label/2015/050547s071,050596s042lbl.pdf',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Cefotaxime',
     genericName: 'Cefotaxime',
     category: 'Antibiotics',
@@ -4063,6 +4227,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '38',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, AVYCAZ (ceftazidime and avibactam) for injection, rev. 2/2025 - 2.1 Adults, Table 2 paediatric dosage, Tables 3 and 4 renal impairment | https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/206494s013lbl.pdf',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Ceftazidime/Avibactam',
     genericName: 'Ceftazidime/Avibactam',
     category: 'Antibiotics',
@@ -4144,6 +4315,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '39',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, FETROJA (cefiderocol) for injection, current DailyMed version rev. March 2026 - 2.1 Recommended Dosage, 2.2 renal adjustments, 8.4 Pediatric Use, 5.1 warning | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=75c0c785-38e0-4049-a6fb-b77581f5b35c',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Cefiderocol',
     genericName: 'Cefiderocol',
     category: 'Antibiotics',
@@ -4221,6 +4399,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '40',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, UNASYN (ampicillin sodium and sulbactam sodium) for injection, DOSAGE AND ADMINISTRATION (DailyMed full prescribing information) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Ampicillin/Sulbactam',
     genericName: 'Ampicillin/Sulbactam',
     category: 'Antibiotics',
@@ -4302,6 +4487,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '41',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, TIMENTIN (ticarcillin disodium and clavulanate potassium), rev. 06/2014 - 2.1 Adults, 2.2 Pediatric Patients (>=3 Months of Age), 2.3 Renal Impairment Table 1 | https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/050590s069,050658s031lbl.pdf',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Ticarcillin/Clavulanate',
     genericName: 'Ticarcillin/Clavulanate',
     category: 'Antibiotics',
@@ -4373,6 +4565,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '42',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Cefuroxime for Injection USP (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=703cc338-c0b6-4a02-b8db-c27aeff181df',
     name: 'Cefuroxime',
     genericName: 'Cefuroxime',
     category: 'Antibiotics',
@@ -4456,6 +4652,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '43',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Cefazolin for Injection USP (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=1dc9de56-e259-4546-a1db-23119a8a088e',
     name: 'Cefazolin',
     genericName: 'Cefazolin',
     category: 'Antibiotics',
@@ -4535,6 +4735,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '44',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Cefoxitin for Injection USP (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=6a4a2afa-4f00-41d4-bd6d-baa0a95f6929',
     name: 'Cefoxitin',
     genericName: 'Cefoxitin',
     category: 'Antibiotics',
@@ -4614,6 +4818,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '45',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, ZERBAXA (ceftolozane and tazobactam) for injection (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=70ac1d90-eff3-4f0b-9f46-5846c571b32f',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Ceftolozane/Tazobactam',
     genericName: 'Ceftolozane/Tazobactam',
     category: 'Antibiotics',
@@ -4697,6 +4908,13 @@ const baseDrugs: Drug[] = [
   // Additional Fluoroquinolones
   {
     id: '46',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, AVELOX (moxifloxacin hydrochloride) tablets (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=7d74dfa6-0468-43ad-ad7f-dd90d9ae7706',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Moxifloxacin',
     genericName: 'Moxifloxacin',
     category: 'Antibiotics',
@@ -4794,6 +5012,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '47',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Ofloxacin tablets USP (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=ee1bf431-97fa-4aba-9cc3-0cfcea779ca2',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Ofloxacin',
     genericName: 'Ofloxacin',
     category: 'Antibiotics',
@@ -4884,6 +5109,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '48',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA NOROXIN (norfloxacin) prescribing information, Dosage and Administration + Pediatric Use (RxList mirror of the Merck FDA label; accessdata PDF 019384s062 retrieved but font-enc… | https://www.rxlist.com/noroxin-drug.htm',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Norfloxacin',
     genericName: 'Norfloxacin',
     category: 'Antibiotics',
@@ -5050,6 +5282,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '50',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Netromycin (netilmicin sulfate) CPS monograph, Dosage and Administration - adult, paediatric and neonatal regimens plus peak/trough targets | https://www.rxmed.com/b.main/b2.pharmaceutical/b2.1.monographs/cps-_monographs/CPS-_(General_Monographs-_N)/NETROMYCIN.h…',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Netilmicin',
     genericName: 'Netilmicin',
     category: 'Antibiotics',
@@ -5127,6 +5366,10 @@ const baseDrugs: Drug[] = [
   // Additional Macrolides
   {
     id: '51',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'DailyMed - ERYTHROMYCIN BASE FILMTAB (erythromycin tablet, film coated), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3e823928-c853-4617-acad-21b27174aa7b',
     name: 'Erythromycin',
     genericName: 'Erythromycin',
     category: 'Antibiotics',
@@ -5208,6 +5451,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '52',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Medsafe New Zealand Data Sheet, Arrow-Roxithromycin 150/300 mg coated tablets, section 4.2 Dose and method of administration and section 4.4 Special warnings (text extracted direct… | https://www.medsafe.govt.nz/profs/Datasheet/a/Arrowroxithromycintab.pdf',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Roxithromycin',
     genericName: 'Roxithromycin',
     category: 'Antibiotics',
@@ -5281,6 +5531,13 @@ const baseDrugs: Drug[] = [
   // Additional Tetracyclines
   {
     id: '53',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'DailyMed / FDA - Tetracycline Hydrochloride Capsules USP 250 mg and 500 mg, Dosage and Administration and Warnings (tooth development) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=b504e612-5aef-47fa-8f7b-dfb754011b9f&type=display',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Tetracycline',
     genericName: 'Tetracycline',
     category: 'Antibiotics',
@@ -5376,6 +5633,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '54',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'DailyMed / FDA - Minocycline Hydrochloride Capsules, Dosage and Administration and Warnings (tooth development) | https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=94d941e3-d3d8-4414-bd5c-4a92848e738f',
     name: 'Minocycline',
     genericName: 'Minocycline',
     category: 'Antibiotics',
@@ -5460,6 +5721,13 @@ const baseDrugs: Drug[] = [
   // Additional Antibiotics
   {
     id: '55',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, BACTRIM / BACTRIM DS (sulfamethoxazole and trimethoprim) tablets, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Trimethoprim/Sulfamethoxazole',
     genericName: 'Trimethoprim/Sulfamethoxazole',
     category: 'Antibiotics',
@@ -5557,6 +5825,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '56',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, MACRODANTIN (nitrofurantoin, macrocrystalline) capsules, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ec86b651-d77d-4a42-b493-24244456b3f6',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Nitrofurantoin',
     genericName: 'Nitrofurantoin',
     category: 'Antibiotics',
@@ -5645,6 +5920,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '57',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, fosfomycin tromethamine granules for oral solution (Monurol), DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c3ba67e7-aaca-e682-277a-94e20b0abad7',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Fosfomycin',
     genericName: 'Fosfomycin',
     category: 'Antibiotics',
@@ -5715,6 +5997,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '58',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, RIFAMPIN capsules, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=78c4d20c-9d9b-4f26-bc11-ff193c6c53ca',
     name: 'Rifampin',
     genericName: 'Rifampin',
     category: 'Antibiotics',
@@ -5804,6 +6090,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '59',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, ISONIAZID tablets, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9c34d487-693b-43e3-803e-45d87425e3d6',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Isoniazid',
     genericName: 'Isoniazid',
     category: 'Antibiotics',
@@ -5879,6 +6172,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '60',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, MYAMBUTOL (ethambutol hydrochloride) tablets, DailyMed (dose confirmed against StatPearls for the renal interval) | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d523d8a-a5b8-44eb-8575-e36f186602a3',
     name: 'Ethambutol',
     genericName: 'Ethambutol',
     category: 'Antibiotics',

@@ -6,6 +6,13 @@ import { Drug } from '../types';
 export const chemoAndSupplementDrugs: Drug[] = [
   {
     id: 'chemo-001',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Cisplatin Injection, DailyMed — section 2 Dosage and Administration, boxed warning, section 2.5 dose modifications, section 8.4 Pediatric Use | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=a440f077-46f6-4688-a209-65bce38d1c92',
+    clinicalReviewNote:
+      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Sisplatin',
     genericName: 'Cisplatin',
     category: 'Oncology',
@@ -136,10 +143,14 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'chemo-002',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Carboplatin Injection USP (DailyMed), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=48aa7ef3-9f44-2a08-e054-00144ff88e88',
     name: 'Karboplatin',
     requiresClinicalReview: true,
     clinicalReviewNote:
-      'Karboplatin AUC bazlı Calvert formülü ile dozlanır: Doz (mg) = AUC x (GFR + 25). BSA bazlı hesaplama klinik olarak uygun degildir.',
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
     genericName: 'Carboplatin',
     category: 'Oncology',
     unit: 'mg',
@@ -253,6 +264,13 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'chemo-003',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Paclitaxel Injection USP (DailyMed), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=e4be6cbf-72b9-4f7f-9b1b-459b2d35961a&type=display',
+    clinicalReviewNote:
+      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Paklitaksel',
     genericName: 'Paclitaxel',
     category: 'Oncology',
@@ -367,6 +385,13 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'chemo-004',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Doxorubicin Hydrochloride Injection (DailyMed), section 2 Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=6bcde92b-e584-4919-866a-68847ea201ba&type=display',
+    clinicalReviewNote:
+      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Doksorobisin',
     genericName: 'Doxorubicin',
     category: 'Oncology',
@@ -485,6 +510,13 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'chemo-005',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Fluorouracil Injection (DailyMed), section 2 Recommended Dosage | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=66d451fe-2436-494c-80c5-4528c8e34369',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: '5-Florourasil',
     genericName: '5-Fluorouracil (5-FU)',
     category: 'Oncology',
@@ -603,6 +635,13 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'chemo-006',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Gemcitabine for Injection (DailyMed), section 2 Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=aa445f68-1e55-a587-76dc-def068bc9c74&type=display',
+    clinicalReviewNote:
+      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Gemsitabin',
     genericName: 'Gemcitabine',
     category: 'Oncology',
@@ -718,6 +757,13 @@ export const chemoAndSupplementDrugs: Drug[] = [
   // ═══════════════════════════════════════════════════════════════
   {
     id: 'supp-001',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'IOM/NAM Dietary Reference Intakes for Calcium and Vitamin D, Tolerable Upper Intake Level table (NCBI Bookshelf); StatPearls Cholecalciferol monograph | https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t7/',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'D Vitamini (Kolekalsiferol)',
     genericName: 'Vitamin D3 / Cholecalciferol',
     category: 'Supplements',
@@ -956,6 +1002,10 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'supp-003',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA-registered OTC label, B-12 (cyanocobalamin) 1000 mcg tablet (DailyMed); corroborated by NICE evidence review, Vitamin B12 deficiency in over 16s | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3c810a40-9e90-4ca7-b364-20d9ac61b120',
     name: 'B12 Vitamini (Siyanokobalamin)',
     genericName: 'Vitamin B12 / Cyanocobalamin',
     category: 'Supplements',
@@ -1066,6 +1116,10 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'supp-004',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Folic Acid Tablets USP 1 mg (DailyMed, full prescribing information) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=0cd531c8-6f98-4bc6-b3db-4c203e3b2f87',
     name: 'Folik Asit',
     genericName: 'Folic Acid / Folate',
     category: 'Supplements',
@@ -1302,6 +1356,10 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'supp-006',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'StatPearls, Omega-3 Fatty Acids (NCBI Bookshelf), reporting FDA intake limits and the approved prescription doses | https://www.ncbi.nlm.nih.gov/books/NBK564314/',
     name: 'Omega-3 Yağ Asitleri',
     genericName: 'Omega-3 Fatty Acids (EPA/DHA)',
     category: 'Supplements',
@@ -1403,6 +1461,10 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'supp-007',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'StatPearls, Dietary Calcium and Supplementation (NCBI Bookshelf); corroborated by StatPearls, Calcium Carbonate | https://www.ncbi.nlm.nih.gov/books/NBK549792/',
     name: 'Kalsiyum Karbonat',
     genericName: 'Calcium Carbonate',
     category: 'Supplements',

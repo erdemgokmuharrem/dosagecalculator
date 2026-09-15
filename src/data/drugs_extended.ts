@@ -6,6 +6,10 @@ export const extendedDrugs: Drug[] = [
   // ═══════════════════════════════════════════════
   {
     id: '61',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, ZOSYN (piperacillin and tazobactam) injection — DailyMed, section 2 Dosage and Administration (Table 2 pediatric dosing, Table 1 renal impairment) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=8db6bd91-2106-4bfd-8cc8-38aaf1e18d17&type=display',
     name: 'Piperasilin/Tazobaktam',
     genericName: 'Piperacillin/Tazobactam',
     category: 'Antibiotics',
@@ -115,6 +119,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '62',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, meropenem for injection — DailyMed, Dosage and Administration (adult and paediatric dose tables, renal impairment table) | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Meropenem',
     genericName: 'Meropenem',
     category: 'Antibiotics',
@@ -224,6 +235,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '63',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, VANCOMYCIN injection — DailyMed, section 2 Dosage and Administration; plus the 2020 ASHP/IDSA/PIDS/SIDP revised consensus guideline (Rybak et al., Clin… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=99e523d8-9bde-43cb-8434-497015e5dcbd',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Vankomisin',
     genericName: 'Vancomycin',
     category: 'Antibiotics',
@@ -333,6 +351,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '64',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, LEVAQUIN (levofloxacin) tablets/oral solution/injection — DailyMed, section 2 Dosage and Administration (adult table, paediatric table, renal impairmen… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=a23a1cca-bc3e-48c5-abd9-82eddb52e91b&type=display',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Levofloksasin',
     genericName: 'Levofloxacin',
     category: 'Antibiotics',
@@ -451,6 +476,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '65',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, clarithromycin tablets — DailyMed, Dosage and Administration (adult indication table and paediatric dosing) | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=98580dee-d2f4-4f62-a2d4-7434bab2421e',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Klaritromisin',
     genericName: 'Clarithromycin',
     category: 'Antibiotics',
@@ -565,6 +597,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '66',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA prescribing information, Ceftriaxone for Injection USP — DailyMed, Dosage and Administration and Contraindications | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=bc1cc991-3e16-48a3-8912-73750674143b&type=display',
     name: 'Seftriakson',
     genericName: 'Ceftriaxone',
     category: 'Antibiotics',
@@ -674,6 +710,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '67',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'UK SmPC, Metronidazole 200 mg/5 ml oral suspension (emc), posology; cross-checked against FDA Metronidazole Injection USP label (accessdata 018890s058) | https://www.medicines.org.uk/emc/product/6690/smpc',
     name: 'Metronidazol',
     genericName: 'Metronidazole',
     category: 'Antibiotics',
@@ -778,6 +818,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '68',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA/DailyMed label, Fluconazole tablets, DOSAGE AND ADMINISTRATION | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2ca7efcd-4a8d-4139-a3eb-930afd18b13f',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Flukonazol',
     genericName: 'Fluconazole',
     category: 'Antimicrobials',
@@ -875,6 +922,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '69',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA/DailyMed label, Doxycycline Hyclate, DOSAGE AND ADMINISTRATION | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=2ad2b85f-2479-c7cd-e063-6294a90acca1',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Doksisiklin',
     genericName: 'Doxycycline',
     category: 'Antibiotics',
@@ -983,6 +1037,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '70',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA/DailyMed label, BACTRIM / BACTRIM DS (sulfamethoxazole and trimethoprim), DOSAGE AND ADMINISTRATION incl. the renal impairment table | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Kotrimoksazol (TMP/SMX)',
     genericName: 'Trimethoprim/Sulfamethoxazole',
     category: 'Antibiotics',
@@ -1099,6 +1160,10 @@ export const extendedDrugs: Drug[] = [
   // ═══════════════════════════════════════════════
   {
     id: '71',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA/DailyMed label, NORVASC (amlodipine besylate) tablets, DOSAGE AND ADMINISTRATION | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=abd6a2ca-40c2-485c-bc53-db1c652505ed',
     name: 'Amlodipin',
     genericName: 'Amlodipine',
     category: 'Antihypertensives',
@@ -1196,6 +1261,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '72',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA/DailyMed label, Bisoprolol Fumarate tablets (Zebeta), DOSAGE AND ADMINISTRATION and Pediatric Use; UK SmPC Bisoprolol Fumarate 10 mg film-coated tablets for the chronic heart f… | https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=c0e309f3-82c3-4629-b790-fb8538b87369',
     name: 'Bisoprolol',
     genericName: 'Bisoprolol',
     category: 'Cardiovascular',
@@ -1301,6 +1370,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '73',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), atorvastatin calcium tablets, Section 2 Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=25c8f92f-9cb6-482b-82e1-16ad7c94e7b3',
     name: 'Atorvastatin',
     genericName: 'Atorvastatin',
     category: 'Cardiovascular',
@@ -1411,6 +1484,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '74',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), PLAVIX (clopidogrel bisulfate) tablets, Section 2 Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=de8b0b67-eb25-4684-83b5-7ad785314227',
     name: 'Klopidogrel',
     genericName: 'Clopidogrel',
     category: 'Anticoagulants',
@@ -1511,6 +1588,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '75',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), ramipril capsules USP, Sections 2.1/2.3/2.5 and 8.4 | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=178f647f-efdb-4b33-957a-61fd92c50e4b&type=display',
     name: 'Ramipril',
     genericName: 'Ramipril',
     category: 'Antihypertensives',
@@ -1621,6 +1702,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '76',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed) ALDACTONE Sections 2, 4, 8.4, 8.6; UK SmPC (emc) spironolactone Sections 4.2/4.3 for paediatric dosing | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=0fed2822-3a03-4b64-9857-c682fcd462bc&type=display',
     name: 'Spironolakton',
     genericName: 'Spironolactone',
     category: 'Diuretics',
@@ -1735,6 +1820,10 @@ export const extendedDrugs: Drug[] = [
   // ═══════════════════════════════════════════════
   {
     id: '77',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), ZOLOFT (sertraline hydrochloride) tablets and oral solution, Section 2 Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=fe9e8b7d-61ea-409d-84aa-3ebd79a046b5&type=display',
     name: 'Sertralin',
     genericName: 'Sertraline',
     category: 'Psychiatry',
@@ -1847,6 +1936,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '78',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label (DailyMed), NEURONTIN (gabapentin) capsules/tablets/oral solution, Section 2 Dosage and Administration incl. renal dosing table | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=d9a88774-1fb2-4a5d-8753-686af1f0e174&type=display',
     name: 'Gabapentin',
     genericName: 'Gabapentin',
     category: 'Neurology',
@@ -1944,6 +2037,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '79',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, SINEMET (carbidopa and levodopa) tablets, DailyMed | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=9b17b028-964a-473c-823d-81423535bd66',
     name: 'Levodopa/Karbidopa',
     genericName: 'Levodopa/Carbidopa',
     category: 'Neurology',
@@ -2050,6 +2147,13 @@ export const extendedDrugs: Drug[] = [
   // ═══════════════════════════════════════════════
   {
     id: '80',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'MHRA/EMA SmPC, Ventolin Evohaler 100 micrograms (emc); corroborated by Easyhaler Salbutamol 100 mcg SmPC | https://www.medicines.org.uk/emc/product/850/smpc',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Salbutamol',
     genericName: 'Salbutamol (Albuterol)',
     category: 'Respiratory',
@@ -2148,6 +2252,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '81',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, montelukast sodium tablets, DailyMed (boxed warning + section 2); paediatric strengths per FDA SINGULAIR label 020829s063/020830s064/021409s040 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ccbbf0d6-efd9-4fdd-9e7b-e3d293062609',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Montelukast',
     genericName: 'Montelukast',
     category: 'Respiratory',
@@ -2240,6 +2351,10 @@ export const extendedDrugs: Drug[] = [
   // ═══════════════════════════════════════════════
   {
     id: '82',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, PROTONIX delayed-release tablets/granules, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=08098cb2-c048-4640-f387-6beec4a38936',
     name: 'Pantoprazol',
     genericName: 'Pantoprazole',
     category: 'Gastrointestinal',
@@ -2342,6 +2457,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '83',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, ondansetron injection, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e0050959-c14c-41b6-9a92-fadc5f6feff3',
     name: 'Ondansetron',
     genericName: 'Ondansetron',
     category: 'Gastrointestinal',
@@ -2445,6 +2564,10 @@ export const extendedDrugs: Drug[] = [
   // ═══════════════════════════════════════════════
   {
     id: '84',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, JARDIANCE (empagliflozin tablets), DailyMed, rev 9/2023 | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=334f1b3d-5670-6685-e063-6294a90a7e47&type=display',
     name: 'Empagliflozin',
     genericName: 'Empagliflozin',
     category: 'Antidiabetics',
@@ -2551,6 +2674,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '85',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Ozempic (semaglutide) injection, DailyMed — sections 2.2 Recommended Dosage and 8.4 Pediatric Use | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=adec4fd2-6858-4c99-91d4-531f5f2a2d79',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Semaglutid',
     genericName: 'Semaglutide',
     category: 'Antidiabetics',
@@ -2763,6 +2893,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '87',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Amiodarone HCl Injection, DailyMed (Dosage and Administration; Pediatric Use), cross-checked against StatPearls ’Amiodarone’ for the ACLS/PALS arrest doses | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=1efeca40-3df8-4b89-950c-ec8cac6b7780',
     name: 'Amyodaron',
     genericName: 'Amiodarone',
     category: 'Emergency',
@@ -2889,6 +3023,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '88',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Atropine Sulfate Injection (PLR format), DailyMed — Table 1 (adults) and Table 2 (paediatric), ’Symptomatic bradycardia’ rows | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=8663ff94-8bea-4061-9fd5-3ab2e85e862e',
     name: 'Atropin',
     genericName: 'Atropine',
     category: 'Emergency',
@@ -2994,6 +3132,10 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '89',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA labels, Furosemide Tablets/Oral Solution (DailyMed) and Furosemide Injection USP (accessdata, NDA 018902 s036), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=ea623e21-e9fd-4ef1-843b-82cbc05af5bf',
     name: 'Furosemid',
     genericName: 'Furosemide',
     category: 'Diuretics',
@@ -3099,6 +3241,13 @@ export const extendedDrugs: Drug[] = [
   },
   {
     id: '90',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, Methylprednisolone Sodium Succinate for Injection USP, DailyMed — Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=e86fbda8-00e4-4d54-841a-59dea6c15e70&type=display',
+    clinicalReviewNote:
+      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Metilprednizolon',
     genericName: 'Methylprednisolone',
     category: 'Corticosteroids',

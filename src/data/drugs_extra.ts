@@ -3,6 +3,10 @@ import { Drug } from '../types';
 export const extraDrugs: Drug[] = [
   {
     id: 'extra-001',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA OTC Drug Facts, Children’s Ibuprofen Oral Suspension 100 mg/5 mL (DailyMed); and FDA prescription label, Ibuprofen Oral Suspension (DailyMed) | https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=c3c600dd-6eec-4304-868e-9642de5e1dac&type=display',
     name: 'Ibuprofen Pediatrik Şurup',
     genericName: 'Ibuprofen',
     category: 'Analgesics',
@@ -99,6 +103,13 @@ export const extraDrugs: Drug[] = [
   },
   {
     id: 'extra-002',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA label, ZOVIRAX (acyclovir) capsules/tablets/suspension (accessdata.fda.gov); and FDA label, Acyclovir Tablets USP (DailyMed); CDC STI Treatment Guidelines, Genital Herpes | https://www.accessdata.fda.gov/drugsatfda_docs/label/2008/018828s031lbl.pdf',
+    clinicalReviewNote:
+      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+    requiresClinicalReview: true,
     name: 'Asiklovir Krem/Tablet',
     genericName: 'Acyclovir',
     category: 'Antiviral',

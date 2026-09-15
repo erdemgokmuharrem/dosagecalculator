@@ -9,31 +9,41 @@ mevcut olmayan bir mimariyi tarif ediyordu.
 
 ## 🔴 Yayına Çıkmadan Önce ZORUNLU (kod dışı)
 
-### 1. Klinik doğrulama — farmakolog yok, kaynak karşılaştırması yapılıyor
+### 1. Klinik doğrulama — 105 kaydın tamamı kaynakla karşılaştırıldı
 
-Elde farmakolog olmadığı için kurallar halka açık otoriter kaynaklarla
-(FDA etiketleri, ürün bilgileri, klinik kılavuzlar) tek tek karşılaştırılıyor.
-Bulgular ve kaynak bağlantıları [DOSE_VERIFICATION.md](DOSE_VERIFICATION.md)
-dosyasında.
+Elde farmakolog olmadığı için kuralların tamamı halka açık otoriter kaynaklarla
+(FDA etiketleri, ürün bilgileri, klinik kılavuzlar) tek tek karşılaştırıldı.
+Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir bağımsız
+incelemeden geçirildi. Tüm bulgular ve kaynak bağlantıları
+[DOSE_VERIFICATION.md](DOSE_VERIFICATION.md) dosyasında.
 
-Veri artık üç seviye taşıyor:
+Sonuç:
 
-| Seviye           | Anlamı                                                    | Uyarı                                        |
-| ---------------- | --------------------------------------------------------- | -------------------------------------------- |
-| `UNVERIFIED`     | Kimse bakmadı                                             | Her sonuçta uyarı                            |
-| `SOURCE_CHECKED` | Halka açık kaynakla karşılaştırıldı, uyuşmayan düzeltildi | Her sonuçta uyarı, kaynağın adı ve tarihiyle |
-| `REVIEWED`       | Adı yazılı bir hekim/farmakolog imzaladı                  | Uyarı kalkar                                 |
+|                         |     |
+| ----------------------- | --- |
+| Kaynakla uyumlu         | 38  |
+| Düzeltme bekleyen       | 67  |
+| Şu an hesabı reddedilen | 61  |
+| Hesaplamaya açık        | 44  |
 
-**Kaynakla karşılaştırma imza değildir.** Hiçbir kayıt `REVIEWED`
-işaretlenmedi; halka açık yayından önce lisanslı bir klinisyenin imzası
-gerekir ve yayın kapısı bunu engellemeye devam ediyor.
+**En sık hata, verinin üretilme biçiminde:** etiketler dozu çoğunlukla
+mg/kg/gün olarak verir; veri setinde aynı sayı doz başına alanına girilmiş ve
+üstüne sıklık uygulanmış. Bu, günlük dozu 2-4 katına çıkarıyor. İki bulgu
+kritik: insülin 1,5 ünite/kg/gün öneriyordu (etiket 0,5-1 ünite/kg/**gün**
+toplam) ve 5-florourasil sıklığı hatalıydı.
 
-Şimdiye kadar bulunanlardan bazıları tek başına zarar verebilecek
-büyüklükteydi: magnezyum sülfat 50 mg/kg yerine 50 g/kg olarak kayıtlıydı;
-gentamisin ve tobramisinde günlük doz, doz başına alanına girilmişti
-(3 kat); adrenalinin tek doz tavanı anafilaksi yerine kardiyak arrest
-dozuydu. Ayrıca 12 etkin madde birden fazla kayıtta ve bazılarında dozlar
-farklı.
+Düzeltilene kadar bu kayıtlar sayı göstermek yerine hesabı reddediyor; gerekçe
+kullanıcıya yazılı olarak gösteriliyor. Veri artık üç seviye taşıyor:
+
+| Seviye           | Anlamı                                   | Uyarı                                        |
+| ---------------- | ---------------------------------------- | -------------------------------------------- |
+| `UNVERIFIED`     | Kimse bakmadı                            | Her sonuçta uyarı                            |
+| `SOURCE_CHECKED` | Halka açık kaynakla karşılaştırıldı      | Her sonuçta uyarı, kaynağın adı ve tarihiyle |
+| `REVIEWED`       | Adı yazılı bir hekim/farmakolog imzaladı | Uyarı kalkar                                 |
+
+**Kaynakla karşılaştırma imza değildir.** Hiçbir kayıt `REVIEWED` değil; halka
+açık yayından önce lisanslı bir klinisyenin imzası gerekir ve yayın kapısı bunu
+engellemeye devam ediyor.
 
 ### 2. Klinik incelemeye alınmış kayıtlar
 
