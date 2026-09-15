@@ -6,6 +6,10 @@ import { extraDrugs } from './drugs_extra';
 const baseDrugs: Drug[] = [
   {
     id: '1',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA acetaminophen labelling (10-15 mg/kg/dose q4-6h; max 75 mg/kg/day or 4 g)',
     name: 'Paracetamol',
     genericName: 'Acetaminophen',
     category: 'Analgesics',
@@ -126,6 +130,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '2',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA/product labelling (10 mg/kg/dose q6-8h, max 40 mg/kg/day; adults max 3200 mg/day)',
     name: 'Ibuprofen',
     genericName: 'Ibuprofen',
     category: 'Analgesics',
@@ -268,6 +276,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '3',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA amoxicillin label (25-45 mg/kg/DAY divided q12h; 20-40 mg/kg/DAY divided q8h)',
     name: 'Amoxicillin',
     genericName: 'Amoxicillin',
     category: 'Antibiotics',
@@ -289,8 +301,8 @@ const baseDrugs: Drug[] = [
     calculationMethod: 'weight',
     dosageFormula: {
       method: 'weight',
-      dosePerKg: 25,
-      frequency: 'q8h',
+      dosePerKg: 20,
+      frequency: 'q12h',
       maxSingleDose: 1000,
       maxDailyDose: 3000,
       ageAdjustments: [
@@ -394,6 +406,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '4',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA methotrexate label (RA: fixed 7.5 mg once weekly; pJIA: 10 mg/m2 weekly; oncology protocols differ)',
+    clinicalReviewNote:
+      'Metotreksat dozu endikasyona göre değişir: romatoid artritte haftalık sabit 7,5-25 mg, juvenil artritte 10 mg/m2/hafta, onkolojide protokole özgü. Tek bir m2 formülü bu rejimleri karşılamaz.',
+    requiresClinicalReview: true,
     name: 'Methotrexate',
     genericName: 'Methotrexate',
     category: 'Immunosuppressants',
@@ -523,11 +542,18 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '5',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA LANOXIN label (maintenance 3-4.5 mcg/kg/day adults and >10 y; 5.6-11.3 mcg/kg/day divided for 5-10 y)',
+    clinicalReviewNote:
+      'Digoksin dar terapötik aralıklıdır; idame dozu serum düzeyi, böbrek işlevi ve yaşa göre belirlenir (erişkin ve >10 yaş 3-4,5 mcg/kg/gün; 5-10 yaş 5,6-11,3 mcg/kg/gün bölünmüş). Sabit kilo başına kural bunu karşılamaz.',
+    requiresClinicalReview: true,
     name: 'Digoxin',
     genericName: 'Digoxin',
     category: 'Cardiac Glycosides',
     unit: 'mcg',
-    maxDailyDose: 500,
+    maxDailyDose: 250,
     contraindications: [
       'Ventriküler fibrilasyon',
       'Dijital toksisitesi',
@@ -546,10 +572,10 @@ const baseDrugs: Drug[] = [
     calculationMethod: 'weight',
     dosageFormula: {
       method: 'weight',
-      dosePerKg: 10,
+      dosePerKg: 4,
       frequency: 'q24h',
       maxSingleDose: 250,
-      maxDailyDose: 500,
+      maxDailyDose: 250,
       ageAdjustments: [
         { minAge: 0, maxAge: 1, adjustmentFactor: 0.5 },
         { minAge: 1, maxAge: 10, adjustmentFactor: 0.8 },
@@ -1711,6 +1737,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '15',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA levothyroxine labelling (full replacement ~1.6 mcg/kg/day; elderly or cardiac disease start 12.5-25 mcg/day)',
     name: 'Levothyroxine',
     requiresClinicalReview: true,
     clinicalReviewNote:
@@ -2144,6 +2174,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '19',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA ceftriaxone label (50-75 mg/kg/day, max 2 g; 100 mg/kg/day up to 4 g for meningitis only)',
     name: 'Ceftriaxone',
     genericName: 'Ceftriaxone',
     category: 'Antibiotics',
@@ -2165,7 +2199,7 @@ const baseDrugs: Drug[] = [
     dosageFormula: {
       method: 'weight',
       dosePerKg: 50,
-      frequency: 'q12h',
+      frequency: 'q24h',
       maxSingleDose: 2000,
       maxDailyDose: 4000,
     },
@@ -2580,6 +2614,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '23',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA ciprofloxacin label (peds 10 mg/kg q12h; adults 500-750 mg PO BID, 400 mg IV)',
     name: 'Ciprofloxacin',
     genericName: 'Ciprofloxacin',
     category: 'Antibiotics',
@@ -2603,8 +2641,8 @@ const baseDrugs: Drug[] = [
       method: 'weight',
       dosePerKg: 10,
       frequency: 'q12h',
-      maxSingleDose: 400,
-      maxDailyDose: 1200,
+      maxSingleDose: 750,
+      maxDailyDose: 1500,
       ageAdjustments: [
         { minAge: 0, maxAge: 18, adjustmentFactor: 0 }, // 18 yaş altı kontrendike (Kistik fibrozis ve şarbon hariç)
       ],
@@ -2823,11 +2861,18 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '25',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Gentamicin labelling (3-5 mg/kg/day divided q8h, or 5-7 mg/kg once daily; interval depends on renal function and postmenstrual age)',
+    clinicalReviewNote:
+      'Aminoglikozid dozu ve uygulama aralığı böbrek işlevine, yenidoğanda postmenstrüel yaşa göre belirlenir ve serum düzeyiyle izlenir. Tek doz x sıklık modeli bu rejimi karşılamaz.',
+    requiresClinicalReview: true,
     name: 'Gentamicin',
     genericName: 'Gentamicin',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 480,
+    maxDailyDose: 500,
     contraindications: [
       'Allergy to aminoglycosides',
       'Severe hearing loss',
@@ -2839,9 +2884,9 @@ const baseDrugs: Drug[] = [
     dosageFormula: {
       method: 'weight',
       dosePerKg: 5, // Geleneksel doz (3-5 mg/kg gün 3'e bölünmüş) veya Tek doz (5-7 mg/kg)
-      frequency: 'q8h',
-      maxSingleDose: 160,
-      maxDailyDose: 480,
+      frequency: 'q24h',
+      maxSingleDose: 500,
+      maxDailyDose: 500,
     },
     productInfo: {
       activeIngredient: 'Gentamisin Sülfat',
@@ -3387,6 +3432,10 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '31',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'FDA metronidazole label (adults 7.5 mg/kg q6h, max 4 g/day; paediatric 30-50 mg/kg/day divided TID)',
     name: 'Metronidazole',
     genericName: 'Metronidazole',
     category: 'Antibiotics',
@@ -3406,10 +3455,10 @@ const baseDrugs: Drug[] = [
     calculationMethod: 'weight',
     dosageFormula: {
       method: 'weight',
-      dosePerKg: 7.5,
+      dosePerKg: 10,
       frequency: 'q8h',
       maxSingleDose: 500,
-      maxDailyDose: 2000,
+      maxDailyDose: 4000,
     },
     productInfo: {
       activeIngredient: 'Metronidazol',
@@ -3668,6 +3717,13 @@ const baseDrugs: Drug[] = [
   },
   {
     id: '34',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Colistimethate label (2.5-5 mg/kg/day of colistin BASE activity, divided 2-4; CBA, CMS and IU are not interchangeable)',
+    clinicalReviewNote:
+      'Kolistin dozu birbirine dönüştürülemeyen üç birimle ifade edilir (kolistin baz aktivitesi, kolistimetat, IU) ve böbrek işlevine göre ayarlanır. Birim belirtilmeden doz hesaplanamaz.',
+    requiresClinicalReview: true,
     name: 'Colistin',
     genericName: 'Colistin',
     category: 'Antibiotics',
@@ -3679,7 +3735,7 @@ const baseDrugs: Drug[] = [
     calculationMethod: 'weight',
     dosageFormula: {
       method: 'weight',
-      dosePerKg: 2.5, // 2.5-5 mg/kg gün (kolistin baz aktivitesi)
+      dosePerKg: 1.25, // 2.5-5 mg/kg gün (kolistin baz aktivitesi)
       frequency: 'q12h',
       maxSingleDose: 150,
       maxDailyDose: 300,
@@ -4915,11 +4971,18 @@ const baseDrugs: Drug[] = [
   // Additional Aminoglycosides
   {
     id: '49',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Tobramycin labelling (3 mg/kg/DAY divided q8h; up to 5 mg/kg/day only in life-threatening infection)',
+    clinicalReviewNote:
+      'Aminoglikozid dozu ve uygulama aralığı böbrek işlevine, yenidoğanda postmenstrüel yaşa göre belirlenir ve serum düzeyiyle izlenir. Tek doz x sıklık modeli bu rejimi karşılamaz.',
+    requiresClinicalReview: true,
     name: 'Tobramycin',
     genericName: 'Tobramycin',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 480,
+    maxDailyDose: 500,
     contraindications: [
       'Allergy to aminoglycosides',
       'Severe hearing loss',
@@ -4930,10 +4993,10 @@ const baseDrugs: Drug[] = [
     calculationMethod: 'weight',
     dosageFormula: {
       method: 'weight',
-      dosePerKg: 3, // 1.5-2.5 mg/kg q8h
-      frequency: 'q8h',
-      maxSingleDose: 120,
-      maxDailyDose: 360,
+      dosePerKg: 5, // 1.5-2.5 mg/kg q8h
+      frequency: 'q24h',
+      maxSingleDose: 500,
+      maxDailyDose: 500,
     },
     productInfo: {
       activeIngredient: 'Tobramisin Sülfat',

@@ -831,11 +831,15 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'supp-002',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Paediatric guidance: 3-6 mg/kg/DAY elemental iron in 1-3 divided doses',
     name: 'Demir (Ferröz Sülfat)',
     genericName: 'Iron (Ferrous Sulphate)',
     category: 'Supplements',
     unit: 'mg',
-    maxDailyDose: 300,
+    maxDailyDose: 200,
     contraindications: [
       'Hemokromatoz',
       'Hemolitik anemi (G6PD gibi)',
@@ -857,9 +861,9 @@ export const chemoAndSupplementDrugs: Drug[] = [
     dosageFormula: {
       method: 'weight',
       dosePerKg: 3,
-      frequency: 'tid',
-      maxSingleDose: 100,
-      maxDailyDose: 300,
+      frequency: 'q24h',
+      maxSingleDose: 200,
+      maxDailyDose: 200,
     },
     atcCode: 'B03AA07',
     productInfo: {
@@ -1168,11 +1172,18 @@ export const chemoAndSupplementDrugs: Drug[] = [
   },
   {
     id: 'supp-005',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Paediatric bolus 25-75 mg/kg; adult eclampsia 4-6 g load then 1-2 g/h infusion',
+    clinicalReviewNote:
+      "Magnezyum sülfat eklampside 4-6 g yükleme, ardından 1-2 g/saat infüzyon olarak verilir; pediatrik bolus 25-75 mg/kg'dır. Tek doz x sıklık modeli yükleme + infüzyon rejimini karşılamaz.",
+    requiresClinicalReview: true,
     name: 'Magnezyum Sülfat',
     genericName: 'Magnesium Sulphate',
     category: 'Emergency',
-    unit: 'g',
-    maxDailyDose: 40,
+    unit: 'mg',
+    maxDailyDose: 30000,
     contraindications: [
       'Miyastenia gravis',
       'Ağır böbrek yetmezliği (GFR <30)',
@@ -1190,9 +1201,9 @@ export const chemoAndSupplementDrugs: Drug[] = [
     dosageFormula: {
       method: 'weight',
       dosePerKg: 50,
-      frequency: 'q6h',
-      maxSingleDose: 4,
-      maxDailyDose: 40,
+      frequency: 'prn',
+      maxSingleDose: 4000,
+      maxDailyDose: 30000,
     },
     atcCode: 'A12CC02',
     productInfo: {

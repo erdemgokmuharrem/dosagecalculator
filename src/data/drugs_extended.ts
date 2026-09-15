@@ -2658,6 +2658,10 @@ export const extendedDrugs: Drug[] = [
   // ═══════════════════════════════════════════════
   {
     id: '86',
+    sourceVerification: 'SOURCE_CHECKED',
+    sourceDate: '2026-09-15',
+    sourceReference:
+      'Anaphylaxis IM epinephrine 0.01 mg/kg, max 0.5 mg per dose (1 mg IV is the cardiac-arrest dose)',
     name: 'Adrenalin (Epinefrin)',
     genericName: 'Epinephrine (Adrenaline)',
     category: 'Emergency',
@@ -2679,7 +2683,7 @@ export const extendedDrugs: Drug[] = [
       method: 'weight',
       dosePerKg: 0.01,
       frequency: 'prn',
-      maxSingleDose: 1,
+      maxSingleDose: 0.5,
       maxDailyDose: 10,
     },
     atcCode: 'C01CA24',
