@@ -22,6 +22,11 @@ jest.mock('../../services/monitoring', () => ({ reportError: jest.fn() }));
 
 const ACCEPTED_KEY = '@medical_disclaimer_accepted';
 
+// The modal renders after an AsyncStorage read. Under a full parallel test run
+// that read has taken longer than the 1s default, which made this suite flaky;
+// the assertions are about eventual state, not speed.
+const SETTLE = { timeout: 5000 };
+
 const renderModal = () => {
   const onAccepted = jest.fn();
   render(
@@ -50,19 +55,19 @@ beforeEach(async () => {
 describe('MedicalDisclaimerModal', () => {
   it('shows on first launch and reports acceptance only once accepted', async () => {
     const onAccepted = renderModal();
-    const accept = await screen.findByTestId('disclaimer-accept');
+    const accept = await screen.findByTestId('disclaimer-accept', {}, SETTLE);
     expect(onAccepted).not.toHaveBeenCalled();
 
     fireEvent.press(accept);
 
-    await waitFor(() => expect(onAccepted).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(onAccepted).toHaveBeenCalledTimes(1), SETTLE);
     expect(await AsyncStorage.getItem(ACCEPTED_KEY)).toBe('true');
   });
 
   it('reports acceptance straight away when accepted in an earlier session', async () => {
     await AsyncStorage.setItem(ACCEPTED_KEY, 'true');
     const onAccepted = renderModal();
-    await waitFor(() => expect(onAccepted).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(onAccepted).toHaveBeenCalledTimes(1), SETTLE);
     expect(screen.queryByTestId('disclaimer-accept')).toBeNull();
   });
 
@@ -73,7 +78,9 @@ describe('MedicalDisclaimerModal', () => {
       .spyOn(AsyncStorage, 'getItem')
       .mockRejectedValueOnce(new Error('storage unavailable'));
     const onAccepted = renderModal();
-    expect(await screen.findByTestId('disclaimer-accept')).toBeTruthy();
+    expect(
+      await screen.findByTestId('disclaimer-accept', {}, SETTLE)
+    ).toBeTruthy();
     expect(onAccepted).not.toHaveBeenCalled();
   });
 });

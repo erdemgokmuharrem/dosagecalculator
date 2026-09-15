@@ -391,7 +391,8 @@
     "crclObesityCaveat": "BMI ≥ 30: Cockcroft-Gault uses total body weight and may overestimate clearance. Verify using an adjusted body weight.",
     "pediatricReview": "Paediatric patient. Paediatric doses must be independently verified by a second healthcare professional.",
     "unverifiedSource": "This dosing rule has not passed independent clinical review (UNVERIFIED). Compare against the official product information before use.",
-    "overlappingAgeBands": "This drug has overlapping age bands (age {{age}} matches more than one). The most restrictive rule was used; the drug record needs correcting."
+    "overlappingAgeBands": "This drug has overlapping age bands (age {{age}} matches more than one). The most restrictive rule was used; the drug record needs correcting.",
+    "sourceCheckedOnly": "This dosing rule has only been compared against a public source ({{source}}, {{date}}); it has not been clinically signed off. Verify against the official product information before use."
   },
   "blocked": {
     "title": "Calculation Not Possible",

@@ -48,6 +48,7 @@ const ENGINE_KEYS = [
   'safety.crclObesityCaveat',
   'safety.pediatricReview',
   'safety.unverifiedSource',
+  'safety.sourceCheckedOnly',
   'blocked.missingFormula',
   'blocked.nonNumericInput',
   'blocked.unsupportedAge',

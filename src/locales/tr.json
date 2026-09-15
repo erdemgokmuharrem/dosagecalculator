@@ -391,7 +391,8 @@
     "crclObesityCaveat": "BMI ≥ 30: Cockcroft-Gault toplam vücut ağırlığı kullandığından klirensi olduğundan yüksek gösterebilir. Düzeltilmiş ağırlıkla doğrulayın.",
     "pediatricReview": "Pediatrik hasta. Pediatrik dozlar ikinci bir sağlık profesyoneli tarafından doğrulanmalıdır.",
     "unverifiedSource": "Bu doz kuralı bağımsız klinik incelemeden geçmemiştir (UNVERIFIED). Uygulamadan önce KÜB/prospektüs ile karşılaştırın.",
-    "overlappingAgeBands": "Bu ilacın yaş aralıkları çakışıyor ({{age}} yaş birden fazla aralığa giriyor). En kısıtlayıcı kural uygulandı; ilaç kaydı düzeltilmelidir."
+    "overlappingAgeBands": "Bu ilacın yaş aralıkları çakışıyor ({{age}} yaş birden fazla aralığa giriyor). En kısıtlayıcı kural uygulandı; ilaç kaydı düzeltilmelidir.",
+    "sourceCheckedOnly": "Bu doz kuralı yalnızca halka açık kaynakla karşılaştırılmıştır ({{source}}, {{date}}); klinik onaydan geçmemiştir. Uygulamadan önce KÜB/prospektüs ile doğrulayın."
   },
   "blocked": {
     "title": "Hesaplama Yapılamadı",

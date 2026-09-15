@@ -16,13 +16,13 @@ import { fileURLToPath } from 'node:url';
 import { lookup } from 'node:dns/promises';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const read = (p) => readFileSync(join(ROOT, p), 'utf8');
+const read = p => readFileSync(join(ROOT, p), 'utf8');
 
 const errors = [];
 const warnings = [];
 
-const fail = (msg) => errors.push(msg);
-const warn = (msg) => warnings.push(msg);
+const fail = msg => errors.push(msg);
+const warn = msg => warnings.push(msg);
 
 // ---------------------------------------------------------------------------
 // 1. Secrets must be present and must not be placeholders.
@@ -44,19 +44,26 @@ const REQUIRED_ENV = [
 for (const key of REQUIRED_ENV) {
   const value = process.env[key]?.trim();
   if (!value) fail(`${key} is not set.`);
-  else if (PLACEHOLDER.test(value)) fail(`${key} still holds a placeholder value ("${value}").`);
+  else if (PLACEHOLDER.test(value))
+    fail(`${key} still holds a placeholder value ("${value}").`);
 }
 
 // ---------------------------------------------------------------------------
 // 2. No placeholder credentials left in tracked source.
 // ---------------------------------------------------------------------------
-for (const file of ['src/config/admob.ts', 'src/services/subscription.ts', 'src/services/monitoring.ts']) {
+for (const file of [
+  'src/config/admob.ts',
+  'src/services/subscription.ts',
+  'src/services/monitoring.ts',
+]) {
   if (!existsSync(join(ROOT, file))) continue;
   const source = read(file);
   // Ignore the word inside comments explaining the historical placeholders.
   const code = source
     .split('\n')
-    .filter((line) => !line.trim().startsWith('*') && !line.trim().startsWith('//'))
+    .filter(
+      line => !line.trim().startsWith('*') && !line.trim().startsWith('//')
+    )
     .join('\n');
   if (/'(appl_|goog_)YOUR|ca-app-pub-x{4,}|YOUR_SENTRY_DSN/i.test(code)) {
     fail(`${file} still contains a hardcoded placeholder credential.`);
@@ -78,22 +85,32 @@ if (existsSync(join(ROOT, 'sentry.properties'))) {
 // ---------------------------------------------------------------------------
 const appJson = JSON.parse(read('app.json')).expo;
 
-if (!appJson.ios?.buildNumber) fail('app.json: expo.ios.buildNumber is missing.');
-if (!appJson.android?.versionCode) fail('app.json: expo.android.versionCode is missing.');
+if (!appJson.ios?.buildNumber)
+  fail('app.json: expo.ios.buildNumber is missing.');
+if (!appJson.android?.versionCode)
+  fail('app.json: expo.android.versionCode is missing.');
 if (appJson.ios?.infoPlist?.ITSAppUsesNonExemptEncryption === undefined) {
-  warn('app.json: ITSAppUsesNonExemptEncryption is unset — App Store Connect will ask on every upload.');
+  warn(
+    'app.json: ITSAppUsesNonExemptEncryption is unset — App Store Connect will ask on every upload.'
+  );
 }
 
 const manifest = appJson.ios?.privacyManifests;
 if (!manifest) {
   fail('app.json: expo.ios.privacyManifests is missing (required by Apple).');
 } else {
-  const usesAds = JSON.stringify(appJson.plugins ?? []).includes('google-mobile-ads');
+  const usesAds = JSON.stringify(appJson.plugins ?? []).includes(
+    'google-mobile-ads'
+  );
   if (usesAds && manifest.NSPrivacyTracking !== true) {
-    fail('Privacy manifest declares NSPrivacyTracking=false while Google Mobile Ads is bundled.');
+    fail(
+      'Privacy manifest declares NSPrivacyTracking=false while Google Mobile Ads is bundled.'
+    );
   }
   if (usesAds && (manifest.NSPrivacyCollectedDataTypes ?? []).length === 0) {
-    fail('Privacy manifest declares no collected data types while ad and purchase SDKs are bundled.');
+    fail(
+      'Privacy manifest declares no collected data types while ad and purchase SDKs are bundled.'
+    );
   }
 }
 
@@ -110,43 +127,76 @@ const drift = [];
 const plistPath = 'ios/DosageCalculator/Info.plist';
 if (existsSync(join(ROOT, plistPath))) {
   const plist = read(plistPath);
-  const plistValue = (key) => {
-    const m = plist.match(new RegExp(`<key>${key}</key>\\s*<(string|true|false)\\s*/?>([^<]*)`));
+  const plistValue = key => {
+    const m = plist.match(
+      new RegExp(`<key>${key}</key>\\s*<(string|true|false)\\s*/?>([^<]*)`)
+    );
     if (!m) return undefined;
     return m[1] === 'string' ? m[2] : m[1];
   };
-  const literal = (v) => v !== undefined && !v.startsWith('$(');
+  const literal = v => v !== undefined && !v.startsWith('$(');
 
-  const style = { automatic: 'Automatic', light: 'Light', dark: 'Dark' }[appJson.userInterfaceStyle ?? 'light'];
+  const style = { automatic: 'Automatic', light: 'Light', dark: 'Dark' }[
+    appJson.userInterfaceStyle ?? 'light'
+  ];
   if (plistValue('UIUserInterfaceStyle') !== style) {
-    drift.push(`Info.plist UIUserInterfaceStyle is "${plistValue('UIUserInterfaceStyle')}", app.json expects "${style}"`);
+    drift.push(
+      `Info.plist UIUserInterfaceStyle is "${plistValue('UIUserInterfaceStyle')}", app.json expects "${style}"`
+    );
   }
   const shortVersion = plistValue('CFBundleShortVersionString');
   if (literal(shortVersion) && shortVersion !== appJson.version) {
-    drift.push(`Info.plist CFBundleShortVersionString is "${shortVersion}", app.json version is "${appJson.version}"`);
+    drift.push(
+      `Info.plist CFBundleShortVersionString is "${shortVersion}", app.json version is "${appJson.version}"`
+    );
   }
   const buildNumber = plistValue('CFBundleVersion');
-  if (literal(buildNumber) && appJson.ios?.buildNumber && buildNumber !== String(appJson.ios.buildNumber)) {
-    drift.push(`Info.plist CFBundleVersion is "${buildNumber}", app.json ios.buildNumber is "${appJson.ios.buildNumber}"`);
+  if (
+    literal(buildNumber) &&
+    appJson.ios?.buildNumber &&
+    buildNumber !== String(appJson.ios.buildNumber)
+  ) {
+    drift.push(
+      `Info.plist CFBundleVersion is "${buildNumber}", app.json ios.buildNumber is "${appJson.ios.buildNumber}"`
+    );
   }
   const encryption = appJson.ios?.infoPlist?.ITSAppUsesNonExemptEncryption;
-  if (encryption !== undefined && plistValue('ITSAppUsesNonExemptEncryption') !== String(encryption)) {
-    drift.push('Info.plist is missing ITSAppUsesNonExemptEncryption as declared in app.json');
+  if (
+    encryption !== undefined &&
+    plistValue('ITSAppUsesNonExemptEncryption') !== String(encryption)
+  ) {
+    drift.push(
+      'Info.plist is missing ITSAppUsesNonExemptEncryption as declared in app.json'
+    );
   }
   // Ad measurement must wait for consent: the SDK is initialised only after UMP
   // and ATT, and this flag stops it measuring before that.
   const adsPlugin = (appJson.plugins ?? []).find(
-    (p) => Array.isArray(p) && p[0] === 'react-native-google-mobile-ads'
+    p => Array.isArray(p) && p[0] === 'react-native-google-mobile-ads'
   );
   const delayMeasurement = adsPlugin?.[1]?.delayAppMeasurementInit;
   if (adsPlugin && delayMeasurement !== true) {
-    fail('app.json: react-native-google-mobile-ads must set delayAppMeasurementInit: true so ad measurement waits for consent.');
+    fail(
+      'app.json: react-native-google-mobile-ads must set delayAppMeasurementInit: true so ad measurement waits for consent.'
+    );
   }
-  if (delayMeasurement !== undefined && plistValue('GADDelayAppMeasurementInit') !== String(delayMeasurement)) {
-    drift.push(`Info.plist GADDelayAppMeasurementInit is "${plistValue('GADDelayAppMeasurementInit')}", app.json expects "${delayMeasurement}"`);
+  if (
+    delayMeasurement !== undefined &&
+    plistValue('GADDelayAppMeasurementInit') !== String(delayMeasurement)
+  ) {
+    drift.push(
+      `Info.plist GADDelayAppMeasurementInit is "${plistValue('GADDelayAppMeasurementInit')}", app.json expects "${delayMeasurement}"`
+    );
   }
   for (const lang of Object.keys(appJson.locales ?? {})) {
-    if (!existsSync(join(ROOT, `ios/DosageCalculator/Supporting/${lang}.lproj/InfoPlist.strings`))) {
+    if (
+      !existsSync(
+        join(
+          ROOT,
+          `ios/DosageCalculator/Supporting/${lang}.lproj/InfoPlist.strings`
+        )
+      )
+    ) {
       drift.push(`localised Info.plist strings missing for "${lang}"`);
     }
   }
@@ -156,15 +206,24 @@ if (existsSync(join(ROOT, gradlePath))) {
   const gradle = read(gradlePath);
   const versionCode = gradle.match(/versionCode\s+(\d+)/)?.[1];
   const versionName = gradle.match(/versionName\s+"([^"]+)"/)?.[1];
-  if (appJson.android?.versionCode && versionCode !== String(appJson.android.versionCode)) {
-    drift.push(`build.gradle versionCode is ${versionCode}, app.json android.versionCode is ${appJson.android.versionCode}`);
+  if (
+    appJson.android?.versionCode &&
+    versionCode !== String(appJson.android.versionCode)
+  ) {
+    drift.push(
+      `build.gradle versionCode is ${versionCode}, app.json android.versionCode is ${appJson.android.versionCode}`
+    );
   }
   if (versionName && versionName !== appJson.version) {
-    drift.push(`build.gradle versionName is "${versionName}", app.json version is "${appJson.version}"`);
+    drift.push(
+      `build.gradle versionName is "${versionName}", app.json version is "${appJson.version}"`
+    );
   }
 }
 for (const d of drift) {
-  fail(`Native project out of sync with app.json: ${d}. Run \`npx expo prebuild --clean\` and commit the result.`);
+  fail(
+    `Native project out of sync with app.json: ${d}. Run \`npx expo prebuild --clean\` and commit the result.`
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -177,7 +236,11 @@ for (const d of drift) {
 // ---------------------------------------------------------------------------
 const linkHosts = [
   ...new Set(
-    [...read('src/config/links.ts').matchAll(/(?:https:\/\/|@)([a-z0-9.-]+\.[a-z]{2,})/gi)].map((m) => m[1])
+    [
+      ...read('src/config/links.ts').matchAll(
+        /(?:https:\/\/|@)([a-z0-9.-]+\.[a-z]{2,})/gi
+      ),
+    ].map(m => m[1])
   ),
 ];
 for (const host of linkHosts) {
@@ -185,14 +248,18 @@ for (const host of linkHosts) {
     await lookup(host);
   } catch (error) {
     if (error.code === 'ENOTFOUND') {
-      fail(`${host} (src/config/links.ts) does not resolve — the privacy policy, terms and support contact must be live before review.`);
+      fail(
+        `${host} (src/config/links.ts) does not resolve — the privacy policy, terms and support contact must be live before review.`
+      );
     } else {
       warn(`Could not check ${host}: ${error.code ?? error.message}.`);
     }
   }
 }
 if (!process.env.EXPO_PUBLIC_APP_STORE_ID?.trim()) {
-  warn('EXPO_PUBLIC_APP_STORE_ID is not set — the "Rate the app" row stays hidden on iOS until it is.');
+  warn(
+    'EXPO_PUBLIC_APP_STORE_ID is not set — the "Rate the app" row stays hidden on iOS until it is.'
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -200,7 +267,7 @@ if (!process.env.EXPO_PUBLIC_APP_STORE_ID?.trim()) {
 // ---------------------------------------------------------------------------
 // ATT is requested by the consent flow, after the medical disclaimer.
 const attSources = ['App.tsx', 'src/services/adConsent.ts']
-  .filter((f) => existsSync(join(ROOT, f)))
+  .filter(f => existsSync(join(ROOT, f)))
   .map(read)
   .join('\n');
 if (!attSources.includes('requestTrackingPermissionsAsync')) {
@@ -222,11 +289,16 @@ const DATA_FILES = [
 
 let totalDrugs = 0;
 let reviewedDrugs = 0;
+let sourceCheckedDrugs = 0;
 for (const file of DATA_FILES) {
   if (!existsSync(join(ROOT, file))) continue;
   const source = read(file);
   totalDrugs += (source.match(/^\s{4}id: '/gm) ?? []).length;
-  reviewedDrugs += (source.match(/sourceVerification: 'REVIEWED'/g) ?? []).length;
+  reviewedDrugs += (source.match(/sourceVerification: 'REVIEWED'/g) ?? [])
+    .length;
+  sourceCheckedDrugs += (
+    source.match(/sourceVerification: 'SOURCE_CHECKED'/g) ?? []
+  ).length;
 }
 
 if (totalDrugs === 0) {
@@ -235,22 +307,26 @@ if (totalDrugs === 0) {
   // A warning rather than a hard failure so the pipeline is usable during
   // development, but it must be zero before a public release.
   warn(
-    `${totalDrugs - reviewedDrugs}/${totalDrugs} dosing rules are still UNVERIFIED. ` +
-      'A pharmacologist must sign each one off (set sourceVerification/reviewedBy/sourceDate) before public release.'
+    `${totalDrugs - reviewedDrugs}/${totalDrugs} dosing rules lack clinical sign-off ` +
+      `(${sourceCheckedDrugs} of them compared against a public source, the rest unchecked). ` +
+      'Comparing a rule against a label is not sign-off: a pharmacologist or physician must ' +
+      'set sourceVerification: REVIEWED with reviewedBy/sourceDate before public release.'
   );
 }
 
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
-const bullet = (list) => list.map((m) => `  • ${m}`).join('\n');
+const bullet = list => list.map(m => `  • ${m}`).join('\n');
 
 if (warnings.length) {
   console.log(`\n⚠️  ${warnings.length} warning(s):\n${bullet(warnings)}`);
 }
 
 if (errors.length) {
-  console.error(`\n❌ ${errors.length} blocking issue(s):\n${bullet(errors)}\n`);
+  console.error(
+    `\n❌ ${errors.length} blocking issue(s):\n${bullet(errors)}\n`
+  );
   console.error('This build must NOT be submitted to the stores.\n');
   process.exit(1);
 }

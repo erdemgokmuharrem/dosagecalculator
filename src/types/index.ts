@@ -56,10 +56,17 @@ export interface Drug {
   /** ISO date the source was last checked, e.g. "2026-01-15". */
   sourceDate?: string;
   /**
-   * Whether a named clinical reviewer has signed this rule off.
-   * Defaults to UNVERIFIED — the calculator warns on every unverified result.
+   * How far this rule has been checked.
+   *
+   * - UNVERIFIED: nobody has checked it. The default.
+   * - SOURCE_CHECKED: compared against a public authoritative source (the label
+   *   named in `sourceReference`) and corrected where it disagreed. This is NOT
+   *   clinical sign-off: no clinician has taken responsibility for it, so the
+   *   calculator still warns on every result.
+   * - REVIEWED: a named pharmacologist or physician (`reviewedBy`) has signed it
+   *   off. Only this level clears the warning.
    */
-  sourceVerification?: 'UNVERIFIED' | 'REVIEWED';
+  sourceVerification?: 'UNVERIFIED' | 'SOURCE_CHECKED' | 'REVIEWED';
   /** Name/title of the pharmacologist or physician who approved the rule. */
   reviewedBy?: string;
   /**
@@ -245,7 +252,7 @@ export type DoseCalculationSuccess = {
   sourceTitle: string;
   sourceSection: string;
   sourceDate: string;
-  sourceVerification: 'UNVERIFIED' | 'REVIEWED';
+  sourceVerification: 'UNVERIFIED' | 'SOURCE_CHECKED' | 'REVIEWED';
   warnings: DoseWarning[];
 };
 

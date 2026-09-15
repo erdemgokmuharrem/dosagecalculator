@@ -391,7 +391,8 @@
     "crclObesityCaveat": "BMI ≥ 30：Cockcroft-Gault 使用总体重，可能高估清除率。请使用校正体重核实。",
     "pediatricReview": "儿科患者。儿科剂量必须由第二位医疗专业人员独立核实。",
     "unverifiedSource": "此剂量规则未通过独立临床审核（UNVERIFIED）。使用前请对照官方产品信息核实。",
-    "overlappingAgeBands": "该药物的年龄区间存在重叠（{{age}} 岁匹配多个区间）。已采用最严格的规则；药物记录需要更正。"
+    "overlappingAgeBands": "该药物的年龄区间存在重叠（{{age}} 岁匹配多个区间）。已采用最严格的规则；药物记录需要更正。",
+    "sourceCheckedOnly": "此剂量规则仅与公开来源核对过（{{source}}，{{date}}），未经临床审核。使用前请对照官方产品信息核实。"
   },
   "blocked": {
     "title": "无法计算",

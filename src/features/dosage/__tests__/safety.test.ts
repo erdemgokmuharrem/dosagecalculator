@@ -446,6 +446,26 @@ describe('provenance and paediatric escalation', () => {
     expect(r.sourceDate).toBe('2026-01-15');
   });
 
+  it('keeps warning when a rule was only compared against a public source', () => {
+    // Comparing a rule against a label is not clinical sign-off. The result says
+    // so and names the source, so the clinician can go and check it.
+    const drug = weightDrug(
+      {},
+      {
+        sourceVerification: 'SOURCE_CHECKED',
+        sourceReference: 'FDA label',
+        sourceDate: '2026-09-15',
+      }
+    );
+    const r = ok(calculateDosage(adult(), drug));
+    expect(codes(r)).toContain('safety.sourceCheckedOnly');
+    expect(codes(r)).not.toContain('safety.unverifiedSource');
+    expect(r.sourceVerification).toBe('SOURCE_CHECKED');
+    expect(
+      r.warnings.find(w => w.code === 'safety.sourceCheckedOnly')?.params
+    ).toEqual({ source: 'FDA label', date: '2026-09-15' });
+  });
+
   it('always asks for a second check on paediatric patients', () => {
     const r = ok(
       calculateDosage(adult({ age: 6, weight: 20, height: 115 }), weightDrug())

@@ -709,14 +709,24 @@ export const calculateDosage = (
     });
   }
 
-  // Provenance: every rule in the current data set is machine-entered and has not
-  // been signed off by a clinical reviewer. Surface that on every result.
+  // Provenance. Only a named clinical reviewer clears this warning; a rule that
+  // was merely compared against a public label still says so on every result,
+  // and names the source so the clinician can go and check it.
   const sourceVerification = drug.sourceVerification ?? 'UNVERIFIED';
   if (sourceVerification === 'UNVERIFIED') {
     warnings.push({
       code: 'safety.unverifiedSource',
       severity: 'warning',
       params: {},
+    });
+  } else if (sourceVerification === 'SOURCE_CHECKED') {
+    warnings.push({
+      code: 'safety.sourceCheckedOnly',
+      severity: 'warning',
+      params: {
+        source: drug.sourceReference ?? '',
+        date: drug.sourceDate ?? '',
+      },
     });
   }
 

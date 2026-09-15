@@ -391,7 +391,8 @@
     "crclObesityCaveat": "BMI ≥ 30: Cockcroft-Gault verwendet das Gesamtkörpergewicht und kann die Clearance überschätzen. Mit angepasstem Körpergewicht überprüfen.",
     "pediatricReview": "Pädiatrische Patientin/pädiatrischer Patient. Pädiatrische Dosierungen müssen von einer zweiten Fachperson unabhängig geprüft werden.",
     "unverifiedSource": "Diese Dosierregel hat keine unabhängige klinische Prüfung durchlaufen (UNVERIFIED). Vor der Anwendung mit der Fachinformation abgleichen.",
-    "overlappingAgeBands": "Die Altersbereiche dieses Arzneimittels überschneiden sich (Alter {{age}} trifft auf mehrere zu). Es wurde die restriktivste Regel verwendet; der Datensatz muss korrigiert werden."
+    "overlappingAgeBands": "Die Altersbereiche dieses Arzneimittels überschneiden sich (Alter {{age}} trifft auf mehrere zu). Es wurde die restriktivste Regel verwendet; der Datensatz muss korrigiert werden.",
+    "sourceCheckedOnly": "Diese Dosierregel wurde nur mit einer öffentlichen Quelle abgeglichen ({{source}}, {{date}}); eine klinische Freigabe liegt nicht vor. Vor der Anwendung mit der Fachinformation abgleichen."
   },
   "blocked": {
     "title": "Berechnung Nicht Möglich",
