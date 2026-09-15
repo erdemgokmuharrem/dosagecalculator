@@ -9,21 +9,31 @@ mevcut olmayan bir mimariyi tarif ediyordu.
 
 ## 🔴 Yayına Çıkmadan Önce ZORUNLU (kod dışı)
 
-### 1. Klinik Doğrulama — hiçbiri yapılmadı
+### 1. Klinik doğrulama — farmakolog yok, kaynak karşılaştırması yapılıyor
 
-Veritabanındaki **105 doz kuralının tamamı** `UNVERIFIED` durumundadır.
-Hesaplama motoru her sonuçta bunu uyarı olarak gösterir.
+Elde farmakolog olmadığı için kurallar halka açık otoriter kaynaklarla
+(FDA etiketleri, ürün bilgileri, klinik kılavuzlar) tek tek karşılaştırılıyor.
+Bulgular ve kaynak bağlantıları [DOSE_VERIFICATION.md](DOSE_VERIFICATION.md)
+dosyasında.
 
-Her kural için bir farmakolog veya hekim tarafından doldurulması gerekenler:
+Veri artık üç seviye taşıyor:
 
-```ts
-sourceReference: 'TİTCK KÜB / FDA label / BNF-C …',
-sourceDate: '2026-01-15',
-sourceVerification: 'REVIEWED',
-reviewedBy: 'Dr. …',
-```
+| Seviye           | Anlamı                                                    | Uyarı                                        |
+| ---------------- | --------------------------------------------------------- | -------------------------------------------- |
+| `UNVERIFIED`     | Kimse bakmadı                                             | Her sonuçta uyarı                            |
+| `SOURCE_CHECKED` | Halka açık kaynakla karşılaştırıldı, uyuşmayan düzeltildi | Her sonuçta uyarı, kaynağın adı ve tarihiyle |
+| `REVIEWED`       | Adı yazılı bir hekim/farmakolog imzaladı                  | Uyarı kalkar                                 |
 
-`npm run check:release` bu sayıyı raporlar. Halka açık sürümde 0 olmalıdır.
+**Kaynakla karşılaştırma imza değildir.** Hiçbir kayıt `REVIEWED`
+işaretlenmedi; halka açık yayından önce lisanslı bir klinisyenin imzası
+gerekir ve yayın kapısı bunu engellemeye devam ediyor.
+
+Şimdiye kadar bulunanlardan bazıları tek başına zarar verebilecek
+büyüklükteydi: magnezyum sülfat 50 mg/kg yerine 50 g/kg olarak kayıtlıydı;
+gentamisin ve tobramisinde günlük doz, doz başına alanına girilmişti
+(3 kat); adrenalinin tek doz tavanı anafilaksi yerine kardiyak arrest
+dozuydu. Ayrıca 12 etkin madde birden fazla kayıtta ve bazılarında dozlar
+farklı.
 
 ### 2. Klinik incelemeye alınmış kayıtlar
 
