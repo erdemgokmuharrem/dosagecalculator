@@ -1,0 +1,27 @@
+{
+ "40": {
+  "formula": {
+   "renalAdjustments": [
+    {
+     "minGFR": 30,
+     "maxGFR": 1000000,
+     "adjustmentFactor": 1
+    },
+    {
+     "minGFR": 15,
+     "maxGFR": 30,
+     "adjustmentFactor": 1,
+     "frequencyOverride": "q12h"
+    },
+    {
+     "minGFR": 5,
+     "maxGFR": 15,
+     "adjustmentFactor": 1,
+     "frequencyOverride": "q24h"
+    }
+   ]
+  },
+  "sourceReference": "Unasyn etiketi (Pfizer): çocukta 300 mg/kg/gün kombine, q6h; erişkinde 3 g q6h, en fazla 12 g/gün; CrCl 15-29 q12h, 5-14 q24h (doz aynı)",
+  "sourceDate": "2026-09-17"
+ }
+}

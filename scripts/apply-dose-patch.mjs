@@ -96,8 +96,18 @@ const formulaRange = (slice) => {
   return null;
 };
 
-const literal = (value) =>
-  typeof value === 'string' ? `'${value.replace(/'/g, "\\'")}'` : String(value);
+/** Serialises a patch value as a TypeScript literal. Arrays and objects are
+ *  emitted with unquoted keys; the formatter re-wraps them afterwards. */
+const literal = (value) => {
+  if (typeof value === 'string') return `'${value.replace(/'/g, "\\'")}'`;
+  if (Array.isArray(value)) return `[${value.map(literal).join(', ')}]`;
+  if (value && typeof value === 'object') {
+    return `{ ${Object.entries(value)
+      .map(([k, v]) => `${k}: ${literal(v)}`)
+      .join(', ')} }`;
+  }
+  return String(value);
+};
 
 /**
  * Sets `key` inside an object literal: replaces the existing entry, or inserts
@@ -128,14 +138,32 @@ const valueEnd = (block, from) => {
   return block.length;
 };
 
+/** Removes `key` from an object literal; used when a patch sets it to null. */
+const dropKey = (block, key) => {
+  const m = block.match(new RegExp(`\\n(\\s*)${key}:`));
+  if (!m) return block;
+  const start = m.index ?? 0; // the newline that begins the key's line
+  const colon = block.indexOf(':', start + 1) + 1;
+  const end = valueEnd(block, colon);
+  // Keep the newline that begins the next line. Removing it glued that line
+  // onto the previous one, so the next setKey could not find its key and added
+  // a second copy.
+  return block.slice(0, start) + block.slice(end);
+};
+
 const setKey = (block, key, value) => {
+  if (value === null) return { block: dropKey(block, key), skipped: false };
   const m = block.match(new RegExp(`\\n(\\s*)${key}:`));
   if (m) {
     const at = (m.index ?? 0) + 1;
     const colon = block.indexOf(':', at) + 1;
     const end = valueEnd(block, colon);
     const existing = block.slice(colon, end).trim().replace(/,$/, '');
-    if (/^[[{]/.test(existing)) return { block, skipped: true };
+    // An existing array or object is only replaced when the patch supplies one;
+    // a scalar patch must never silently flatten a structured value.
+    const structuredExisting = /^[[{]/.test(existing);
+    const structuredValue = Array.isArray(value) || (value && typeof value === 'object');
+    if (structuredExisting && !structuredValue) return { block, skipped: true };
     return {
       block: block.slice(0, at) + `${m[1]}${key}: ${literal(value)},` + block.slice(end),
       skipped: false,

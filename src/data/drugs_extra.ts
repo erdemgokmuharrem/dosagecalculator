@@ -6,7 +6,7 @@ export const extraDrugs: Drug[] = [
     sourceVerification: 'SOURCE_CHECKED',
     sourceDate: '2026-09-15',
     sourceReference:
-      'FDA OTC Drug Facts, Children’s Ibuprofen Oral Suspension 100 mg/5 mL (DailyMed); and FDA prescription label, Ibuprofen Oral Suspension (DailyMed) | https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=c3c600dd-6eec-4304-868e-9642de5e1dac&type=display',
+      'Ibuprofen 10 mg/kg/doz q6-8h, gunluk tavan 40 mg/kg; 6 aydan kucukte kontrendike. Surup kaydi da kilo bazli modele alindi (id 2 ile ayni kural)',
     name: 'Ibuprofen Pediatrik Şurup',
     genericName: 'Ibuprofen',
     category: 'Analgesics',
@@ -25,19 +25,17 @@ export const extraDrugs: Drug[] = [
       { effect: 'Tinnitus (kulak çınlaması)', frequency: 'rare' },
     ],
     dosageForm: 'syrup',
-    calculationMethod: 'age',
+    calculationMethod: 'weight',
     dosageFormula: {
-      method: 'age',
-      fixedDose: 100, // Baz doz 100mg
+      dosePerKg: 10,
+      method: 'weight',
       frequency: 'q8h',
       maxSingleDose: 400,
       maxDailyDose: 1200,
       ageAdjustments: [
-        { minAge: 0.5, maxAge: 1, adjustmentFactor: 0.5 }, // 6-12 ay için 50mg
-        { minAge: 1, maxAge: 3, adjustmentFactor: 1.0 }, // 1-3 yaş için 100mg
-        { minAge: 4, maxAge: 6, adjustmentFactor: 1.5 }, // 4-6 yaş için 150mg
-        { minAge: 7, maxAge: 9, adjustmentFactor: 2.0 }, // 7-9 yaş için 200mg
-        { minAge: 10, maxAge: 12, adjustmentFactor: 3.0 }, // 10-12 yaş için 300mg
+        { minAge: 0, maxAge: 0.5, adjustmentFactor: 0 },
+        { minAge: 0.5, maxAge: 12, adjustmentFactor: 0.8 },
+        { minAge: 65, maxAge: 120, adjustmentFactor: 0.7 },
       ],
     },
     productInfo: {
@@ -108,7 +106,7 @@ export const extraDrugs: Drug[] = [
     sourceReference:
       'FDA label, ZOVIRAX (acyclovir) capsules/tablets/suspension (accessdata.fda.gov); and FDA label, Acyclovir Tablets USP (DailyMed); CDC STI Treatment Guidelines, Genital Herpes | https://www.accessdata.fda.gov/drugsatfda_docs/label/2008/018828s031lbl.pdf',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Oral asiklovirin dozu endikasyona göre birkaç kat değişir (zonada 800 mg günde 5 kez, genital herpeste 200 mg günde 5 kez, baskılama tedavisinde 400 mg günde 2 kez, suçiçeğinde 20 mg/kg günde 4 kez) ve böbrek yetmezliğinde her rejimin doz aralığı ayrı ayrı uzatılır. Bu rejimler tek bir doz ve sıklık kuralıyla doğru gösterilemediği, krem formunun da mg cinsinden dozu olmadığı için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Asiklovir Krem/Tablet',
     genericName: 'Acyclovir',

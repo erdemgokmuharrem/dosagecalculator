@@ -120,17 +120,16 @@ export const extendedDrugs: Drug[] = [
   {
     id: '62',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA prescribing information, meropenem for injection — DailyMed, Dosage and Administration (adult and paediatric dose tables, renal impairment table) | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71',
+      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Meropenem',
     genericName: 'Meropenem',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 6000,
+    maxDailyDose: 3000,
     contraindications: [
       'Karbapenem alerjisi',
       'Beta-laktam hipersensitivitesi',
@@ -146,11 +145,24 @@ export const extendedDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      renalAdjustments: [
+        { minGFR: 50.01, maxGFR: 1000000, adjustmentFactor: 1 },
+        {
+          minGFR: 26,
+          maxGFR: 50.01,
+          adjustmentFactor: 1,
+          frequencyOverride: 'q12h',
+        },
+      ],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.249, adjustmentFactor: 0 },
+        { minAge: 0.25, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
       dosePerKg: 20,
       frequency: 'q8h',
-      maxSingleDose: 2000,
-      maxDailyDose: 6000,
+      maxSingleDose: 1000,
+      maxDailyDose: 3000,
     },
     atcCode: 'J01DH02',
     productInfo: {
@@ -240,7 +252,7 @@ export const extendedDrugs: Drug[] = [
     sourceReference:
       'FDA prescribing information, VANCOMYCIN injection — DailyMed, section 2 Dosage and Administration; plus the 2020 ASHP/IDSA/PIDS/SIDP revised consensus guideline (Rybak et al., Clin… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=99e523d8-9bde-43cb-8434-497015e5dcbd',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Vankomisin dozu her hastada serum vankomisin düzeyi ve böbrek fonksiyonu izlenerek bireysel olarak ayarlanmalıdır; böbrek yetmezliğinde başlangıç dozundan sonra doz azaltılıp aralık uzatılır, yenidoğanlarda ise yaşa göre ayrı bir şema uygulanır. Bu ayarlamalar tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Vankomisin',
     genericName: 'Vancomycin',
@@ -356,7 +368,7 @@ export const extendedDrugs: Drug[] = [
     sourceReference:
       'FDA prescribing information, LEVAQUIN (levofloxacin) tablets/oral solution/injection — DailyMed, section 2 Dosage and Administration (adult table, paediatric table, renal impairmen… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=a23a1cca-bc3e-48c5-abd9-82eddb52e91b&type=display',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Levofloksasin dozu enfeksiyon türüne göre 250, 500 veya 750 mg arasında değişir; böbrek yetmezliğinde ilk dozdan sonra azaltılmış doz ve bazı durumlarda 48 saatlik aralık gerekir, çocuklarda ise yalnızca şarbon ve veba için kiloya göre 12 saatte bir verilen ayrı bir şema onaylıdır. Bu şemalar tek bir doz ve sıklık kuralıyla doğru gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Levofloksasin',
     genericName: 'Levofloxacin',
@@ -477,12 +489,11 @@ export const extendedDrugs: Drug[] = [
   {
     id: '65',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA prescribing information, clarithromycin tablets — DailyMed, Dosage and Administration (adult indication table and paediatric dosing) | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=98580dee-d2f4-4f62-a2d4-7434bab2421e',
+      'https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/050662s058,050698s038,050775s026lbl.pdf (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Klaritromisin',
     genericName: 'Clarithromycin',
     category: 'Antibiotics',
@@ -501,11 +512,19 @@ export const extendedDrugs: Drug[] = [
       { effect: 'QT uzaması', frequency: 'uncommon' },
     ],
     dosageForm: 'tablet',
-    calculationMethod: 'fixed',
+    calculationMethod: 'weight',
     dosageFormula: {
-      method: 'fixed',
-      fixedDose: 500,
-      frequency: 'bid',
+      renalAdjustments: [
+        { minGFR: 0, maxGFR: 30, adjustmentFactor: 0.5 },
+        { minGFR: 30, maxGFR: 1000, adjustmentFactor: 1 },
+      ],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.5, adjustmentFactor: 0 },
+        { minAge: 0.5, maxAge: 120, adjustmentFactor: 1 },
+      ],
+      frequency: 'q12h',
+      dosePerKg: 7.5,
+      method: 'weight',
       maxSingleDose: 500,
       maxDailyDose: 1000,
     },
@@ -734,6 +753,7 @@ export const extendedDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [{ minAge: 0, maxAge: 0.15, adjustmentFactor: 0.67 }],
       method: 'weight',
       dosePerKg: 7.5,
       frequency: 'q8h',
@@ -823,7 +843,7 @@ export const extendedDrugs: Drug[] = [
     sourceReference:
       'FDA/DailyMed label, Fluconazole tablets, DOSAGE AND ADMINISTRATION | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2ca7efcd-4a8d-4139-a3eb-930afd18b13f',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Flukonazol dozu endikasyona göre değişir: vajinal kandidiyazda tek seferlik doz yeterliyken diğer enfeksiyonlarda ilk gün yükleme dozu ve ardından endikasyona özgü farklı bir günlük idame dozu gerekir. Bu şemalar tek bir doz ve sıklık kuralıyla doğru gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Flukonazol',
     genericName: 'Fluconazole',
@@ -927,7 +947,7 @@ export const extendedDrugs: Drug[] = [
     sourceReference:
       'FDA/DailyMed label, Doxycycline Hyclate, DOSAGE AND ADMINISTRATION | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=2ad2b85f-2479-c7cd-e063-6294a90acca1',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Doksisiklin dozu enfeksiyonun ağırlığına göre değişir: olağan şemada ilk gün 200 mg, sonra günde 100 mg; ağır enfeksiyonlarda 12 saatte bir 100 mg. 8 yaş ve altında yalnızca ağır veya hayatı tehdit eden durumlarda kullanılır. Uygulama enfeksiyonun ağırlığını ve yükleme dozunu ifade edemediği için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: 'Doksisiklin',
     genericName: 'Doxycycline',
@@ -1042,7 +1062,7 @@ export const extendedDrugs: Drug[] = [
     sourceReference:
       'FDA/DailyMed label, BACTRIM / BACTRIM DS (sulfamethoxazole and trimethoprim), DOSAGE AND ADMINISTRATION incl. the renal impairment table | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Kotrimoksazol dozu böbrek fonksiyonuna göre değişir (kreatinin klirensi 15-30 mL/dk ise yarı doz verilir, 15 mL/dk altında kullanılması önerilmez) ve hesaplayıcı bu ayarı erişkinlerde doğru uygulayamıyor. Yanlış doz göstermemek için hesap yapılmıyor.',
     requiresClinicalReview: true,
     name: 'Kotrimoksazol (TMP/SMX)',
     genericName: 'Trimethoprim/Sulfamethoxazole',
@@ -2148,17 +2168,16 @@ export const extendedDrugs: Drug[] = [
   {
     id: '80',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'MHRA/EMA SmPC, Ventolin Evohaler 100 micrograms (emc); corroborated by Easyhaler Salbutamol 100 mcg SmPC | https://www.medicines.org.uk/emc/product/850/smpc',
+      'https://www.medicines.org.uk/emc/product/850/smpc (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Salbutamol',
     genericName: 'Salbutamol (Albuterol)',
     category: 'Respiratory',
     unit: 'mcg',
-    maxDailyDose: 1600,
+    maxDailyDose: 800,
     contraindications: [
       'Beta-2 agonist alerjisi',
       'Kardiyak aritmiler (dikkat)',
@@ -2172,11 +2191,15 @@ export const extendedDrugs: Drug[] = [
     dosageForm: 'inhaler',
     calculationMethod: 'fixed',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 3.999, adjustmentFactor: 0 },
+        { minAge: 4, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'fixed',
-      fixedDose: 200,
+      fixedDose: 100,
       frequency: 'prn',
-      maxSingleDose: 400,
-      maxDailyDose: 1600,
+      maxSingleDose: 200,
+      maxDailyDose: 800,
     },
     atcCode: 'R03AC02',
     productInfo: {
@@ -2253,12 +2276,11 @@ export const extendedDrugs: Drug[] = [
   {
     id: '81',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, montelukast sodium tablets, DailyMed (boxed warning + section 2); paediatric strengths per FDA SINGULAIR label 020829s063/020830s064/021409s040 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ccbbf0d6-efd9-4fdd-9e7b-e3d293062609',
+      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=482dcc92-b47f-4ea6-854a-f5ac2aea7842 (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Montelukast',
     genericName: 'Montelukast',
     category: 'Respiratory',
@@ -2273,6 +2295,12 @@ export const extendedDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'fixed',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.49, adjustmentFactor: 0 },
+        { minAge: 0.5, maxAge: 5.99, adjustmentFactor: 0.4 },
+        { minAge: 6, maxAge: 14.99, adjustmentFactor: 0.5 },
+        { minAge: 15, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'fixed',
       fixedDose: 10,
       frequency: 'q24h',
@@ -2679,7 +2707,7 @@ export const extendedDrugs: Drug[] = [
     sourceReference:
       'FDA label, Ozempic (semaglutide) injection, DailyMed — sections 2.2 Recommended Dosage and 8.4 Pediatric Use | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=adec4fd2-6858-4c99-91d4-531f5f2a2d79',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      "Semaglutid sabit tek bir doz olarak kullanılmaz: haftada bir 0,25 mg ile başlanır, en az 4 haftalık aralarla kan şekeri yanıtına göre 0,5 mg, 1 mg ve en fazla 2 mg'a çıkılır; obezite için kullanılan üründe ise hedef doz, üst sınır ve onaylı yaş grubu farklıdır. Hastanın hangi titrasyon basamağında olduğu ve hangi endikasyonla kullandığı bilinmeden doğru doz hesaplanamayacağı için doz gösterilmiyor.",
     requiresClinicalReview: true,
     name: 'Semaglutid',
     genericName: 'Semaglutide',
@@ -3135,7 +3163,7 @@ export const extendedDrugs: Drug[] = [
     sourceVerification: 'SOURCE_CHECKED',
     sourceDate: '2026-09-15',
     sourceReference:
-      'FDA labels, Furosemide Tablets/Oral Solution (DailyMed) and Furosemide Injection USP (accessdata, NDA 018902 s036), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=ea623e21-e9fd-4ef1-843b-82cbc05af5bf',
+      'Ayni etkin maddenin id 9 kaydiyla birlestirildi (FDA Lasix etiketi; cocukta 1-2 mg/kg/doz, eriskinde 20-80 mg baslangic)',
     name: 'Furosemid',
     genericName: 'Furosemide',
     category: 'Diuretics',
@@ -3155,10 +3183,14 @@ export const extendedDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 1, adjustmentFactor: 0.5 },
+        { minAge: 65, maxAge: 120, adjustmentFactor: 0.8 },
+      ],
       method: 'weight',
       dosePerKg: 1,
-      frequency: 'q8h',
-      maxSingleDose: 80,
+      frequency: 'q12h',
+      maxSingleDose: 200,
       maxDailyDose: 600,
     },
     atcCode: 'C03CA01',
@@ -3246,7 +3278,7 @@ export const extendedDrugs: Drug[] = [
     sourceReference:
       'FDA label, Methylprednisolone Sodium Succinate for Injection USP, DailyMed — Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=e86fbda8-00e4-4d54-841a-59dea6c15e70&type=display',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Metilprednizolon dozu hastalığa ve hastanın yanıtına göre belirlenir: erişkinde başlangıç dozu 10-40 mg, çocukta 0,11-1,6 mg/kg/gün arasında değişir, puls steroid tedavisinde ve multipl skleroz atağında çok daha yüksek dozlar kullanılır. Tek bir kural bu farklılığı doğru karşılayamadığı için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Metilprednizolon',
     genericName: 'Methylprednisolone',

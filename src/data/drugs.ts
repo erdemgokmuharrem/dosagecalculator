@@ -411,7 +411,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA methotrexate label (RA: fixed 7.5 mg once weekly; pJIA: 10 mg/m2 weekly; oncology protocols differ)',
     clinicalReviewNote:
-      'Metotreksat dozu endikasyona göre değişir: romatoid artritte haftalık sabit 7,5-25 mg, juvenil artritte 10 mg/m2/hafta, onkolojide protokole özgü. Tek bir m2 formülü bu rejimleri karşılamaz.',
+      'Metotreksat dozu endikasyona göre temelden değişir: romatoid artritte haftada bir sabit 7,5 mg ile başlanıp yanıta göre artırılır, sedef hastalığında haftada 10-25 mg, juvenil idiyopatik artritte haftada 10 mg/m², akut lenfoblastik lösemide haftada 20 mg/m² verilir ve kan sayımına göre ayarlanır. Erişkindeki sabit doz ile çocuktaki yüzey alanına göre doz tek bir formülle ifade edilemediği için doz gösterilmiyor; doz endikasyona göre hekim tarafından belirlenmelidir.',
     requiresClinicalReview: true,
     name: 'Methotrexate',
     genericName: 'Methotrexate',
@@ -547,7 +547,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA LANOXIN label (maintenance 3-4.5 mcg/kg/day adults and >10 y; 5.6-11.3 mcg/kg/day divided for 5-10 y)',
     clinicalReviewNote:
-      'Digoksin dar terapötik aralıklıdır; idame dozu serum düzeyi, böbrek işlevi ve yaşa göre belirlenir (erişkin ve >10 yaş 3-4,5 mcg/kg/gün; 5-10 yaş 5,6-11,3 mcg/kg/gün bölünmüş). Sabit kilo başına kural bunu karşılamaz.',
+      'Digoksin idame dozu yağsız vücut ağırlığı ve kreatinin klerensine göre seçilir ve serum digoksin düzeyine göre ayarlanır; 10 yaş üstünde ve erişkinde günde bir kez, 5-10 yaşta günde iki kez verilir, 5 yaş altında tablet yerine oral çözelti kullanılır. Bu farklar tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Digoxin',
     genericName: 'Digoxin',
@@ -700,7 +700,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed), WARFARIN SODIUM tablet - Dosage and Administration 2.1/2.3, Boxed Warning, 8.4 Pediatric Use | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1b766b1-0327-48cd-ab01-e85038cf365f',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Varfarin dozu her hasta için INR sonucuna göre ayrı ayrı ayarlanır; hedef INR genellikle 2,0-3,0 olup prospektüs başlangıçta 2-5 mg, idamede 2-10 mg gibi bir aralık verir, sabit bir doz vermez. Uygulama INR değerini hesaba katamadığı ve çocuklarda güvenli doz belirlenmemiş olduğu için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: 'Warfarin',
     genericName: 'Warfarin',
@@ -820,7 +820,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed), HUMULIN R (insulin human injection) - Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9ec3e28a-cea9-4e45-9057-e5bf8e37014c',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'İnsülin dozu her hasta için kan şekeri ölçümlerine göre ayrı ayrı ayarlanır; prospektüsteki 0,5-1 ünite/kg/gün değeri bazal ve öğün insülinini birlikte kapsayan TOPLAM GÜNLÜK gereksinimdir, tek bir enjeksiyon dozu değildir. Uygulama bu titrasyonu ve bazal/bolus ayrımını yapamadığı için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: 'Insulin Regular',
     genericName: 'Insulin Human',
@@ -1226,7 +1226,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed), PRILOSEC (omeprazole magnesium) - Dosage and Administration, paediatric weight-band tables | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b6761f84-53ac-4745-a8c8-1e5427d7e179',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Omeprazolün çocuk dozu kiloyla orantılı değil, kilo aralığına göre sabittir (5-10 kg arası 5 mg, 10-20 kg arası 10 mg, 20 kg ve üstü 20 mg); erişkinde endikasyona göre 20-40 mg verilir. Uygulama kilo aralığı tablosunu ifade edemediği için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: 'Omeprazole',
     genericName: 'Omeprazole',
@@ -1460,7 +1460,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed) - GLUCOPHAGE / GLUCOPHAGE XR (metformin hydrochloride) tablets, Dosage and Administration + Contraindications | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=4a0166c7-7097-4e4a-9036-6c9a60d08fc6',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      "Metformine 500 mg günde iki kez gibi bir başlangıç dozuyla başlanır ve kan şekeri yanıtına göre haftalık artırılır (erişkinde en fazla 2550 mg/gün); eGFR 30'un altında kontrendikedir. Uygulama başlangıç ve idame dozunu ayıramadığı için doz gösterilmemektedir.",
     requiresClinicalReview: true,
     name: 'Metformin',
     genericName: 'Metformin',
@@ -1575,7 +1575,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed) - lisinopril tablets, Dosage and Administration (adult hypertension, renal impairment, pediatric hypertension) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=80221abf-6e01-c8c2-e053-2a91aa0a82b8&type=display',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Lisinopril 6 yaş altında önerilmez; 6 yaş ve üzeri çocuklarda kiloya göre 0,07 mg/kg (en fazla 5 mg), erişkinlerde ise kilodan bağımsız 10 mg ile başlanır ve bu iki farklı rejim tek bir hesap kuralıyla aynı anda doğru gösterilemediği için doz hesaplanmıyor. Böbrek yetmezliğinde de erişkinde başlangıç dozu yarıya indirilirken glomerüler filtrasyon hızı 30 mL/dk/1,73 m² altındaki çocuklarda ilaç önerilmez.',
     requiresClinicalReview: true,
     name: 'Lisinopril',
     genericName: 'Lisinopril',
@@ -1795,7 +1795,7 @@ const baseDrugs: Drug[] = [
     name: 'Levothyroxine',
     requiresClinicalReview: true,
     clinicalReviewNote:
-      '50 yaş üstü ve kardiyak hastalarda 25-50 mcg sabit başlangıç dozu gerekir; mg/kg modeli bu rejimi karşılamaz.',
+      'Levotiroksin dozu TSH ve serbest T4 düzeyine göre ayarlanır; yaşlılarda ve kalp hastalarında ürün bilgisi sayı vermeden daha düşük başlangıç dozu ister, ergenlikte ise doz yaşa değil büyüme ve ergenliğin tamamlanıp tamamlanmadığına göre değişir. Bu nedenle kilo başına tek bir kural doğru başlangıç dozunu veremez ve doz hesaplanmıyor.',
     genericName: 'Levothyroxine',
     category: 'Thyroid Hormones',
     unit: 'mcg',
@@ -1905,17 +1905,16 @@ const baseDrugs: Drug[] = [
   {
     id: '16',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label (DailyMed) - meropenem for injection (Hikma), Dosage and Administration tables for adult and pediatric patients and for renal impairment | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=d54fdbad-ca93-467c-92d7-c1bd88f3bbe3&type=display',
+      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (id 62 için doğrulanan kural, aynı etkin madde)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Meropenem',
     genericName: 'Meropenem',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 6000,
+    maxDailyDose: 3000,
     contraindications: [
       'Allergy to carbapenems',
       'Severe hypersensitivity to beta-lactams',
@@ -1924,11 +1923,24 @@ const baseDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      renalAdjustments: [
+        { minGFR: 50.01, maxGFR: 1000000, adjustmentFactor: 1 },
+        {
+          minGFR: 26,
+          maxGFR: 50.01,
+          adjustmentFactor: 1,
+          frequencyOverride: 'q12h',
+        },
+      ],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.249, adjustmentFactor: 0 },
+        { minAge: 0.25, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
       dosePerKg: 20,
       frequency: 'q8h',
-      maxSingleDose: 2000,
-      maxDailyDose: 6000,
+      maxSingleDose: 1000,
+      maxDailyDose: 3000,
     },
     productInfo: {
       activeIngredient: 'Meropenem trihydrate',
@@ -2028,7 +2040,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed) - PRIMAXIN IV (imipenem and cilastatin sodium) for injection, Dosage and Administration and Warnings (seizures / renal function) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=f41d8abd-7792-4918-1b93-bd83ea01955e&type=display',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      "İmipenem/silastatin çocuklarda kiloya göre (3 aydan büyüklerde 6 saatte bir 15-25 mg/kg), erişkinlerde ise sabit dozla (6 saatte bir 500 mg) verilir ve kreatinin klerensi 90 mL/dk'nın altındaki erişkinlerde nöbet riski nedeniyle doz mutlaka azaltılmalıdır. Bu böbrek ayarı ve 3 aydan küçük bebeklerde yaşa göre değişen doz aralığı tek bir doz kuralıyla doğru gösterilemediği için doz hesaplanmıyor.",
     requiresClinicalReview: true,
     name: 'Imipenem/Cilastatin',
     genericName: 'Imipenem/Cilastatin',
@@ -2144,7 +2156,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed) - INVANZ (ertapenem for injection), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=33f3b99b-fa82-42e0-26bf-f49891ae3d22',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      "Ertapenem 3 ay-12 yaş arasında 15 mg/kg günde iki kez (günde en fazla 1 g), 13 yaş ve üzerinde ise günde tek doz 1 g olarak verilir ve kreatinin klerensi 30 mL/dk/1,73 m² veya altındaki erişkinlerde doz günde 500 mg'a düşürülür. Çocuk ve erişkindeki farklı uygulama sıklığı ile bu böbrek ayarı tek bir doz kuralıyla doğru gösterilemediği için doz hesaplanmıyor.",
     requiresClinicalReview: true,
     name: 'Ertapenem',
     genericName: 'Ertapenem',
@@ -2371,7 +2383,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA prescribing information, cefepime for injection (DailyMed), section 2 Dosage and Administration Table 1/Table 2 and section 5.2 Neurotoxicity | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e80c27e2-164d-4836-ba24-c160d75dc5d3',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Sefepim dozu ve uygulama aralığı böbrek işlevine göre birlikte ayarlanmalıdır; CrCl 60 ve altında ayarlama zorunludur ve ayarlanmamış doz ciddi nörotoksisiteye yol açabilir. Bu ayarlama henüz doğru hesaplanamadığı için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: 'Cefepime',
     genericName: 'Cefepime',
@@ -2474,12 +2486,11 @@ const baseDrugs: Drug[] = [
   {
     id: '21',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA prescribing information, ZOSYN (piperacillin and tazobactam) injection (DailyMed), section 2 Dosage and Administration including the paediatric dosage table and the renal impai… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=8db6bd91-2106-4bfd-8cc8-38aaf1e18d17&type=display',
+      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8db6bd91-2106-4bfd-8cc8-38aaf1e18d17 (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Piperacillin/Tazobactam',
     genericName: 'Piperacillin/Tazobactam',
     category: 'Antibiotics',
@@ -2493,9 +2504,14 @@ const baseDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.1666, adjustmentFactor: 0 },
+        { minAge: 0.1667, maxAge: 0.75, adjustmentFactor: 0.8 },
+        { minAge: 0.7501, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
-      dosePerKg: 100,
-      frequency: 'q6h',
+      dosePerKg: 112.5,
+      frequency: 'q8h',
       maxSingleDose: 4500,
       maxDailyDose: 18000,
     },
@@ -2597,7 +2613,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA prescribing information, vancomycin injection (DailyMed), section 2 Dosage and Administration and Use in Specific Populations / renal impairment; corroborated by the 2020 ASHP/… | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=99e523d8-9bde-43cb-8434-497015e5dcbd&type=display',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Vankomisin dozu her hastada böbrek fonksiyonuna ve ölçülen serum vankomisin düzeyine göre ayarlanmalıdır; yenidoğanlarda ayrıca yükleme dozu ve doğum sonrası yaşa göre değişen doz aralığı gerekir. Serum düzeyi takibiyle belirlenen bu dozlama sabit bir doz kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Vancomycin',
     genericName: 'Vancomycin',
@@ -2846,7 +2862,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA prescribing information, levofloxacin tablets (DailyMed), section 2 Dosage and Administration, Table 1 (adults, CLCR at least 50 mL/min), Table 2 (paediatric patients 30 kg or… | https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=dabedb15-5b55-3853-e053-2995a90aa44e',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Levofloksasinin erişkin dozu enfeksiyon türüne göre 250, 500 veya 750 mg olarak seçilir ve böbrek yetmezliğinde ilk tam dozdan sonra azaltılmış doz ya da uzatılmış aralıkla sürdürülür; çocuklarda yalnızca şarbon ve veba için kiloya göre kullanılır. Bu rejim tek bir doz ve sıklık kuralıyla doğru ifade edilemediği için doz gösterilmiyor.',
     requiresClinicalReview: true,
     name: 'Levofloxacin',
     genericName: 'Levofloxacin',
@@ -2966,7 +2982,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'Gentamicin labelling (3-5 mg/kg/day divided q8h, or 5-7 mg/kg once daily; interval depends on renal function and postmenstrual age)',
     clinicalReviewNote:
-      'Aminoglikozid dozu ve uygulama aralığı böbrek işlevine, yenidoğanda postmenstrüel yaşa göre belirlenir ve serum düzeyiyle izlenir. Tek doz x sıklık modeli bu rejimi karşılamaz.',
+      'Gentamisin, böbrek işlevi azalmışsa olağan ilk dozdan sonra azaltılmış dozla ya da uzatılmış aralıkla sürdürülür ve serum düzeyiyle izlenir; yaşamın ilk haftasındaki yenidoğanda 12 saatte bir, diğer yaşlarda 8 saatte bir verilir. Bu şema tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Gentamicin',
     genericName: 'Gentamicin',
@@ -3081,7 +3097,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA prescribing information, amikacin sulfate injection (DailyMed), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=c0f57839-1c9b-49e5-8c7a-708e2d16495d',
     clinicalReviewNote:
-      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Amikasin dozu serum pik ve dip düzeylerine göre ayarlanır; yenidoğanda ve böbrek yetmezliğinde önce yükleme dozu verilir, idame dozu kreatinin klerensiyle orantılı olarak azaltılır. Tek doz ve sıklık modeli bu rejimi karşılamadığı için doz gösterilmiyor.',
     requiresClinicalReview: true,
     name: 'Amikacin',
     genericName: 'Amikacin',
@@ -3182,7 +3198,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA prescribing information, ZITHROMAX (azithromycin) tablets and oral suspension (DailyMed), Dosage and Administration - adult and paediatric dosage tables | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3ddecd25-dc32-a2af-e063-6294a90a526d',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Azitromisin endikasyona göre farklı kürlerle verilir: çoğu enfeksiyonda ilk gün yüksek doz, sonraki 4 gün yarım doz (erişkinde 500 mg sonra 250 mg, çocukta 10 mg/kg sonra 5 mg/kg), bazı enfeksiyonlarda ise 3 günlük ya da tek seferlik doz uygulanır. Yükleme dozu ve kür süresi sabit bir günlük doz kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Azithromycin',
     genericName: 'Azithromycin',
@@ -3367,7 +3383,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed) - doxycycline hyclate tablets | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=f234f419-42da-4a6d-82c6-92106cd77c67',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Doksisiklin dozu enfeksiyonun ağırlığına göre değişir: olağan şemada ilk gün 200 mg, sonra günde 100 mg; ağır enfeksiyonlarda 12 saatte bir 100 mg. 8 yaş ve altında yalnızca ağır veya hayatı tehdit eden durumlarda kullanılır. Uygulama enfeksiyonun ağırlığını ve yükleme dozunu ifade edemediği için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: 'Doxycycline',
     genericName: 'Doxycycline',
@@ -3564,12 +3580,12 @@ const baseDrugs: Drug[] = [
     sourceVerification: 'SOURCE_CHECKED',
     sourceDate: '2026-09-15',
     sourceReference:
-      'FDA metronidazole label (adults 7.5 mg/kg q6h, max 4 g/day; paediatric 30-50 mg/kg/day divided TID)',
+      'SmPC: cocuklarda gunluk 20-30 mg/kg, 8 saatte bir 7,5 mg/kg; eriskinde 7,5 mg/kg q6-8h, gunluk tavan 4 g | dogrulama: DOSE_VERIFICATION.md id 67',
     name: 'Metronidazole',
     genericName: 'Metronidazole',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 2000,
+    maxDailyDose: 4000,
     contraindications: [
       'Allergy to metronidazole',
       'Pregnancy (first trimester)',
@@ -3583,10 +3599,11 @@ const baseDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [{ minAge: 0, maxAge: 0.15, adjustmentFactor: 0.67 }],
       method: 'weight',
-      dosePerKg: 10,
+      dosePerKg: 7.5,
       frequency: 'q8h',
-      maxSingleDose: 500,
+      maxSingleDose: 1000,
       maxDailyDose: 4000,
     },
     productInfo: {
@@ -3669,7 +3686,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed) - ZYVOX (linezolid) injection, granules, tablets | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6e70e63b-bfd5-478d-a8ee-8ba22c9efabd',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Linezolid doğumdan 11 yaşına kadar 8 saatte bir 10 mg/kg, 12 yaş ve üzerinde ise 12 saatte bir 600 mg verilir; doz aralığı yaşa göre değiştiği için tek bir kuralla doğru doz gösterilemiyor. Yedi günlükten küçük prematüre yenidoğanlarda başlangıç aralığı da farklıdır (12 saatte bir 10 mg/kg).',
     requiresClinicalReview: true,
     name: 'Linezolid',
     genericName: 'Linezolid',
@@ -3778,7 +3795,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label (DailyMed) - daptomycin for injection (CUBICIN) | https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=4cdf4099-db58-43b8-9fbc-afd997ccfa4b',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Daptomisin dozu endikasyona göre değişir (erişkinde komplike deri ve yumuşak doku enfeksiyonunda 4 mg/kg, S. aureus bakteriyemisinde 6 mg/kg; çocukta yaşa ve endikasyona göre 5-12 mg/kg) ve kreatinin klirensi 30 mL/dk altında aynı doz 48 saatte bir verilir. Bu şema tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor; 1 yaşından küçük çocuklarda kullanılmamalıdır.',
     requiresClinicalReview: true,
     name: 'Daptomycin',
     genericName: 'Daptomycin',
@@ -3865,7 +3882,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'Colistimethate label (2.5-5 mg/kg/day of colistin BASE activity, divided 2-4; CBA, CMS and IU are not interchangeable)',
     clinicalReviewNote:
-      'Kolistin dozu birbirine dönüştürülemeyen üç birimle ifade edilir (kolistin baz aktivitesi, kolistimetat, IU) ve böbrek işlevine göre ayarlanır. Birim belirtilmeden doz hesaplanamaz.',
+      'Kolistin dozu birbirine eşit olmayan birimlerle (kolistin baz aktivitesi miligramı, kolistimetat sodyum miligramı, milyon ünite) yazılır ve kreatinin klerensi 10-29 mL/dk olan hastada dozlar arası süre 36 saate uzatılır. Bu birim ve şema farkları tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Colistin',
     genericName: 'Colistin',
@@ -3954,7 +3971,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label - TYGACIL (tigecycline), Pfizer prescribing information | https://www.pfizermedical.com/tygacil/dosage-admin',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      "Tigesiklin erişkinde 100 mg yükleme dozunun ardından 12 saatte bir 50 mg olarak verilir, ağır karaciğer yetmezliğinde idame dozu 25 mg'a iner ve 18 yaş altında kullanımı önerilmez. Yükleme dozu ve karaciğer yetmezliği ayarı tek doz ve sıklık modeliyle ifade edilemediği için doz gösterilmiyor.",
     requiresClinicalReview: true,
     name: 'Tigecycline',
     genericName: 'Tigecycline',
@@ -4047,7 +4064,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, FORTAZ (ceftazidime for injection), Table 3 Recommended Dosage Schedule; Table 4 renal insufficiency | https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/050578s062lbl.pdf',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Seftazidimin idame dozu kreatinin klerensi 50 mL/dk altına indiğinde erişkinde sabit miktar ve uzatılmış aralıkla verilir (ör. 1 g 12 veya 24 saatte bir, 500 mg 24 veya 48 saatte bir); kiloya dayalı kural erişkin üst doz sınırıyla birlikte bu azaltmayı doğru hesaplayamıyor. Böbrek yetmezliğinde birikim nöbet ve ensefalopatiye yol açabildiği için doz gösterilmiyor.',
     requiresClinicalReview: true,
     name: 'Ceftazidime',
     genericName: 'Ceftazidime',
@@ -4145,7 +4162,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, CLAFORAN (cefotaxime for injection), DOSAGE AND ADMINISTRATION - Adults table and ’Neonates, Infants, and Children’ | https://www.accessdata.fda.gov/drugsatfda_docs/label/2015/050547s071,050596s042lbl.pdf',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Sefotaksim çocuklarda günlük dozun 4-6 eşit doza bölünmesiyle, erişkinlerde 8-12 saatte bir verilir ve doz enfeksiyonun ağırlığına göre günde 2-12 g arasında değişir. Tek bir doz ve sıklık bu şemaları karşılayamadığı için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: 'Cefotaxime',
     genericName: 'Cefotaxime',
@@ -4232,7 +4249,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, AVYCAZ (ceftazidime and avibactam) for injection, rev. 2/2025 - 2.1 Adults, Table 2 paediatric dosage, Tables 3 and 4 renal impairment | https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/206494s013lbl.pdf',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Seftazidim/avibaktamın dozu böbrek fonksiyonuna göre yalnızca miktar olarak değil doz aralığı olarak da değişir (kreatinin klirensi 30 mL/dk ve altında 0,94 g 12, 24 veya 48 saatte bir) ve yenidoğanlarda doğumdaki gebelik haftasına ve düzeltilmiş yaşa bağlıdır. Bu şema tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor; böbrek fonksiyonu bozuk 2 yaş altı çocuklar için önerilmiş bir doz yoktur.',
     requiresClinicalReview: true,
     name: 'Ceftazidime/Avibactam',
     genericName: 'Ceftazidime/Avibactam',
@@ -4320,7 +4337,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, FETROJA (cefiderocol) for injection, current DailyMed version rev. March 2026 - 2.1 Recommended Dosage, 2.2 renal adjustments, 8.4 Pediatric Use, 5.1 warning | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=75c0c785-38e0-4049-a6fb-b77581f5b35c',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Sefiderokol yalnızca 18 yaş ve üzeri erişkinlerde onaylıdır ve dozu böbrek fonksiyonuna göre hem miktar hem sıklık olarak değişir (kreatinin klirensi 120 mL/dk ve üzerinde 6 saatte bir 2 g, 15 mL/dk altında veya aralıklı hemodiyalizde 12 saatte bir 0,75 g). Bu şema tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Cefiderocol',
     genericName: 'Cefiderocol',
@@ -4400,12 +4417,11 @@ const baseDrugs: Drug[] = [
   {
     id: '40',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, UNASYN (ampicillin sodium and sulbactam sodium) for injection, DOSAGE AND ADMINISTRATION (DailyMed full prescribing information) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda',
+      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Ampicillin/Sulbactam',
     genericName: 'Ampicillin/Sulbactam',
     category: 'Antibiotics',
@@ -4419,8 +4435,13 @@ const baseDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      renalAdjustments: [{ minGFR: 30, maxGFR: 9999, adjustmentFactor: 1 }],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.999, adjustmentFactor: 0 },
+        { minAge: 1, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
-      dosePerKg: 50,
+      dosePerKg: 75,
       frequency: 'q6h',
       maxSingleDose: 3000,
       maxDailyDose: 12000,
@@ -4488,12 +4509,11 @@ const baseDrugs: Drug[] = [
   {
     id: '41',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, TIMENTIN (ticarcillin disodium and clavulanate potassium), rev. 06/2014 - 2.1 Adults, 2.2 Pediatric Patients (>=3 Months of Age), 2.3 Renal Impairment Table 1 | https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/050590s069,050658s031lbl.pdf',
+      'https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/050590s069,050658s031lbl.pdf (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Ticarcillin/Clavulanate',
     genericName: 'Ticarcillin/Clavulanate',
     category: 'Antibiotics',
@@ -4507,10 +4527,15 @@ const baseDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      renalAdjustments: [{ minGFR: 60.01, maxGFR: 9999, adjustmentFactor: 1 }],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.249, adjustmentFactor: 0 },
+        { minAge: 0.25, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
-      dosePerKg: 75, // 3.1g q4-6h
+      dosePerKg: 50, // 3.1g q4-6h
       frequency: 'q6h',
-      maxSingleDose: 3100,
+      maxSingleDose: 3000,
       maxDailyDose: 18000,
     },
     productInfo: {
@@ -4823,7 +4848,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, ZERBAXA (ceftolozane and tazobactam) for injection (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=70ac1d90-eff3-4f0b-9f46-5846c571b32f',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Seftolozan/tazobaktamda çocuk dozu kiloya göre (8 saatte bir 30 mg/kg, en fazla 1,5 g) belirlenirken böbrek yetmezliğinde erişkin dozu sabit miktara (750 mg ya da 375 mg) indirilir, hemodiyalizde yükleme dozunu idame dozu izler ve 2 yaş altında böbrek yetmezliği varsa kullanımı önerilmez. Bu şemalar tek bir hesaplama kuralıyla doğru ifade edilemediği için doz gösterilmez; dozu ürün bilgisindeki böbrek fonksiyonuna göre doz tablosundan belirleyin.',
     requiresClinicalReview: true,
     name: 'Ceftolozane/Tazobactam',
     genericName: 'Ceftolozane/Tazobactam',
@@ -4909,12 +4934,11 @@ const baseDrugs: Drug[] = [
   {
     id: '46',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, AVELOX (moxifloxacin hydrochloride) tablets (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=7d74dfa6-0468-43ad-ad7f-dd90d9ae7706',
+      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=45ce14e5-98b8-296b-e063-6294a90a769b (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Moxifloxacin',
     genericName: 'Moxifloxacin',
     category: 'Antibiotics',
@@ -4935,6 +4959,10 @@ const baseDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 17.99, adjustmentFactor: 0 },
+        { minAge: 18, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'fixed',
       fixedDose: 400,
       frequency: 'q24h',
@@ -5017,7 +5045,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, Ofloxacin tablets USP (DailyMed) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=ee1bf431-97fa-4aba-9cc3-0cfcea779ca2',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Ofloksasin dozu endikasyona göre değişir (sistit ve komplike idrar yolu enfeksiyonunda 12 saatte bir 200 mg, servisit, üretrit ve prostatitte 12 saatte bir 300 mg, pnömoni, deri enfeksiyonu ve pelvik inflamatuvar hastalıkta 12 saatte bir 400 mg, gonorede tek doz 400 mg) ve böbrek yetmezliğinde ilk dozdan sonra doz aralığı 24 saate uzatılır. Tek bir kural bu şemaları doğru gösteremediği için doz hesaplanmaz; 18 yaş altında güvenliliği ve etkinliği kanıtlanmamıştır.',
     requiresClinicalReview: true,
     name: 'Ofloxacin',
     genericName: 'Ofloxacin',
@@ -5110,12 +5138,11 @@ const baseDrugs: Drug[] = [
   {
     id: '48',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA NOROXIN (norfloxacin) prescribing information, Dosage and Administration + Pediatric Use (RxList mirror of the Merck FDA label; accessdata PDF 019384s062 retrieved but font-enc… | https://www.rxlist.com/noroxin-drug.htm',
+      'FDA NOROXIN etiketi (019384s067): tüm İYE ve prostatit endikasyonlarında 400 mg q12h; CrCl ≤30 mL/dk/1,73 m² için 400 mg günde bir kez; 18 yaş altında güvenlilik belirlenmemiş',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Norfloxacin',
     genericName: 'Norfloxacin',
     category: 'Antibiotics',
@@ -5136,6 +5163,19 @@ const baseDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
+      renalAdjustments: [
+        {
+          minGFR: 0,
+          maxGFR: 30.01,
+          adjustmentFactor: 1,
+          frequencyOverride: 'q24h',
+        },
+        { minGFR: 30.01, maxGFR: 1000000, adjustmentFactor: 1 },
+      ],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 17.99, adjustmentFactor: 0 },
+        { minAge: 18, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'fixed',
       fixedDose: 400,
       frequency: 'q12h',
@@ -5208,7 +5248,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'Tobramycin labelling (3 mg/kg/DAY divided q8h; up to 5 mg/kg/day only in life-threatening infection)',
     clinicalReviewNote:
-      'Aminoglikozid dozu ve uygulama aralığı böbrek işlevine, yenidoğanda postmenstrüel yaşa göre belirlenir ve serum düzeyiyle izlenir. Tek doz x sıklık modeli bu rejimi karşılamaz.',
+      'Tobramisin, böbrek işlevi azalmışsa 1 mg/kg yükleme dozundan sonra azaltılmış dozla ya da uzatılmış aralıkla sürdürülür ve serum düzeyiyle izlenir; yaşamın ilk haftasındaki yenidoğanda 12 saatte bir, diğer yaşlarda 8 saatte bir verilir. Bu şema tek bir doz ve sıklık kuralıyla gösterilemediği için doz hesaplanmıyor.',
     requiresClinicalReview: true,
     name: 'Tobramycin',
     genericName: 'Tobramycin',
@@ -5287,7 +5327,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'Netromycin (netilmicin sulfate) CPS monograph, Dosage and Administration - adult, paediatric and neonatal regimens plus peak/trough targets | https://www.rxmed.com/b.main/b2.pharmaceutical/b2.1.monographs/cps-_monographs/CPS-_(General_Monographs-_N)/NETROMYCIN.h…',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Netilmisin yaşa göre farklı şemalarla verilir (erişkinde günde 4-6 mg/kg, 2-3 doza bölünerek; çocukta 8 saatte bir 2-2,5 mg/kg) ve böbrek yetmezliğinde 2 mg/kg yükleme dozundan sonraki dozlar serum kreatininine göre hesaplanıp kan düzeyi ölçümüyle (dip düzey 2 mcg/mL altında olacak şekilde) ayarlanmalıdır. Bu şema tek bir sabit kuralla güvenle ifade edilemediği için doz gösterilmez.',
     requiresClinicalReview: true,
     name: 'Netilmicin',
     genericName: 'Netilmicin',
@@ -5452,27 +5492,27 @@ const baseDrugs: Drug[] = [
   {
     id: '52',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'Medsafe New Zealand Data Sheet, Arrow-Roxithromycin 150/300 mg coated tablets, section 4.2 Dose and method of administration and section 4.4 Special warnings (text extracted direct… | https://www.medsafe.govt.nz/profs/Datasheet/a/Arrowroxithromycintab.pdf',
+      'https://www.medsafe.govt.nz/profs/Datasheet/a/Arrowroxithromycintab.pdf (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Roxithromycin',
     genericName: 'Roxithromycin',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 600,
+    maxDailyDose: 300,
     contraindications: ['Allergy to macrolides', 'Severe liver disease'],
     sideEffects: ['Nausea', 'Diarrhea', 'Abdominal pain', 'QT prolongation'],
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [],
       method: 'weight',
-      dosePerKg: 5, // 2.5-4 mg/kg q12h
+      dosePerKg: 3, // 2.5-4 mg/kg q12h
       frequency: 'q12h',
-      maxSingleDose: 300,
-      maxDailyDose: 600,
+      maxSingleDose: 150,
+      maxDailyDose: 300,
     },
     productInfo: {
       activeIngredient: 'Roksitromisin',
@@ -5532,12 +5572,11 @@ const baseDrugs: Drug[] = [
   {
     id: '53',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'DailyMed / FDA - Tetracycline Hydrochloride Capsules USP 250 mg and 500 mg, Dosage and Administration and Warnings (tooth development) | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=b504e612-5aef-47fa-8f7b-dfb754011b9f&type=display',
+      'https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=b504e612-5aef-47fa-8f7b-dfb754011b9f&type=display (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Tetracycline',
     genericName: 'Tetracycline',
     category: 'Antibiotics',
@@ -5558,10 +5597,14 @@ const baseDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 8, adjustmentFactor: 0 },
+        { minAge: 8.01, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
-      dosePerKg: 5,
+      dosePerKg: 6.25,
       frequency: 'q6h',
-      maxSingleDose: 500,
+      maxSingleDose: 250,
       maxDailyDose: 2000,
     },
     productInfo: {
@@ -5726,7 +5769,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, BACTRIM / BACTRIM DS (sulfamethoxazole and trimethoprim) tablets, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      "TMP-SMX dozu trimetoprim bileşenine göre hesaplanır; CrCl 15-30 arasında olağan dozun yarısı verilir, 15'in altında kullanılması önerilmez. Bu böbrek ayarlaması henüz doğru hesaplanamadığı için doz gösterilmemektedir.",
     requiresClinicalReview: true,
     name: 'Trimethoprim/Sulfamethoxazole',
     genericName: 'Trimethoprim/Sulfamethoxazole',
@@ -5826,12 +5869,11 @@ const baseDrugs: Drug[] = [
   {
     id: '56',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, MACRODANTIN (nitrofurantoin, macrocrystalline) capsules, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ec86b651-d77d-4a42-b493-24244456b3f6',
+      'https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=89d8696b-f9ce-9691-6222-8416ca143bba&type=display (kaynaktan türetildi; tek red gerekçesi olan motor hatası giderildi)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Nitrofurantoin',
     genericName: 'Nitrofurantoin',
     category: 'Antibiotics',
@@ -5852,10 +5894,18 @@ const baseDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
-      method: 'fixed',
-      fixedDose: 100, // 50-100 mg q6h
+      renalAdjustments: [
+        { minGFR: 60, maxGFR: 999, adjustmentFactor: 1 },
+        { minGFR: 0, maxGFR: 60, adjustmentFactor: 0 },
+      ],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.084, adjustmentFactor: 0 },
+        { minAge: 0.085, maxAge: 120, adjustmentFactor: 1 },
+      ],
+      dosePerKg: 1.25,
+      method: 'weight', // 50-100 mg q6h
       frequency: 'q6h',
-      maxSingleDose: 100,
+      maxSingleDose: 50,
       maxDailyDose: 400,
     },
     productInfo: {
@@ -5925,7 +5975,7 @@ const baseDrugs: Drug[] = [
     sourceReference:
       'FDA label, fosfomycin tromethamine granules for oral solution (Monurol), DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c3ba67e7-aaca-e682-277a-94e20b0abad7',
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Fosfomisin trometamol, komplike olmayan sistitte yalnızca tek seferlik 3 g olarak verilir ve aynı atak için tekrarlanmaz. Hesaplayıcı tek seferlik dozu ifade edemediği ve dozu her gün tekrarlanacakmış gibi göstermek hatalı olacağı için doz gösterilmiyor.',
     requiresClinicalReview: true,
     name: 'Fosfomycin',
     genericName: 'Fosfomycin',
@@ -6091,12 +6141,11 @@ const baseDrugs: Drug[] = [
   {
     id: '59',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, ISONIAZID tablets, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9c34d487-693b-43e3-803e-45d87425e3d6',
+      'https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=9c34d487-693b-43e3-803e-45d87425e3d6&type=display (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Isoniazid',
     genericName: 'Isoniazid',
     category: 'Antibiotics',
@@ -6112,6 +6161,10 @@ const baseDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 14.99, adjustmentFactor: 2 },
+        { minAge: 15, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
       dosePerKg: 5, // 5mg/kg günlük (max 300)
       frequency: 'q24h',

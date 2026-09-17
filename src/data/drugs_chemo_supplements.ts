@@ -11,7 +11,7 @@ export const chemoAndSupplementDrugs: Drug[] = [
     sourceReference:
       'FDA label, Cisplatin Injection, DailyMed — section 2 Dosage and Administration, boxed warning, section 2.5 dose modifications, section 8.4 Pediatric Use | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=a440f077-46f6-4688-a209-65bce38d1c92',
     clinicalReviewNote:
-      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Sisplatin dozu ve uygulama şeması kanser türüne göre değişir (testis kanserinde 5 gün boyunca günde 20 mg/m², over kanserinde 3-4 haftada bir 75-100 mg/m², mesane kanserinde 3-4 haftada bir 50-70 mg/m²) ve her kürden önce böbrek fonksiyonu ile kan sayımı değerlendirilmelidir. Tek bir kural bunları doğru karşılayamadığı için doz hesaplanmıyor; dozu protokole göre belirleyin.',
     requiresClinicalReview: true,
     name: 'Sisplatin',
     genericName: 'Cisplatin',
@@ -150,7 +150,7 @@ export const chemoAndSupplementDrugs: Drug[] = [
     name: 'Karboplatin',
     requiresClinicalReview: true,
     clinicalReviewNote:
-      'Bu ilacın dozu tek doz x sıklık modeliyle ifade edilemiyor (endikasyona, laboratuvar değerine veya titrasyona bağlı); bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Karboplatin dozu vücut yüzey alanına göre değil, böbrek fonksiyonuna dayanan Calvert formülüyle (toplam doz = hedef eğri altındaki alan × [glomerüler filtrasyon hızı + 25]) belirlenir; yüzey alanına göre verilen doz da tek ajan ya da kombinasyon rejimine göre değişir ve sonraki kürler önceki kürdeki en düşük trombosit ve nötrofil sayılarına göre ayarlanır. Bu hesaplar tek bir doz formülüyle yapılamadığından doz gösterilmiyor; doz onkoloji protokolüne göre belirlenmelidir.',
     genericName: 'Carboplatin',
     category: 'Oncology',
     unit: 'mg',
@@ -269,7 +269,7 @@ export const chemoAndSupplementDrugs: Drug[] = [
     sourceReference:
       'FDA label, Paclitaxel Injection USP (DailyMed), Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=e4be6cbf-72b9-4f7f-9b1b-459b2d35961a&type=display',
     clinicalReviewNote:
-      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Paklitaksel dozu endikasyona ve infüzyon süresine göre değişir (ör. meme kanserinde 3 saatte 175 mg/m², küçük hücreli dışı akciğer kanserinde 24 saatte 135 mg/m², Kaposi sarkomunda 2 haftada bir 100 mg/m²) ve ilk kür dozu karaciğer enzimleri ile bilirubine göre azaltılmalıdır. Hesaplayıcı bu koşulları uygulayamadığı için doz gösterilmiyor; dozu protokole göre belirleyin.',
     requiresClinicalReview: true,
     name: 'Paklitaksel',
     genericName: 'Paclitaxel',
@@ -390,7 +390,7 @@ export const chemoAndSupplementDrugs: Drug[] = [
     sourceReference:
       'FDA label, Doxorubicin Hydrochloride Injection (DailyMed), section 2 Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=6bcde92b-e584-4919-866a-68847ea201ba&type=display',
     clinicalReviewNote:
-      'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      'Doksorubisin dozu kullanılan şemaya göre değişir (tek başına 21 günde bir 60-75 mg/m², kombinasyonda 21-28 günde bir 40-75 mg/m²) ve serum bilirubini yüksekse %50-75 azaltılmalı, 5 mg/dL üzerindeyse hiç başlanmamalıdır. Hesaplayıcı bilirubini ve ömür boyu toplam doz sınırını dikkate alamadığı için doz gösterilmiyor; dozu protokole göre belirleyin.',
     requiresClinicalReview: true,
     name: 'Doksorobisin',
     genericName: 'Doxorubicin',
@@ -515,7 +515,7 @@ export const chemoAndSupplementDrugs: Drug[] = [
     sourceReference:
       'FDA label, Fluorouracil Injection (DailyMed), section 2 Recommended Dosage | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=66d451fe-2436-494c-80c5-4528c8e34369',
     clinicalReviewNote:
-      'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
+      '5-FU şemaları tanıya göre değişir ve en sık kullanılanlar 400 mg/m2 bolus ardından 46 saatlik sürekli infüzyon şeklindedir; haftalık bolus şeması ise 8 haftalık kür içinde ara verilerek uygulanır. Tek bir doz ve uygulama sıklığı bu şemaları karşılayamadığı, ayrıca tedavi öncesi DPYD/DPD eksikliği değerlendirmesi gerektiği için doz gösterilmemektedir.',
     requiresClinicalReview: true,
     name: '5-Florourasil',
     genericName: '5-Fluorouracil (5-FU)',
@@ -636,17 +636,15 @@ export const chemoAndSupplementDrugs: Drug[] = [
   {
     id: 'chemo-006',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, Gemcitabine for Injection (DailyMed), section 2 Dosage and Administration | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=aa445f68-1e55-a587-76dc-def068bc9c74&type=display',
+      'Gemsitabin etiketi (DailyMed, Hospira/Fresenius): 1000 mg/m2, mutlak mg tavanı yok. 3000 mg tavan klinik bir sınır değil, 3,0 m2 karşılığı girdi güvencesidir; gerçekçi hastada devreye girmez.',
     clinicalReviewNote:
       'Bu kuraldaki tavan değerleri hastanın bir bölümünde eksik doz üretiyor ve henüz düzeltilmedi; bu nedenle hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'Gemsitabin',
     genericName: 'Gemcitabine',
     category: 'Oncology',
     unit: 'mg',
-    maxDailyDose: 1500,
     contraindications: [
       'Gemsitabin alerjisi',
       'Gebelik',
@@ -663,11 +661,15 @@ export const chemoAndSupplementDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'bsa',
     dosageFormula: {
+      maxSingleDose: 3000,
+      ageAdjustments: [
+        { minAge: 0, maxAge: 17.999, adjustmentFactor: 0 },
+        { minAge: 18, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'bsa',
       dosePerM2: 1000,
       frequency: 'q7d',
-      maxSingleDose: 1500,
-      maxDailyDose: 1500,
+      maxDailyDose: 3000,
     },
     atcCode: 'L01BC05',
     productInfo: {
@@ -758,17 +760,16 @@ export const chemoAndSupplementDrugs: Drug[] = [
   {
     id: 'supp-001',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'IOM/NAM Dietary Reference Intakes for Calcium and Vitamin D, Tolerable Upper Intake Level table (NCBI Bookshelf); StatPearls Cholecalciferol monograph | https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t7/',
+      'https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t2/ (kaynaktan türetildi, bağımsız kontrolden geçti)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
-    requiresClinicalReview: true,
     name: 'D Vitamini (Kolekalsiferol)',
     genericName: 'Vitamin D3 / Cholecalciferol',
     category: 'Supplements',
     unit: 'units',
-    maxDailyDose: 10000,
+    maxDailyDose: 4000,
     contraindications: [
       'Hiperkalsemi',
       'Hipervitaminoz D',
@@ -784,11 +785,16 @@ export const chemoAndSupplementDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'fixed',
     dosageFormula: {
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.99, adjustmentFactor: 0.66667 },
+        { minAge: 1, maxAge: 70.99, adjustmentFactor: 1 },
+        { minAge: 71, maxAge: 120, adjustmentFactor: 1.33333 },
+      ],
       method: 'fixed',
-      fixedDose: 1000,
+      fixedDose: 600,
       frequency: 'q24h',
-      maxSingleDose: 10000,
-      maxDailyDose: 10000,
+      maxSingleDose: 4000,
+      maxDailyDose: 4000,
     },
     atcCode: 'A11CC05',
     productInfo: {
@@ -1231,7 +1237,7 @@ export const chemoAndSupplementDrugs: Drug[] = [
     sourceReference:
       'Paediatric bolus 25-75 mg/kg; adult eclampsia 4-6 g load then 1-2 g/h infusion',
     clinicalReviewNote:
-      "Magnezyum sülfat eklampside 4-6 g yükleme, ardından 1-2 g/saat infüzyon olarak verilir; pediatrik bolus 25-75 mg/kg'dır. Tek doz x sıklık modeli yükleme + infüzyon rejimini karşılamaz.",
+      'Magnezyum sülfatın dozu endikasyona göre değişir: preeklampsi ve eklampside yükleme dozunun ardından saatlik sürekli infüzyon verilir ve doz serum magnezyum düzeyine göre ayarlanır; magnezyum eksikliğinde ise doz bireyseldir ve serum düzeyi ile böbrek işlevine göre belirlenir. Onaylı ürün bilgisinde çocuklar için kiloya dayalı bir doz bulunmadığından hesaplayıcı tek bir güvenli doz gösteremez; endikasyona özgü protokolü uygulayın.',
     requiresClinicalReview: true,
     name: 'Magnezyum Sülfat',
     genericName: 'Magnesium Sulphate',
