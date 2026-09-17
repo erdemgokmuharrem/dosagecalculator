@@ -412,7 +412,8 @@
     "unknownMethod": "Unbekannte Berechnungsmethode. Berechnung nicht möglich.",
     "nonFiniteResult": "Die Berechnung hat kein gültiges Ergebnis geliefert. Eingaben prüfen.",
     "contraindicatedAge": "{{drug}} ist in dieser Altersgruppe ({{age}}) KONTRAINDIZIERT. Es wurde keine Dosis berechnet.",
-    "clinicalReviewRequired": "Die Dosisberechnung für {{drug}} steht noch unter klinischer Prüfung. {{note}}"
+    "clinicalReviewRequired": "Die Dosisberechnung für {{drug}} steht noch unter klinischer Prüfung. {{note}}",
+    "contraindicatedRenal": "{{drug}} ist bei dieser Nierenfunktion ({{value}} {{unit}}) KONTRAINDIZIERT. Es wurde keine Dosis berechnet."
   },
   "validation": {
     "ageRequired": "Alter ist erforderlich",

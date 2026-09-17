@@ -465,6 +465,22 @@ export const calculateDosage = (
   }
 
   // ---- Contraindications --------------------------------------------------
+  // A renal band with factor 0 means the drug must not be given at that level
+  // of kidney function. It used to be multiplied in like any other factor, so
+  // the result was a "0 mg" dose instead of a refusal.
+  if (renal && renalAdjustment.applied && renalAdjustment.factor === 0) {
+    return {
+      status: 'blocked',
+      reason: 'CLINICAL_REVIEW_REQUIRED',
+      messageCode: 'blocked.contraindicatedRenal',
+      messageParams: {
+        drug: drug.name,
+        value: Math.round(renal.value),
+        unit: renal.unit,
+      },
+    };
+  }
+
   const ageAdjustment = resolveAgeAdjustment(patient, drug);
 
   if (ageAdjustment.contraindicated) {

@@ -412,7 +412,8 @@
     "unknownMethod": "未知的计算方法，无法计算。",
     "nonFiniteResult": "计算未产生有效结果。请检查输入。",
     "contraindicatedAge": "{{drug}} 在该年龄段（{{age}}）为禁忌。未计算剂量。",
-    "clinicalReviewRequired": "{{drug}} 的剂量计算正在等待临床审核。{{note}}"
+    "clinicalReviewRequired": "{{drug}} 的剂量计算正在等待临床审核。{{note}}",
+    "contraindicatedRenal": "在此肾功能水平（{{value}} {{unit}}）下，{{drug}}为禁忌。未计算剂量。"
   },
   "validation": {
     "ageRequired": "请输入年龄",

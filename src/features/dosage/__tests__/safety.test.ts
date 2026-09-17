@@ -355,6 +355,28 @@ describe('renal function', () => {
     expect(codes(r)).not.toContain('safety.renalImpairmentNoRule');
   });
 
+  it('refuses, rather than showing 0 mg, where a renal band contraindicates the drug', () => {
+    // Nitrofurantoin-style rule: contraindicated below a clearance of 60.
+    const drug = weightDrug({
+      renalAdjustments: [
+        { minGFR: 0, maxGFR: 60, adjustmentFactor: 0 },
+        { minGFR: 60, maxGFR: 1000, adjustmentFactor: 1 },
+      ],
+    });
+    const r = calculateDosage(
+      adult({ age: 75, weight: 60, serumCreatinine: 3.0 }),
+      drug
+    );
+    expect(r.status).toBe('blocked');
+    if (r.status === 'blocked') {
+      expect(r.messageCode).toBe('blocked.contraindicatedRenal');
+      expect(r.messageParams).toMatchObject({ unit: 'mL/min' });
+    }
+    // With normal kidneys the same drug is dosed as usual.
+    const normal = ok(calculateDosage(adult({ serumCreatinine: 0.9 }), drug));
+    expect(normal.renalFactor).toBe(1);
+  });
+
   it('blocks when a drug needs renal dosing but no creatinine was supplied', () => {
     const drug = weightDrug({
       renalAdjustments: [{ minGFR: 0, maxGFR: 30, adjustmentFactor: 0.5 }],

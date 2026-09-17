@@ -412,7 +412,8 @@
     "unknownMethod": "Tanımsız hesaplama yöntemi. Hesaplama yapılamaz.",
     "nonFiniteResult": "Hesaplama geçerli bir sonuç üretmedi. Girdileri kontrol edin.",
     "contraindicatedAge": "{{drug}} bu yaş grubunda ({{age}}) KONTRENDİKEDİR. Doz hesaplanmadı.",
-    "clinicalReviewRequired": "{{drug}} için doz hesaplama klinik inceleme bekliyor. {{note}}"
+    "clinicalReviewRequired": "{{drug}} için doz hesaplama klinik inceleme bekliyor. {{note}}",
+    "contraindicatedRenal": "{{drug}} bu böbrek işlevi düzeyinde ({{value}} {{unit}}) KONTRENDİKEDİR. Doz hesaplanmadı."
   },
   "validation": {
     "ageRequired": "Yaş zorunludur",

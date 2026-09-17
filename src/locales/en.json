@@ -412,7 +412,8 @@
     "unknownMethod": "Unknown calculation method. Calculation is not possible.",
     "nonFiniteResult": "The calculation did not produce a valid result. Check the inputs.",
     "contraindicatedAge": "{{drug}} is CONTRAINDICATED at this age ({{age}}). No dose was calculated.",
-    "clinicalReviewRequired": "Dose calculation for {{drug}} is pending clinical review. {{note}}"
+    "clinicalReviewRequired": "Dose calculation for {{drug}} is pending clinical review. {{note}}",
+    "contraindicatedRenal": "{{drug}} is CONTRAINDICATED at this level of kidney function ({{value}} {{unit}}). No dose was calculated."
   },
   "validation": {
     "ageRequired": "Age is required",
