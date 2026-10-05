@@ -1907,7 +1907,7 @@ const baseDrugs: Drug[] = [
     sourceVerification: 'SOURCE_CHECKED',
     sourceDate: '2026-09-17',
     sourceReference:
-      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (id 62 için doğrulanan kural, aynı etkin madde)',
+      'FDA label, Meropenem (DailyMed): intraabdominal 20 mg/kg q8h (<3 ay yetersiz veri); erişkin ve >50 kg 1 g q8h (maks 3 g/gün); CrCl 26-50 1 g q12h, 10-25 500 mg q12h, <10 500 mg q24h',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
     name: 'Meropenem',
@@ -1924,12 +1924,24 @@ const baseDrugs: Drug[] = [
     calculationMethod: 'weight',
     dosageFormula: {
       renalAdjustments: [
-        { minGFR: 50.01, maxGFR: 1000000, adjustmentFactor: 1 },
+        { minGFR: 50, maxGFR: 1000000, adjustmentFactor: 1 },
         {
           minGFR: 26,
-          maxGFR: 50.01,
+          maxGFR: 50,
           adjustmentFactor: 1,
           frequencyOverride: 'q12h',
+        },
+        {
+          minGFR: 10,
+          maxGFR: 26,
+          adjustmentFactor: 0.5,
+          frequencyOverride: 'q12h',
+        },
+        {
+          minGFR: 0,
+          maxGFR: 10,
+          adjustmentFactor: 0.5,
+          frequencyOverride: 'q24h',
         },
       ],
       ageAdjustments: [
@@ -2379,17 +2391,16 @@ const baseDrugs: Drug[] = [
   {
     id: '20',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA prescribing information, cefepime for injection (DailyMed), section 2 Dosage and Administration Table 1/Table 2 and section 5.2 Neurotoxicity | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e80c27e2-164d-4836-ba24-c160d75dc5d3',
+      'FDA label, Maxipime (DailyMed): çocukta 50 mg/kg q12h (<2 ay kontrendike); erişkinde 2 g q12h (maks 4 g/gün); CrCl 30-60 2 g q24h, 11-29 1 g q24h, <11 500 mg q24h',
     clinicalReviewNote:
       'Sefepim dozu ve uygulama aralığı böbrek işlevine göre birlikte ayarlanmalıdır; CrCl 60 ve altında ayarlama zorunludur ve ayarlanmamış doz ciddi nörotoksisiteye yol açabilir. Bu ayarlama henüz doğru hesaplanamadığı için doz gösterilmemektedir.',
-    requiresClinicalReview: true,
     name: 'Cefepime',
     genericName: 'Cefepime',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 6000,
+    maxDailyDose: 4000,
     contraindications: [
       'Allergy to cephalosporins',
       'Severe hypersensitivity to beta-lactams',
@@ -2398,11 +2409,36 @@ const baseDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
+      renalAdjustments: [
+        { minGFR: 60, maxGFR: 1000000, adjustmentFactor: 1 },
+        {
+          minGFR: 30,
+          maxGFR: 60,
+          adjustmentFactor: 1,
+          frequencyOverride: 'q24h',
+        },
+        {
+          minGFR: 11,
+          maxGFR: 30,
+          adjustmentFactor: 0.5,
+          frequencyOverride: 'q24h',
+        },
+        {
+          minGFR: 0,
+          maxGFR: 11,
+          adjustmentFactor: 0.25,
+          frequencyOverride: 'q24h',
+        },
+      ],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.166, adjustmentFactor: 0 },
+        { minAge: 0.167, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
       dosePerKg: 50,
-      frequency: 'q8h',
+      frequency: 'q12h',
       maxSingleDose: 2000,
-      maxDailyDose: 6000,
+      maxDailyDose: 4000,
     },
     productInfo: {
       activeIngredient: 'Sefepim',
@@ -4419,7 +4455,7 @@ const baseDrugs: Drug[] = [
     sourceVerification: 'SOURCE_CHECKED',
     sourceDate: '2026-09-17',
     sourceReference:
-      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda (kaynaktan türetildi, bağımsız kontrolden geçti)',
+      'Unasyn etiketi (Pfizer): çocukta 300 mg/kg/gün kombine, q6h; erişkinde 3 g q6h, en fazla 12 g/gün; CrCl 15-29 q12h, 5-14 q24h (doz aynı)',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
     name: 'Ampicillin/Sulbactam',
@@ -4435,7 +4471,21 @@ const baseDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
-      renalAdjustments: [{ minGFR: 30, maxGFR: 9999, adjustmentFactor: 1 }],
+      renalAdjustments: [
+        { minGFR: 30, maxGFR: 1000000, adjustmentFactor: 1 },
+        {
+          minGFR: 15,
+          maxGFR: 30,
+          adjustmentFactor: 1,
+          frequencyOverride: 'q12h',
+        },
+        {
+          minGFR: 5,
+          maxGFR: 15,
+          adjustmentFactor: 1,
+          frequencyOverride: 'q24h',
+        },
+      ],
       ageAdjustments: [
         { minAge: 0, maxAge: 0.999, adjustmentFactor: 0 },
         { minAge: 1, maxAge: 120, adjustmentFactor: 1 },
@@ -4511,7 +4561,7 @@ const baseDrugs: Drug[] = [
     sourceVerification: 'SOURCE_CHECKED',
     sourceDate: '2026-09-17',
     sourceReference:
-      'https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/050590s069,050658s031lbl.pdf (kaynaktan türetildi, bağımsız kontrolden geçti)',
+      'FDA label, TIMENTIN (DailyMed): çocukta 50 mg/kg q6h (<3 ay yetersiz veri); erişkinde 3.1 g (3 g tikarsilin) q6h (ağır infeksiyon 3.1 g q4h, maks 18 g/gün); CrCl 30-60 2 g q4h, 10-30 2 g q8h, <10 2 g q12h',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
     name: 'Ticarcillin/Clavulanate',
@@ -4527,7 +4577,27 @@ const baseDrugs: Drug[] = [
     dosageForm: 'injection',
     calculationMethod: 'weight',
     dosageFormula: {
-      renalAdjustments: [{ minGFR: 60.01, maxGFR: 9999, adjustmentFactor: 1 }],
+      renalAdjustments: [
+        { minGFR: 60, maxGFR: 1000000, adjustmentFactor: 1 },
+        {
+          minGFR: 30,
+          maxGFR: 60,
+          adjustmentFactor: 0.67,
+          frequencyOverride: 'q4h',
+        },
+        {
+          minGFR: 10,
+          maxGFR: 30,
+          adjustmentFactor: 0.67,
+          frequencyOverride: 'q8h',
+        },
+        {
+          minGFR: 0,
+          maxGFR: 10,
+          adjustmentFactor: 0.67,
+          frequencyOverride: 'q12h',
+        },
+      ],
       ageAdjustments: [
         { minAge: 0, maxAge: 0.249, adjustmentFactor: 0 },
         { minAge: 0.25, maxAge: 120, adjustmentFactor: 1 },
@@ -5765,17 +5835,16 @@ const baseDrugs: Drug[] = [
   {
     id: '55',
     sourceVerification: 'SOURCE_CHECKED',
-    sourceDate: '2026-09-15',
+    sourceDate: '2026-09-17',
     sourceReference:
-      'FDA label, BACTRIM / BACTRIM DS (sulfamethoxazole and trimethoprim) tablets, DailyMed | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62',
+      'FDA label, BACTRIM / BACTRIM DS (DailyMed): 8 mg/kg/gün TMP q12h (çocuk), 160 mg TMP q12h (erişkin, maks 320 mg/gün); <2 ay kontrendike; CrCl 15-30 yarım doz, <15 kontrendike',
     clinicalReviewNote:
       "TMP-SMX dozu trimetoprim bileşenine göre hesaplanır; CrCl 15-30 arasında olağan dozun yarısı verilir, 15'in altında kullanılması önerilmez. Bu böbrek ayarlaması henüz doğru hesaplanamadığı için doz gösterilmemektedir.",
-    requiresClinicalReview: true,
     name: 'Trimethoprim/Sulfamethoxazole',
     genericName: 'Trimethoprim/Sulfamethoxazole',
     category: 'Antibiotics',
     unit: 'mg',
-    maxDailyDose: 1600,
+    maxDailyDose: 320,
     contraindications: [
       'Allergy to sulfonamides',
       'Severe liver disease',
@@ -5791,11 +5860,20 @@ const baseDrugs: Drug[] = [
     dosageForm: 'tablet',
     calculationMethod: 'weight',
     dosageFormula: {
+      renalAdjustments: [
+        { minGFR: 30, maxGFR: 1000000, adjustmentFactor: 1 },
+        { minGFR: 15, maxGFR: 30, adjustmentFactor: 0.5 },
+        { minGFR: 0, maxGFR: 15, adjustmentFactor: 0 },
+      ],
+      ageAdjustments: [
+        { minAge: 0, maxAge: 0.166, adjustmentFactor: 0 },
+        { minAge: 0.167, maxAge: 120, adjustmentFactor: 1 },
+      ],
       method: 'weight',
-      dosePerKg: 5, // 6-12 mg/kg/gün TMP üzerinden (İYE profilaksi: 2mg/kg)
+      dosePerKg: 4, // 6-12 mg/kg/gün TMP üzerinden (İYE profilaksi: 2mg/kg)
       frequency: 'q12h',
-      maxSingleDose: 800,
-      maxDailyDose: 1600,
+      maxSingleDose: 160,
+      maxDailyDose: 320,
     },
     productInfo: {
       activeIngredient: 'Trimetoprim (TMP) + Sulfametoaksazol (SMX)',

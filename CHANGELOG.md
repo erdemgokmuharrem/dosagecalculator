@@ -4,6 +4,16 @@ Bu dosya, projede yakın zamanda yapılan anlamlı değişiklikleri özetler; ba
 bir oturum işe devam ederken git geçmişini baştan okumak zorunda kalmasın diye
 tutulur. En yeni en üstte.
 
+## 2026-10-05
+
+- **Sefepim ve TMP-SMX hesaplamaya açıldı; böbrek bantları tamamlandı.**
+  - **Sefepim (id 20):** FDA etiketine (Maxipime) göre çocukta 50 mg/kg q12h (<2 ay kontrendike), erişkinde 2 g q12h (maks 4000 mg/gün), CrCl 30-60'ta 2 g q24h, 11-29'da 1 g q24h, <11'de 500 mg q24h olarak tanımlandı ve hesaplamaya açıldı.
+  - **Trimethoprim/Sulfamethoxazole (id 55):** FDA etiketine (Bactrim) göre çocukta 4 mg TMP/kg q12h (<2 ay kontrendike), erişkinde 160 mg TMP q12h (maks 320 mg TMP/gün), CrCl 15-30'da yarım doz (0.5), <15'te kontrendike (0) olarak tanımlandı ve hesaplamaya açıldı. Hesaplanan kural sayısı 60'tan 62'ye yükseldi.
+  - **Meropenem (id 16 ve id 62):** FDA etiketine uygun olarak CrCl 10-25 aralığında yarım doz q12h, CrCl <10 aralığında yarım doz q24h bantları eklendi.
+  - **Tikarsilin/Klavulanat (id 41):** FDA etiketine (Timentin) uygun olarak CrCl 30-60 (2 g q4h, factor 0.67), CrCl 10-30 (2 g q8h, factor 0.67) ve CrCl <10 (2 g q12h, factor 0.67) böbrek bantları uygulandı.
+  - **Ampisilin/Sulbaktam (id 40):** Bekleyen FDA onaylı böbrek bantları (CrCl 15-29 q12h, CrCl 5-14 q24h) uygulandı.
+  - `verification.json` ve `DOSE_VERIFICATION.md` raporu güncellendi; bekleyen yama dosyaları temizlendi.
+
 ## 2026-09-17
 
 - **Yaş katsayısı da tek doz tavanına göre sıralandı** (henüz commit'lenmedi).

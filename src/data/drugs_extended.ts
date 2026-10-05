@@ -122,7 +122,7 @@ export const extendedDrugs: Drug[] = [
     sourceVerification: 'SOURCE_CHECKED',
     sourceDate: '2026-09-17',
     sourceReference:
-      'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (kaynaktan türetildi, bağımsız kontrolden geçti)',
+      'FDA label, Meropenem (DailyMed): intraabdominal 20 mg/kg q8h (<3 ay yetersiz veri); erişkin ve >50 kg 1 g q8h (maks 3 g/gün); CrCl 26-50 1 g q12h, 10-25 500 mg q12h, <10 500 mg q24h',
     clinicalReviewNote:
       'Bu kuralın dozu, kaynak etiketiyle karşılaştırıldığında uyuşmuyor ve henüz düzeltilmedi; yanlış doz göstermemek için hesap yapılmıyor. Ayrıntı ve kaynak: DOSE_VERIFICATION.md',
     name: 'Meropenem',
@@ -146,12 +146,24 @@ export const extendedDrugs: Drug[] = [
     calculationMethod: 'weight',
     dosageFormula: {
       renalAdjustments: [
-        { minGFR: 50.01, maxGFR: 1000000, adjustmentFactor: 1 },
+        { minGFR: 50, maxGFR: 1000000, adjustmentFactor: 1 },
         {
           minGFR: 26,
-          maxGFR: 50.01,
+          maxGFR: 50,
           adjustmentFactor: 1,
           frequencyOverride: 'q12h',
+        },
+        {
+          minGFR: 10,
+          maxGFR: 26,
+          adjustmentFactor: 0.5,
+          frequencyOverride: 'q12h',
+        },
+        {
+          minGFR: 0,
+          maxGFR: 10,
+          adjustmentFactor: 0.5,
+          frequencyOverride: 'q24h',
         },
       ],
       ageAdjustments: [

@@ -1,6 +1,6 @@
 # Doz Verisi Doğrulama Raporu
 
-Son güncelleme: 2026-09-17
+Son güncelleme: 2026-10-05
 
 ## Bu belge ne değildir
 
@@ -34,39 +34,41 @@ Hesaplanan kayıtların aynı dozu vermesi gerekir; farklıysa kullanıcının h
 | meropenem                    | id 16: Meropenem — 20 mg (kg başına, q8h), hesaplanıyor <br> id 62: Meropenem — 20 mg (kg başına, q8h), hesaplanıyor                                  | evet                                     |
 | metronidazol                 | id 31: Metronidazole — 7.5 mg (kg başına, q8h), hesaplanıyor <br> id 67: Metronidazol — 7.5 mg (kg başına, q8h), hesaplanıyor                         | evet                                     |
 | piperacillintazobactam       | id 21: Piperacillin/Tazobactam — 112.5 mg (kg başına, q8h), hesaplanıyor <br> id 61: Piperasilin/Tazobaktam — 100 mg (kg başına, q8h), hesaplanıyor   | **hayır**                                |
-| trimethoprimsulfamethoxazole | id 55: Trimethoprim/Sulfamethoxazole — 5 mg (kg başına, q12h), reddediliyor <br> id 70: Kotrimoksazol (TMP/SMX) — 5 mg (kg başına, bid), reddediliyor | evet                                     |
+| trimethoprimsulfamethoxazole | id 55: Trimethoprim/Sulfamethoxazole — 4 mg (kg başına, q12h), hesaplanıyor <br> id 70: Kotrimoksazol (TMP/SMX) — 5 mg (kg başına, bid), reddediliyor | evet                                     |
 | vancomycin                   | id 22: Vancomycin — 15 mg (kg başına, q8h), reddediliyor <br> id 63: Vankomisin — 15 mg (kg başına, q12h), reddediliyor                               | evet                                     |
 
-### 1b. Hesaplanan kayıtlardan kendi günlük tavanını aşanlar: 17
+### 1b. Hesaplanan kayıtlardan kendi günlük tavanını aşanlar: 19
 
 70 kg erişkin için doz × sıklık, kaydın günlük tavanını aşıyor. Çoğu tasarım gereğidir (pediatrik kilo başına doz + erişkin tavanı); tavan erişkin dozunu doğru sınırlar ama her erişkin hesabında uyarı çıkar.
 
-| id        | İlaç                      | Tek doz | Sıklık | Günlük | Tavan | Kat  |
-| --------- | ------------------------- | ------- | ------ | ------ | ----- | ---- |
-| 40        | Ampicillin/Sulbactam      | 5250    | q6h    | 21000  | 12000 | 1.8x |
-| 42        | Cefuroxime                | 1750    | q8h    | 5250   | 3000  | 1.8x |
-| extra-001 | Ibuprofen Pediatrik Şurup | 700     | q8h    | 2100   | 1200  | 1.8x |
-| 16        | Meropenem                 | 1400    | q8h    | 4200   | 3000  | 1.4x |
-| 51        | Erythromycin              | 700     | q6h    | 2800   | 2000  | 1.4x |
-| 52        | Roxithromycin             | 210     | q12h   | 420    | 300   | 1.4x |
-| 54        | Minocycline               | 140     | q12h   | 280    | 200   | 1.4x |
-| 62        | Meropenem                 | 1400    | q8h    | 4200   | 3000  | 1.4x |
-| 21        | Piperacillin/Tazobactam   | 7875    | q8h    | 23625  | 18000 | 1.3x |
-| 58        | Rifampin                  | 700     | q24h   | 700    | 600   | 1.2x |
-| 59        | Isoniazid                 | 350     | q24h   | 350    | 300   | 1.2x |
-| 61        | Piperasilin/Tazobaktam    | 7000    | q8h    | 21000  | 18000 | 1.2x |
-| 1         | Paracetamol               | 1050    | q6h    | 4200   | 4000  | 1.1x |
-| 28        | Clarithromycin            | 525     | q12h   | 1050   | 1000  | 1.1x |
-| 65        | Klaritromisin             | 525     | q12h   | 1050   | 1000  | 1.1x |
-| supp-002  | Demir (Ferröz Sülfat)     | 210     | q24h   | 210    | 200   | 1.1x |
-| 30        | Clindamycin               | 700     | q6h    | 2800   | 2700  | 1.0x |
+| id        | İlaç                          | Tek doz | Sıklık | Günlük | Tavan | Kat  |
+| --------- | ----------------------------- | ------- | ------ | ------ | ----- | ---- |
+| 20        | Cefepime                      | 3500    | q12h   | 7000   | 4000  | 1.8x |
+| 40        | Ampicillin/Sulbactam          | 5250    | q6h    | 21000  | 12000 | 1.8x |
+| 42        | Cefuroxime                    | 1750    | q8h    | 5250   | 3000  | 1.8x |
+| 55        | Trimethoprim/Sulfamethoxazole | 280     | q12h   | 560    | 320   | 1.8x |
+| extra-001 | Ibuprofen Pediatrik Şurup     | 700     | q8h    | 2100   | 1200  | 1.8x |
+| 16        | Meropenem                     | 1400    | q8h    | 4200   | 3000  | 1.4x |
+| 51        | Erythromycin                  | 700     | q6h    | 2800   | 2000  | 1.4x |
+| 52        | Roxithromycin                 | 210     | q12h   | 420    | 300   | 1.4x |
+| 54        | Minocycline                   | 140     | q12h   | 280    | 200   | 1.4x |
+| 62        | Meropenem                     | 1400    | q8h    | 4200   | 3000  | 1.4x |
+| 21        | Piperacillin/Tazobactam       | 7875    | q8h    | 23625  | 18000 | 1.3x |
+| 58        | Rifampin                      | 700     | q24h   | 700    | 600   | 1.2x |
+| 59        | Isoniazid                     | 350     | q24h   | 350    | 300   | 1.2x |
+| 61        | Piperasilin/Tazobaktam        | 7000    | q8h    | 21000  | 18000 | 1.2x |
+| 1         | Paracetamol                   | 1050    | q6h    | 4200   | 4000  | 1.1x |
+| 28        | Clarithromycin                | 525     | q12h   | 1050   | 1000  | 1.1x |
+| 65        | Klaritromisin                 | 525     | q12h   | 1050   | 1000  | 1.1x |
+| supp-002  | Demir (Ferröz Sülfat)         | 210     | q24h   | 210    | 200   | 1.1x |
+| 30        | Clindamycin                   | 700     | q6h    | 2800   | 2700  | 1.0x |
 
 ## 2. Sonuç özeti (105/105 kayıt kaynakla karşılaştırıldı)
 
 - Kaynakla uyumlu: **38**
 - Uyuşmazlık bulunan: **67**
-- Bunlardan düzeltilip hesaplamaya açılan: **22**
-- Şu an hesabı reddedilen kayıt: **45/105**
+- Bunlardan düzeltilip hesaplamaya açılan: **24**
+- Şu an hesabı reddedilen kayıt: **43/105**
 
 Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir bağımsız incelemeden geçirildi; çürütülenlerde veri değiştirilmedi. Düzeltme önerileri de uygulanmadan önce ayrı bir ajan tarafından etikete karşı yeniden hesaplanır.
 
@@ -83,7 +85,7 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 | 17        | Imipenem/Cilastatin                                  | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesap reddediliyor |
 | 18        | Ertapenem                                            | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesap reddediliyor |
 | 19        | Ceftriaxone (id 19)                                  | KAYNAKLA UYUŞMUYOR                   | -        | hesaplanıyor       |
-| 20        | Cefepime                                             | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesap reddediliyor |
+| 20        | Cefepime                                             | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesaplanıyor       |
 | 21        | Piperacillin/Tazobactam                              | KAYNAKLA UYUŞMUYOR                   | orta     | hesaplanıyor       |
 | 25        | Gentamicin                                           | KAYNAKLA UYUŞMUYOR                   | -        | hesap reddediliyor |
 | 29        | Doxycycline                                          | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesap reddediliyor |
@@ -107,7 +109,7 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 | 50        | Netilmicin                                           | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesap reddediliyor |
 | 52        | Roxithromycin                                        | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesaplanıyor       |
 | 53        | Tetracycline                                         | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesaplanıyor       |
-| 55        | Trimethoprim/Sulfamethoxazole                        | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesap reddediliyor |
+| 55        | Trimethoprim/Sulfamethoxazole                        | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesaplanıyor       |
 | 56        | Nitrofurantoin                                       | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesaplanıyor       |
 | 59        | Isoniazid                                            | KAYNAKLA UYUŞMUYOR                   | yüksek   | hesaplanıyor       |
 | 62        | Meropenem                                            | KAYNAKLA UYUŞMUYOR                   | orta     | hesaplanıyor       |
@@ -223,7 +225,7 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 - **Kaynak:** FDA label (DailyMed) - meropenem for injection (Hikma), Dosage and Administration tables for adult and pediatric patients and for renal impairment
 - **Not:** Daily-total check PASSES for the per-kg value: 20 mg/kg q8h = 60 mg/kg/day is exactly the labelled paediatric complicated intra-abdominal regimen, so this record does not carry the per-dose/per-day inversion. The errors are the ceilings and the missing >50 kg / adult rule. Label, pediatric 3 months and older: 10 mg/kg q8h (max 500 mg) for complicated skin and skin structure infection, 20 mg/kg q8h (max 1 gram) for intra-abdominal infection, 40 mg/kg q8h (max 2 grams) for meningitis; and 'pediatric patients weighing over 50 kg' receive the fixed adult dose - 500 mg q8h for cSSSI, 1 gram q8h for cIAI, 2 grams q8h for meningitis. Adults: 500 mg q8h for cSSSI (1 gram q8h if P. aeruginosa) and 1 gram q8h for complicated intra-abdominal infection. The stored record keeps scaling past 50 kg with no switch to fixed dosing, so a 70 kg adult is shown 1400 mg q8h = 4.2 g/day where the label caps no…
 - **Önerilen değer:** Default (cIAI, 3 months and older, up to 50 kg): perKg 20 mg/kg q8h, maxSingle 1000 mg, maxDaily 3000 mg. Add a >50 kg / adult branch: kind=fixed 1 g q8h, maxDaily 3000 mg (500 mg q8h for skin and skin structure infection). Keep meningitis as a separate selectable profile at 40 mg/kg q8h, maxSingle 2000, maxDaily 6000 - never as the ceiling on the default. ageAdj [0,0.25,0] (not established below 3 months for these indications; neonatal dosing is a distinct regimen). renalAdj as interval extension, or as daily-total factors [51,999,1], [26,50,0.67], [10,25,0.33], [0,10,0.167].
-- **Uygulanan düzeltme:** 20 (kg başına), q8h, tek doz tavanı 1000, günlük tavan 3000; 2 yaş bandı; 1 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (id 62 için doğrulanan kural, aynı etkin madde) Ek: CrCl 26-50 aralığında aynı doz q12h. CrCl 26 altındaki yarım doz bantları, motorda böbrek katsayısının tavandan sonra uygulanması düzeltilene kadar eklenmedi.
+- **Uygulanan düzeltme:** 20 (kg başına), q8h, tek doz tavanı 1000, günlük tavan 3000; 2 yaş bandı; 4 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (id 62 için doğrulanan kural, aynı etkin madde)
 - **Çapraz kontrol:** CLAIM CONFIRMED (verdict MISMATCH on the adult/>50 kg behaviour and the ceilings, severity high). I retrieved the meropenem FDA label and, independently, an EU SmPC. FDA label, paediatric 3 months and older: 10 mg/kg q8h (max 500 mg) for cSSSI, 20 mg/kg q8h (max 1 gram) for complicated intra-abdominal infection, 40 mg/kg q8h (max 2 grams) for meningitis; and explicitly, paediatric patients weighing over 50 kg receive the adult regimen - "500 mg every 8 hours for cSSSI, 1 gram every 8 hours for cIAI and 2 grams every 8 hours for meningitis". Adults: 500 mg q8h for cSSSI (1 gram q8h for P. aerug…
 - Bağlantı: https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=d54fdbad-ca93-467c-92d7-c1bd88f3bbe3&type=display
 
@@ -252,12 +254,11 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 #### Cefepime (id 20) — KAYNAKLA UYUŞMUYOR, ciddiyet: yüksek
 
 - **Bulunduğunda kayıtta:** perKg 50 mg/kg q8h (= 150 mg/kg/day), maxSingle 2000 mg, maxDaily 6000 mg, no renal adjustment
-- **Şu an kayıtta:** 50 mg (kg başına, q8h), tek doz tavanı 2000, günlük tavan 6000 — hesap reddediliyor, kaynakla karşılaştırıldı
+- **Şu an kayıtta:** 50 mg (kg başına, q12h), tek doz tavanı 2000, günlük tavan 4000 — kaynakla karşılaştırıldı
 - **Kaynak:** FDA prescribing information, cefepime for injection (DailyMed), section 2 Dosage and Administration Table 1/Table 2 and section 5.2 Neurotoxicity
 - **Not:** Daily-total check: stored rule gives 150 mg/kg/day in children and 6 g/day in an adult (2 g capped x3). The label's default paediatric dose is 50 mg/kg PER DOSE EVERY 12 HOURS (= 100 mg/kg/day); q8h is reserved for febrile neutropenic patients and severe Pseudomonas pneumonia. Adult Table 1 defaults are 1-2 g q12h (max 4 g/day) for pneumonia, UTI, skin and complicated intra-abdominal infection; 2 g q8h (6 g/day) is listed only for febrile neutropenia and P. aeruginosa. So the stored record makes the highest labelled regimen the default for every patient and every indication - a 1.5x overdose against the standard daily dose. Compounding this, renalAdj is empty while the label requires interval extension for CrCL 60 or below (e.g. 2 g q8h becomes 2 g q12h at CrCL 30-60, q24h at 11-29 and below) and section 5.2 warns of "life-threatening or fatal" encephalopathy, myoclonus, seizures and non…
 - **Önerilen değer:** Default: perKg 50 mg/kg q12h, maxSingle 2000 mg, maxDaily 4000 mg, minimum age 2 months. Add a separate explicitly-labelled high-dose profile (febrile neutropenia / P. aeruginosa) at 50 mg/kg q8h with maxSingle 2000 and maxDaily 6000. Populate renalAdj from label Table 2: CrCL 30-60 factor 0.5, CrCL 11-29 factor 0.25, CrCL under 11 factor 0.125 (implemented as interval extension), haemodialysis 1 g day 1 then 500 mg q24h.
-- **Neden hesaplanmıyor:** Sefepim dozu ve uygulama aralığı böbrek işlevine göre birlikte ayarlanmalıdır; CrCl 60 ve altında ayarlama zorunludur ve ayarlanmamış doz ciddi nörotoksisiteye yol açabilir. Bu ayarlama henüz doğru hesaplanamadığı için doz gösterilmemektedir.
-- **Önerilen düzeltme bağımsız kontrolde reddedildi:** REJECT, keep blocked. The dose numbers are right, but the renal part is not. Source: I read the FDA Maxipime label (Rev 8/2021, 050679s046) myself and cross-checked it against the Hospira DailyMed SPL (11/2024). - Section 2.2 (children 2 months to 16 years, up to 40 kg): '50 mg per kg per dose, administered every 12 hours' for UTI, uncomplicated skin infection and pneumonia. q8h only for P. aeruginosa pneumonia and febrile neutropenia. The child dose must not exceed the adult dose. - Table 1 (adults): 2 g q12h for severe UTI and skin infection, 1-2 g q8-12h for pneumonia, 2 g q8-12h for cIAI. The highest regimen is 2 g q8h = 6 g/day. - Section 8.4: under 2 months not established. Recomputed
+- **Uygulanan düzeltme:** 50 (kg başına), q12h, tek doz tavanı 2000, günlük tavan 4000; 2 yaş bandı; 4 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e80c27e2-164d-4836-ba24-c160d75dc5d3 (kaynaktan türetildi; tek red gerekçesi olan motor hatası giderildi)
 - **Çapraz kontrol:** Could not refute. I pulled the Cefepime Injection FDA label (Reference ID 4601712, rev. 5/2020) and extracted section 2.2 verbatim: 'The usual recommended dosage in pediatric patients up to 40 kg in weight ... is: 50 mg per kg per dose, administered every 12 hours for uncomplicated and complicated urinary tract infections (including pyelonephritis), uncomplicated skin and skin structure infections, and pneumonia', with q8h given ONLY for 'moderate to severe pneumonia due to P. aeruginosa' and 'febrile neutropenic patients'. So the labelled paediatric default daily total is 100 mg/kg/day; the s…
 - Bağlantı: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e80c27e2-164d-4836-ba24-c160d75dc5d3
 
@@ -419,12 +420,11 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 #### Trimethoprim/Sulfamethoxazole (id 55) — KAYNAKLA UYUŞMUYOR, ciddiyet: yüksek
 
 - **Bulunduğunda kayıtta:** perKg 5 mg/kg q12h, maxSingle 800 mg, maxDaily 1600 mg, no ageAdj, no renalAdj. Daily total = 10 mg/kg/day; adult ceiling allowed = 800 mg/dose, 1600 mg/day.
-- **Şu an kayıtta:** 5 mg (kg başına, q12h), tek doz tavanı 800, günlük tavan 1600 — hesap reddediliyor, kaynakla karşılaştırıldı
+- **Şu an kayıtta:** 4 mg (kg başına, q12h), tek doz tavanı 160, günlük tavan 320 — kaynakla karşılaştırıldı
 - **Kaynak:** FDA label, BACTRIM / BACTRIM DS (sulfamethoxazole and trimethoprim) tablets, DailyMed
 - **Not:** The per-kg number and the ceilings are expressed in two different components of the combination, so the caps are 5x too high. The 5 mg/kg q12h rule is clearly the TRIMETHOPRIM component: the label's paediatric dose is '40 mg/kg sulfamethoxazole and 8 mg/kg trimethoprim per 24 hours, given in two divided doses every 12 hours', i.e. 4 mg TMP/kg/dose; 5 mg/kg q12h = 10 mg TMP/kg/day, which is acceptable (Medscape/AAP quote 8-12 mg TMP/kg/day divided q12h), so the per-kg value itself is not the defect. But maxSingle 800 / maxDaily 1600 are the SULFAMETHOXAZOLE contents of one and two DS tablets. The label's adult dose for UTI/shigellosis is '1 BACTRIM DS tablet or 2 BACTRIM tablets every 12 hours' = 160 mg TMP per dose, 320 mg TMP/day. With the stored rule a 70 kg adult is shown 350 mg q12h (700 mg TMP/day, ~4.4 DS tablets/day) and a 100 kg adult 500 mg q12h, with no clamp, because the cap i…
 - **Önerilen değer:** Label the unit explicitly as 'mg trimethoprim component'. Keep kind=perKg, dose 5 (mg TMP/kg), freq q12h, but set maxSingle 160 and maxDaily 320 (= 1 DS tablet q12h). Add renalAdj [[30,999,1],[15,30,0.5],[0,15,0]] and ageAdj [[0,0.167,0]] (contraindicated <2 months). If PCP dosing is wanted, add it as a separate record: 5 mg TMP/kg q6h (15-20 mg/kg/day), no 160 mg cap.
-- **Neden hesaplanmıyor:** TMP-SMX dozu trimetoprim bileşenine göre hesaplanır; CrCl 15-30 arasında olağan dozun yarısı verilir, 15'in altında kullanılması önerilmez. Bu böbrek ayarlaması henüz doğru hesaplanamadığı için doz gösterilmemektedir.
-- **Önerilen düzeltme bağımsız kontrolde reddedildi:** REJECT, keep blocked for now; the dose numbers themselves are correct. Source I retrieved: DailyMed, BACTRIM/BACTRIM DS (Sun Pharma), revised 12/2024. What the label says: contraindicated under 2 months. Children with UTI, otitis media or shigellosis get 8 mg/kg trimethoprim (TMP) per 24 h, given q12h; the table gives 20 kg = 1 tablet (80/400) q12h and 40 kg = 1 DS q12h. Adults get 1 DS (160 mg TMP) q12h. Renal: CrCl above 30 usual regimen, 15-30 half the usual regimen, below 15 use not recommended. The paediatric PCP prophylaxis section says the total daily dose should not exceed 320 mg TMP. Arithmetic: 4 x 2 = 8 mg TMP/kg/day. A 20 kg child gets 80 mg q12h = 160 mg/day, matching the table.
+- **Uygulanan düzeltme:** 4 mg TMP (kg başına), q12h, tek doz tavanı 160, günlük tavan 320; 2 yaş bandı; 3 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62 (kaynaktan türetildi; tek red gerekçesi olan motor hatası giderildi)
 - **Çapraz kontrol:** CLAIM CONFIRMED (could not refute). I retrieved the Bactrim label and a second generic co-trimoxazole label myself. The label states adult UTI dosing as '1 BACTRIM DS (double strength) tablet or 2 BACTRIM tablets every 12 hours' (= 160 mg TMP / 800 mg SMX per dose) and paediatric as '40 mg/kg sulfamethoxazole and 8 mg/kg trimethoprim per 24 hours, given in two divided doses every 12 hours'. Decisively, the generic label states verbatim: 'The total daily dose should not exceed 1600 mg sulfamethoxazole and 320 mg trimethoprim.' That single sentence shows the stored ceilings (maxSingle 800, maxDa…
 - Bağlantı: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62
 
@@ -691,8 +691,7 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 - **Kaynak:** FDA label, UNASYN (ampicillin sodium and sulbactam sodium) for injection, DOSAGE AND ADMINISTRATION (DailyMed full prescribing information)
 - **Not:** Unit-basis inconsistency producing a one-third paediatric under-dose. The caps are unambiguously combination-product figures - adult label is 'UNASYN 1.5 g (ampicillin 1 g and sulbactam 0.5 g) to 3 g (ampicillin 2 g and sulbactam 1 g) every six hours', total sulbactam not to exceed 4 g/day, i.e. 12 g UNASYN/day - which matches maxSingle 3000 and maxDaily 12000 exactly. On that same combination basis the paediatric label reads: 'The recommended daily dose of UNASYN in pediatric patients is 300 mg per kg of body weight administered via intravenous infusion in equally divided doses every 6 hours', i.e. 75 mg/kg per dose q6h. Daily-total check: stored 50 x 4 = 200 mg/kg/day versus the labelled 300 mg/kg/day - 33% low for every child under 40 kg. (If the 50 was meant as ampicillin component it would be correct, but then the 3000/12000 caps are wrong by 50%; the record mixes the two convention…
 - **Önerilen değer:** dose 75 mg/kg of the combination q6h (=300 mg/kg/day), maxSingle 3000 mg, maxDaily 12000 mg, and rename the unit explicitly to 'mg ampicillin+sulbactam combined'. Switch to adult fixed dosing at >=40 kg (1.5-3 g q6h). ageAdj [0,1,0] or a warning that paediatric use is established only from 1 year of age. renalAdj as interval extension: CrCl >=30 -> 1.5-3 g q6-8h, 15-29 -> q12h (factor 0.5), 5-14 -> q24h (factor 0.25). Add a hard ceiling of 4 g sulbactam per day.
-- **Uygulanan düzeltme:** 75 (kg başına), q6h, tek doz tavanı 3000, günlük tavan 12000; 2 yaş bandı; 1 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda (kaynaktan türetildi, bağımsız kontrolden geçti)
-- **Bekleyen:** Etikete uygun böbrek bantları (CrCl 15-29 q12h, 5-14 q24h) hazır ama geçici olarak uygulanmadı: başka bir oturumun eklediği test bu kaydın eski böbrek boşluğunu senaryo olarak kullanıyor. scripts/dose-verification/pending/ampicillin-sulbactam-renal.json
+- **Uygulanan düzeltme:** 75 (kg başına), q6h, tek doz tavanı 3000, günlük tavan 12000; 2 yaş bandı; 3 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda (kaynaktan türetildi, bağımsız kontrolden geçti)
 - **Çapraz kontrol:** Could not refute — the UNASYN label confirms the unit-basis inconsistency and the resulting under-dose. Adult: 'UNASYN 1.5 g (ampicillin 1 g and sulbactam 0.5 g) to 3 g (ampicillin 2 g and sulbactam 1 g) every six hours' with 'The total dose of sulbactam should not exceed 4 g per day' — i.e. 12 g UNASYN/day, matching the stored maxSingle 3000 and maxDaily 12000 exactly and pinning the record to the COMBINATION basis. On that same basis, under the heading 'Pediatric Patients 1 Year of Age or Older': 'The recommended daily dose of UNASYN in pediatric patients is 300 mg per kg of body weight admi…
 - Bağlantı: https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda
 
@@ -703,7 +702,7 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 - **Kaynak:** FDA label, TIMENTIN (ticarcillin disodium and clavulanate potassium), rev. 06/2014 - 2.1 Adults, 2.2 Pediatric Patients (>=3 Months of Age), 2.3 Renal Impairment Table 1
 - **Not:** Daily-total check: 75 mg/kg x 4 = 300 mg/kg/day, which is the label's SEVERE-infection total, not the default. Section 2.2 reads: 'Patients <60 kg: Mild to moderate infections, 200 mg/kg/day based on ticarcillin content in divided doses every 6 hours; severe infections, 300 mg/kg/day in divided doses every 4 hours.' The default per-dose figure at q6h is therefore 50 mg/kg, not 75; 75 mg/kg q6h is not a labelled regimen at all (the label reaches 300 mg/kg/day only by shortening the interval to q4h, keeping 50 mg/kg per dose). So the app shows every child 50% above the mild-to-moderate default, against labelled convulsions on exceeding the recommended dose (5.3), platelet dysfunction/bleeding (5.4) and sodium load (5.8). The record also mixes unit conventions: maxSingle 3100 is the combination vial (3 g ticarcillin + 0.1 g clavulanic acid) while the mg/kg figures and maxDaily 18000 are tic…
 - **Önerilen değer:** dose 50 mg/kg (ticarcillin content) q6h = 200 mg/kg/day as the mild-to-moderate default; severe-infection option 50 mg/kg q4h = 300 mg/kg/day. maxSingle 3000 mg ticarcillin (3.1 g of product), maxDaily 18000 mg ticarcillin. Switch to adult fixed dosing at >=60 kg: 3.1 g q6h mild-moderate, q4h severe. ageAdj [0,0.25,0] (under 3 months not supported). renalAdj as CrCl bands with a 3.1 g loading dose: >60 -> 3 g q4h, 30-60 -> 2 g q4h, 10-30 -> 2 g q8h, <10 -> 2 g q12h (q24h with hepatic dysfunction). Mark the record discontinued/unavailable in the US.
-- **Uygulanan düzeltme:** 50 (kg başına), q6h, tek doz tavanı 3000, günlük tavan 18000; 2 yaş bandı; 1 böbrek bandı. Kaynak: https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/050590s069,050658s031lbl.pdf (kaynaktan türetildi, bağımsız kontrolden geçti)
+- **Uygulanan düzeltme:** 50 (kg başına), q6h, tek doz tavanı 3000, günlük tavan 18000; 2 yaş bandı; 4 böbrek bandı. Kaynak: https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/050590s069,050658s031lbl.pdf (kaynaktan türetildi, bağımsız kontrolden geçti)
 - **Çapraz kontrol:** Could not refute — I extracted the TIMENTIN label and section 2.2 reads exactly as claimed: 'Pediatric Patients (≥3 Months of Age). Patients <60 kg: Mild to moderate infections, 200 mg/kg/day based on ticarcillin content in divided doses every 6 hours; severe infections, 300 mg/kg/day in divided doses every 4 hours.' The default per-dose figure at q6h is therefore 50 mg/kg, not 75. Stored 75 mg/kg q6h = 300 mg/kg/day reaches the severe-infection daily total by a route the label never uses — the label gets to 300 mg/kg/day by shortening the interval to q4h while holding 50 mg/kg per dose — so 7…
 - Bağlantı: https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/050590s069,050658s031lbl.pdf
 
@@ -725,7 +724,7 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 - **Kaynak:** FDA prescribing information, meropenem for injection — DailyMed, Dosage and Administration (adult and paediatric dose tables, renal impairment table)
 - **Not:** The per-kg number itself is correct and there is no per-dose/per-day multiplication error: 20 mg/kg q8h is exactly the labelled paediatric dose for complicated intra-abdominal infection. The defect is the CEILING. The label caps that indication at 1 gram per dose (10 mg/kg max 500 mg for cSSSI; 20 mg/kg max 1 g for cIAI; 40 mg/kg max 2 g for meningitis), and states that patients over 50 kg receive fixed adult dosing — 500 mg q8h for cSSSI, 1 g q8h for cIAI, 2 g q8h for meningitis. With maxSingle set to the meningitis-only value of 2000 mg, a 70 kg adult is shown 1400 mg q8h = 4.2 g/day against a labelled 3 g/day for the default indication (40% over), and a 100 kg patient is shown 2 g q8h = 6 g/day, i.e. the full meningitis regimen, from a record whose default is not meningitis. Separately, renalAdj is empty although the label mandates adjustment below CrCl 50 (26-50: same dose q12h; 10-2…
 - **Önerilen değer:** Default (intra-abdominal) entry: dose 20 mg/kg q8h, maxSingle 1000 mg, maxDaily 3000 mg. Add a separate meningitis entry: 40 mg/kg q8h, maxSingle 2000 mg, maxDaily 6000 mg. Add ageAdj [[0, 0.25, 0]] (label covers >=3 months). Add renalAdj [[26, 50, 1.0 with interval q12h], [10, 25, 0.5 with interval q12h], [0, 10, 0.5 with interval q24h]].
-- **Uygulanan düzeltme:** 20 (kg başına), q8h, tek doz tavanı 1000, günlük tavan 3000; 2 yaş bandı; 1 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (kaynaktan türetildi, bağımsız kontrolden geçti) Ek: CrCl 26-50 aralığında aynı doz q12h. CrCl 26 altındaki yarım doz bantları, motorda böbrek katsayısının tavandan sonra uygulanması düzeltilene kadar eklenmedi.
+- **Uygulanan düzeltme:** 20 (kg başına), q8h, tek doz tavanı 1000, günlük tavan 3000; 2 yaş bandı; 4 böbrek bandı. Kaynak: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71 (kaynaktan türetildi, bağımsız kontrolden geçti)
 - **Çapraz kontrol:** NOT REFUTED — I independently confirmed the claim from the label itself, and from a second jurisdiction. Verdict MISMATCH, severity high. What I retrieved from the DailyMed meropenem label's Dosage and Administration: paediatric (3 months and older) table reads cSSSI 10 mg/kg max 500 mg q8h; intra-abdominal 20 mg/kg max 1 gram q8h; meningitis 40 mg/kg max 2 grams q8h. Immediately below: 'Pediatric Patients Weighing >50 kg: Administer adult dosing' — 500 mg q8h (cSSSI), 1 g q8h (intra-abdominal), 2 g q8h (meningitis). Adult cIAI is 1 g q8h = 3 g/day. Renal table: CrCl >50 full dose q8h; 26-50 f…
 - Bağlantı: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=092ebd9b-77a0-4877-afc3-dd8211730f71
 
@@ -897,6 +896,6 @@ Uyuşmazlık bildiren her bulgu, iddiayı çürütmeye çalışan ikinci bir ba�
 
 ## 3. Devam eden iş
 
-- Hesabı reddedilen 45 kaydın her biri için kaynaktan düzeltilmiş kural türetilip bağımsız kontrolden geçenler hesaplamaya açılacak.
+- Hesabı reddedilen 43 kaydın her biri için kaynaktan düzeltilmiş kural türetilip bağımsız kontrolden geçenler hesaplamaya açılacak.
 - Modelin temsil edemediği ilaçlar (INR veya kan şekerine göre titre edilenler, düzeye göre dozlananlar, endikasyona göre değişenler, yükleme + infüzyon şemaları) kalıcı olarak reddedilir.
 - Halka açık yayından önce lisanslı bir klinisyenin imzası gerekir.
