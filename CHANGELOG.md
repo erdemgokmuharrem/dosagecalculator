@@ -6,6 +6,41 @@ tutulur. En yeni en üstte.
 
 ## 2026-09-17
 
+- **Yaş katsayısı da tek doz tavanına göre sıralandı** (henüz commit'lenmedi).
+  1'in altındaki yaş katsayısı, böbrek katsayısı gibi tavandan sonra
+  uygulanıyor; 1'in üstündeki (izoniazid çocukta ×2) tavandan önce, yani tavanı
+  aşamıyor. Önceden yaşlı bandı, dozu tavandan gelen hastada kayboluyordu: 65
+  yaş üstünde prednizolon 41 kg'dan itibaren 36 mg (eskiden 40 mg'a kadar),
+  parasetamol 67 kg'dan itibaren 800 mg (1000 mg'a kadar), ibuprofen 81 kg'dan
+  itibaren 560 mg (800 mg'a kadar). Bilerek kabul edilen sonuç: tavana ulaşan
+  çocuk bandın oranını alıyor (parasetamol 1-12 yaş 67 kg üstü 900 mg,
+  ibuprofen şurubu 41 kg üstü 320 mg; eskiden 1000/400 mg'a kadar). Değişen
+  dozların hepsi düşüyor; böbrek bantlı yedi kayıt etkilenmiyor.
+- **Örtüşen böbrek bantları kontrendikasyonu gizleyebiliyordu.** İlk eşleşen
+  bant uygulanıyordu; önce yazılmış 0,5 bandı, 0 (kontrendike) bandının yerine
+  doz veriyordu. Artık yaş bantlarındaki gibi en kısıtlayıcı geçerli bant
+  kazanıyor. Katalog testleri örtüşen böbrek bandını ve azaltma bandı olan
+  kayıtta tek doz tavanı × sıklığın günlük tavanı aşmasını engelliyor (aksi
+  halde yarıya inen rejim günlük kontrolden kaçar). `ENGINE_KEYS` listesinde
+  eksik dört motor kodu (`blocked.contraindicatedRenal` dahil) eklendi; motorun
+  ürettiği her kodu kaynaktan tarayıp listede arayan test var.
+- Bu iki düzeltme için 20 motor testi (TMP-SMX etiket senaryosu: CrCl 20'de 80
+  mg, CrCl 15-30'da 80 kg ve üstünde 80 mg, 15 altında ret, çocukta tavan altı
+  doz aynı; yaş sırası; örtüşen bantlar) ve 4 katalog/çeviri testi eklendi.
+  Özgün motorda 14, bir önceki sürümde 5 motor testi düşüyor.
+- **Hesaplayıcı formu serum kreatinini 1,0 ile dolu açıyordu** (henüz
+  commit'lenmedi). Klinisyen değer girmese de 1,0 motora ölçülmüş kreatinin
+  olarak gidiyordu: "böbrek fonksiyonu değerlendirilmedi" uyarısı hiç
+  çıkmıyor, formda ölçülmemiş bir CrCl (varsayılan hastada 102,1) görünüyor,
+  böbrek kuralı olan 7 ilaç (meropenem 16/62, ampisilin/sulbaktam 40,
+  tikarsilin/klavulanat 41, norfloksasin 48, nitrofurantoin 56,
+  klaritromisin 65) bu uydurma değerle dozlanıyordu. Alan artık boş
+  açılıyor; "1.0" yalnızca yer tutucu. Bu ilaçlar kreatinin girilene kadar
+  "Serum kreatinin değerini girin" diyerek reddediliyor, diğerleri dozu
+  "değerlendirilmedi" uyarısıyla gösteriyor. Ekran testine varsayılan değer
+  ve fixture ilaçla ret testi eklendi; eski ekranla ikisi de düşüyor.
+  Parasetamol/aspirin kullanan ekran ve e2e testleri kreatinin girmiyor; bu
+  kayıtlara böbrek bandı eklenirse kreatinin girmeleri gerekir.
 - **Reddedilen önerilerden norfloksasin açıldı** (henüz commit'lenmedi):
   etiket böbrek yetmezliğinde dozu değil sıklığı değiştiriyor (CrCl ≤30'da
   400 mg günde bir kez); bu `frequencyOverride` ile ifade edildi. İki
@@ -17,6 +52,23 @@ tutulur. En yeni en üstte.
   olarak geri alındı: paralel çalışan "güvenli sınırlar rozeti" görevinin testi
   bu kaydın eski böbrek boşluğunu senaryo olarak kullanıyor. Yama
   `scripts/dose-verification/pending/` altında bekliyor.
+- **"Güvenli Sınırlar İçinde" rozeti azalmış böbrek fonksiyonunu yok
+  sayıyordu** (henüz commit'lenmedi). Böbrek fonksiyonu 60'ın altında olup
+  hiçbir böbrek kuralı uygulanmadığında sonuç yeşil rozetle, hemen altında
+  kritik böbrek uyarısıyla gösteriliyordu. 85 yaş, 38 kg, CrCl 15,4 bir hastada
+  hesaplanan 59 ilacın 57'si böyleydi: 53'ünde böbrek kuralı hiç yok, meropenem
+  (16, 62), ampisilin/sulbaktam (40) ve tikarsilin/klavulanat (41) kuralları bu
+  değeri kapsamıyor. Sonuca `renalAdjustmentStatus` eklendi; bu durumda
+  `isWithinLimits` false oluyor ve rozet "renal doz ayarı uygulanmadı" yazıyor.
+  Böbrek kuralı olan ilaçta böbrek fonksiyonu hesaplanamıyorsa hesap zaten
+  reddediliyordu; artık testle korunuyor.
+- **Böbrek katsayısı tek doz tavanından sonra uygulanıyor.** Tavandan önce
+  çarpıldığında, kilo başına dozu erişkin tavanına ulaşan hastada azaltma
+  kısmen ya da tamamen kayboluyor, sonuç yine "böbrek ayarı uygulandı"
+  diyordu. Katalogda klaritromisin (65) CrCl <30'da 80 kg'da 300 mg, 100 kg'da
+  375 mg veriyordu; doğrusu 250 mg. Tavana takılan dozlarda formül metni sırayı
+  gösteriyor (`… → 500 mg (max) × 0.5 (renal)`). 0-1 dışındaki böbrek
+  katsayıları uygulanmıyor; katalog testi böyle bir bandı engelliyor.
 - Bu iki düzeltme için 25 test eklendi, 3 mevcut test genişletildi; eski
   motorla 20'si düşüyor. Katalog testleri kayda değil değişmeze bakıyor, ekran
   testi de test içinde tanımlı bir ilaç kullanıyor. Bekleyen

@@ -138,15 +138,27 @@ export interface DosageFormula {
   renalAdjustments?: RenalAdjustment[];
 }
 
+/** Inclusive age range in years. Overlapping bands resolve to the lowest factor. */
 export interface AgeAdjustment {
   minAge: number;
   maxAge: number;
-  adjustmentFactor: number; // multiplier for base dose
+  /**
+   * 0 = contraindicated at this age (the dose is refused). Below 1 it scales the
+   * dose after `maxSingleDose` is applied, so the ceiling cannot absorb it; above
+   * 1 it scales the formula dose before, so it cannot breach the ceiling.
+   */
+  adjustmentFactor: number;
 }
 
+/** Half-open clearance range [minGFR, maxGFR). Overlaps resolve to the lowest factor. */
 export interface RenalAdjustment {
   minGFR: number;
   maxGFR: number;
+  /**
+   * 0 = contraindicated at this kidney function (the dose is refused); otherwise
+   * 0-1, applied after `maxSingleDose`, as a fraction of the usual dose.
+   * Anything else is ignored as a data error.
+   */
   adjustmentFactor: number;
   frequencyOverride?: string;
 }
@@ -220,6 +232,23 @@ export type BlockedReason =
   | 'CONFLICTING_SOURCES'
   | 'CLINICAL_REVIEW_REQUIRED';
 
+/**
+ * What the engine did about kidney function for a dose.
+ *
+ * adjusted            → a renal rule from the drug record was applied.
+ * notImpaired         → function was estimated at 60 or above and no renal rule
+ *                       covers it, so the dose is unchanged.
+ * impairedNotAdjusted → function is below 60 but no renal rule was applied (the
+ *                       drug has none, or none covers this value). The dose is
+ *                       the normal-kidney dose and must be reviewed by hand.
+ * notAssessed         → there is no usable renal estimate, e.g. no creatinine.
+ */
+export type RenalAdjustmentStatus =
+  | 'adjusted'
+  | 'notImpaired'
+  | 'impairedNotAdjusted'
+  | 'notAssessed';
+
 export type DoseCalculationSuccess = {
   status: 'success';
   /** Dose per administration, in `unit`. */
@@ -237,6 +266,10 @@ export type DoseCalculationSuccess = {
   exceedsDailyMax: boolean;
   /** False when no daily ceiling could be checked (unknown frequency or no limit). */
   dailyCheckPerformed: boolean;
+  /**
+   * False when a ceiling was breached or could not be checked, or when kidney
+   * function was not accounted for (`renalAdjustmentStatus`).
+   */
   isWithinLimits: boolean;
   bsa: number;
   renalEstimate?: {
@@ -244,6 +277,7 @@ export type DoseCalculationSuccess = {
     method: 'cockcroft-gault' | 'schwartz';
     unit: 'mL/min' | 'mL/min/1.73m²';
   };
+  renalAdjustmentStatus: RenalAdjustmentStatus;
   ageFactor: number;
   renalFactor: number;
   formula: string;

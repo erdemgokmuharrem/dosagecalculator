@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import en from '../en.json';
 import tr from '../tr.json';
 import de from '../de.json';
@@ -32,7 +34,10 @@ const LOCALES: Record<string, Json> = {
 const REFERENCE = 'tr';
 const referenceKeys = flatten(LOCALES[REFERENCE]).sort();
 
-/** Keys the calculation engine can emit. Every one must exist in every locale. */
+/**
+ * Keys the calculation engine and its limit badge can emit. Every one must
+ * exist in every locale.
+ */
 const ENGINE_KEYS = [
   'safety.cappedSingleDose',
   'safety.noSingleDoseCeiling',
@@ -41,6 +46,7 @@ const ENGINE_KEYS = [
   'safety.unknownFrequency',
   'safety.unscheduledFrequency',
   'safety.noMatchingAgeBand',
+  'safety.overlappingAgeBands',
   'safety.renalAdjustmentApplied',
   'safety.renalImpairmentNoRule',
   'safety.renalNotAssessed',
@@ -64,7 +70,35 @@ const ENGINE_KEYS = [
   'blocked.missingFixedDose',
   'blocked.unknownMethod',
   'blocked.nonFiniteResult',
+  'blocked.contraindicatedRenal',
+  'blocked.contraindicatedAge',
+  'blocked.clinicalReviewRequired',
+  // Limit badge lines (`limitStatusKeys`).
+  'calculation.exceedsLimits',
+  'calculation.renalAdjustmentNotApplied',
+  'calculation.safetyChecksIncomplete',
 ];
+
+describe('engine key list', () => {
+  it('names every code the calculation engine emits', () => {
+    // The list above is kept by hand and had fallen behind: the renal and age
+    // contraindication refusals were among the codes it missed.
+    const engine = readFileSync(
+      join(__dirname, '..', '..', 'features', 'dosage', 'calculations.ts'),
+      'utf8'
+    );
+    const emitted = [
+      ...new Set(
+        [...engine.matchAll(/\b(?:code|messageCode): '([\w.]+)'/g)].map(
+          m => m[1]
+        )
+      ),
+    ];
+    // Guards the scanner itself: a broken pattern would make this vacuous.
+    expect(emitted.length).toBeGreaterThan(20);
+    expect(emitted.filter(key => !ENGINE_KEYS.includes(key))).toEqual([]);
+  });
+});
 
 describe.each(Object.keys(LOCALES))('locale: %s', lang => {
   const keys = flatten(LOCALES[lang]).sort();

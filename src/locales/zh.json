@@ -189,6 +189,7 @@
     "unverifiedBadge": "未核实",
     "reviewedBadge": "已审核",
     "safetyChecksIncomplete": "安全检查未能完成",
+    "renalAdjustmentNotApplied": "肾功能不全：剂量未按肾功能调整",
     "notChecked": "未检查"
   },
   "vademecum": {

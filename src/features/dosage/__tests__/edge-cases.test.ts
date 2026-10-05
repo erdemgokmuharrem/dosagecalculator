@@ -234,6 +234,28 @@ describe('renal rules that do not match', () => {
     expect(result.status).toBe('success');
     expect(result.renalFactor).toBe(1);
   });
+
+  it.each([1.5, -0.5])(
+    'does not apply an out-of-range renal factor of %p',
+    factor => {
+      // Applied after the ceiling, 1.5 would give 1350 mg against a 1000 mg
+      // ceiling, and -0.5 a negative dose. The band is treated as unusable.
+      const banded = drug({
+        renalAdjustments: [{ minGFR: 0, maxGFR: 30, adjustmentFactor: factor }],
+      });
+      // 75 y, 90 kg, SCr 4.0 → CrCl ≈ 20, inside the band.
+      const result = calculateDosage(
+        patient({ age: 75, weight: 90, serumCreatinine: 4.0 }),
+        banded
+      ) as DoseCalculationSuccess;
+      expect(result.status).toBe('success');
+      expect(result.renalFactor).toBe(1);
+      expect(result.doseMg).toBe(900);
+      // The kidneys are still impaired and nothing was applied: escalate.
+      expect(result.renalAdjustmentStatus).toBe('impairedNotAdjusted');
+      expect(result.isWithinLimits).toBe(false);
+    }
+  );
 });
 
 describe('helpers', () => {

@@ -189,6 +189,7 @@
     "unverifiedBadge": "UNVERIFIED",
     "reviewedBadge": "REVIEWED",
     "safetyChecksIncomplete": "Safety checks could not be completed",
+    "renalAdjustmentNotApplied": "Renal impairment: dose not adjusted for kidney function",
     "notChecked": "Not checked"
   },
   "vademecum": {

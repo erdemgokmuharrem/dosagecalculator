@@ -189,6 +189,7 @@
     "unverifiedBadge": "UNGEPRÜFT",
     "reviewedBadge": "GEPRÜFT",
     "safetyChecksIncomplete": "Sicherheitsprüfungen konnten nicht abgeschlossen werden",
+    "renalAdjustmentNotApplied": "Eingeschränkte Nierenfunktion: Dosis nicht an die Nierenfunktion angepasst",
     "notChecked": "Nicht geprüft"
   },
   "vademecum": {

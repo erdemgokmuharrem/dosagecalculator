@@ -189,6 +189,7 @@
     "unverifiedBadge": "НЕ ПРОВЕРЕНО",
     "reviewedBadge": "ПРОВЕРЕНО",
     "safetyChecksIncomplete": "Проверки безопасности не завершены",
+    "renalAdjustmentNotApplied": "Функция почек снижена: доза не скорректирована по функции почек",
     "notChecked": "Не проверено"
   },
   "vademecum": {

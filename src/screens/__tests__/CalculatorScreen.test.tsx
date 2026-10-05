@@ -37,6 +37,33 @@ jest.mock('../../contexts/SubscriptionContext', () => ({
 
 jest.mock('../../components/AdBanner', () => ({ AdBanner: () => null }));
 
+// The real catalogue plus one fixture whose only renal rule covers normal
+// kidneys, so an impaired patient matches none. A shipped record would not do:
+// its renal gap closes as soon as the record is corrected.
+jest.mock('../../data/drugs', () => {
+  const actual = jest.requireActual('../../data/drugs');
+  const renalGapFixture = {
+    id: 'fixture-renal-gap',
+    name: 'Renal Gap Fixture',
+    genericName: 'fixture',
+    category: 'Antibiotics',
+    unit: 'mg',
+    dosageForm: 'injection',
+    calculationMethod: 'weight',
+    contraindications: [],
+    sideEffects: [],
+    dosageFormula: {
+      method: 'weight',
+      dosePerKg: 50,
+      frequency: 'q12h',
+      maxSingleDose: 2000,
+      maxDailyDose: 6000,
+      renalAdjustments: [{ minGFR: 60, maxGFR: 9999, adjustmentFactor: 1 }],
+    },
+  };
+  return { ...actual, sampleDrugs: [...actual.sampleDrugs, renalGapFixture] };
+});
+
 const renderScreen = async () => {
   const result = render(
     <SafeAreaProvider
@@ -89,6 +116,38 @@ describe('CalculatorScreen', () => {
     expect(screen.getByTestId('age-input').props.value).toBe('35');
     expect(screen.getByTestId('weight-input').props.value).toBe('70');
     expect(screen.getByTestId('height-input').props.value).toBe('170');
+    // Creatinine starts empty, with 1.0 only as a placeholder. A pre-filled
+    // 1.0 reached the engine as a measured value: kidney function was never
+    // reported as "not assessed", and a CrCl nobody measured was shown.
+    const creatinine = screen.getByTestId('creatinine-input');
+    expect(creatinine.props.value).toBe('');
+    expect(creatinine.props.placeholder).toBe('1.0');
+    expect(screen.queryByText('CrCl (mL/dk)')).toBeNull();
+  });
+
+  it('refuses a drug with renal rules until a serum creatinine is entered', async () => {
+    await renderScreen();
+    // The creatinine field is left as the form opens. Any drug with renal rules
+    // would do; the fixture keeps this independent of catalogue records, which
+    // gain and lose renal rules as they are verified. With the old pre-filled
+    // 1.0 it was dosed against a CrCl of 102 mL/min.
+    await selectDrug('Renal Gap Fixture');
+
+    const blocked = await screen.findByTestId(
+      'blocked-message',
+      {},
+      { timeout: 3000 }
+    );
+    expect(String(blocked.props.children)).toContain(
+      'Serum kreatinin değerini girin'
+    );
+    expect(screen.queryByTestId('result-dose')).toBeNull();
+
+    // A measured value lifts the refusal.
+    setPatient({ 'creatinine-input': '1.0' });
+    fireEvent.press(screen.getByTestId('calculate-button'));
+    await screen.findByTestId('result-dose', {}, { timeout: 3000 });
+    expect(screen.queryByTestId('blocked-message')).toBeNull();
   });
 
   it('shows a numeric dose on screen after selecting a drug', async () => {
@@ -132,6 +191,34 @@ describe('CalculatorScreen', () => {
     const withinLimits = screen.queryByText(/Güvenli Sınırlar İçinde/);
     const exceeds = screen.queryByText(/Doz Sınırı Aşıldı/);
     expect(Boolean(withinLimits) !== Boolean(exceeds)).toBe(true);
+  });
+
+  it('does not claim "within safe limits" when impaired kidneys were not accounted for', async () => {
+    await renderScreen();
+    // 85 y, female, 38 kg, SCr 1.6 → CrCl 15.4 mL/min, which no rule of the
+    // fixture covers, yet every ceiling passes: 1900 mg q12h. This used to show
+    // the green badge directly above the critical renal warning.
+    setPatient({
+      'age-input': '85',
+      'weight-input': '38',
+      'height-input': '150',
+      'creatinine-input': '1.6',
+    });
+    fireEvent.press(screen.getByText('♀ Kadın'));
+
+    await selectDrug('Renal Gap Fixture');
+    const dose = await screen.findByTestId(
+      'result-dose',
+      {},
+      { timeout: 3000 }
+    );
+    expect(String(dose.props.children)).toBe('1900');
+
+    expect(screen.queryByText(/Güvenli Sınırlar İçinde/)).toBeNull();
+    expect(
+      screen.getByText(/Böbrek fonksiyonu azalmış: renal doz ayarı uygulanmadı/)
+    ).toBeTruthy();
+    expect(screen.getByText(/BÖBREK FONKSİYONU AZALMIŞ/)).toBeTruthy();
   });
 
   it('refuses to dose a drug contraindicated at the patient’s age', async () => {

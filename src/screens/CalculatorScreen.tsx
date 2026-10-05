@@ -39,6 +39,7 @@ import {
   formatWarning,
   formatBlockedReason,
   sortWarnings,
+  limitStatusKeys,
   ICON_BY_SEVERITY,
 } from '../features/dosage/warnings';
 import { reportError } from '../services/monitoring';
@@ -115,7 +116,10 @@ const CalculatorScreen: React.FC = () => {
     height: '170',
     gender: 'male',
     patientType: 'adult',
-    serumCreatinine: '1.0',
+    // Empty until measured; "1.0" is only the placeholder. A pre-filled value
+    // reached the engine as a real creatinine, so it never reported kidney
+    // function as not assessed and dosed drugs with renal rules against it.
+    serumCreatinine: '',
   });
 
   // Drug Selection State
@@ -649,7 +653,14 @@ const CalculatorScreen: React.FC = () => {
       padding: 10,
       marginBottom: 10,
     },
-    limitText: { fontSize: 13, fontWeight: '700', marginLeft: 6 },
+    // flexShrink lets a long reason wrap inside the badge instead of running
+    // past its edge.
+    limitText: {
+      fontSize: 13,
+      fontWeight: '700',
+      marginLeft: 6,
+      flexShrink: 1,
+    },
     // Warnings
     // Warnings. Severity drives colour AND weight so a capped dose does not read
     // like an informational note. Hardcoded hex values were theme-blind and
@@ -1336,7 +1347,8 @@ const CalculatorScreen: React.FC = () => {
                 <Text style={styles.formulaText}>{success.formula}</Text>
 
                 {/* Limit status. `isWithinLimits` is false whenever a ceiling was
-                    breached OR could not be verified — never a bare "safe". */}
+                    breached OR could not be verified, or impaired kidney
+                    function was not accounted for — never a bare "safe". */}
                 {success.isWithinLimits ? (
                   <View style={styles.limitOk}>
                     <Text style={styles.limitIcon}>✅</Text>
@@ -1358,9 +1370,9 @@ const CalculatorScreen: React.FC = () => {
                         { color: theme.colors.criticalText },
                       ]}
                     >
-                      {success.cappedByMaximumDose || success.exceedsDailyMax
-                        ? t('calculation.exceedsLimits')
-                        : t('calculation.safetyChecksIncomplete')}
+                      {limitStatusKeys(success)
+                        .map(key => t(key))
+                        .join('\n')}
                     </Text>
                   </View>
                 )}

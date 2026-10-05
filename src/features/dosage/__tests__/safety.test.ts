@@ -10,8 +10,9 @@ import {
   validatePatientForCalculation,
   PATIENT_LIMITS,
 } from '../calculations';
-import { hasCritical, sortWarnings } from '../warnings';
+import { hasCritical, limitStatusKeys, sortWarnings } from '../warnings';
 import type { Patient, Drug, DoseCalculationSuccess } from '../../../types';
+import * as fc from 'fast-check';
 
 const adult = (over: Partial<Patient> = {}): Patient => ({
   id: 'p',
@@ -117,6 +118,7 @@ describe('frequency handling — must fail closed', () => {
     expect(codes(r)).toContain('safety.unknownFrequency');
     // An unverifiable ceiling must never present as "within limits".
     expect(r.isWithinLimits).toBe(false);
+    expect(limitStatusKeys(r)).toEqual(['calculation.safetyChecksIncomplete']);
     expect(hasCritical(r.warnings)).toBe(true);
   });
 
@@ -335,6 +337,9 @@ describe('renal function', () => {
     expect(warn?.severity).toBe('critical');
     // Crucially: no invented adjustment was applied.
     expect(r.renalFactor).toBe(1);
+    // …and the unadjusted dose is not presented as within safe limits.
+    expect(r.renalAdjustmentStatus).toBe('impairedNotAdjusted');
+    expect(r.isWithinLimits).toBe(false);
   });
 
   it('applies the drug’s own renal rule when one exists', () => {
@@ -351,6 +356,7 @@ describe('renal function', () => {
       )
     );
     expect(r.renalFactor).toBe(0.5);
+    expect(r.renalAdjustmentStatus).toBe('adjusted');
     expect(codes(r)).toContain('safety.renalAdjustmentApplied');
     expect(codes(r)).not.toContain('safety.renalImpairmentNoRule');
   });
@@ -419,6 +425,262 @@ describe('renal function', () => {
     expect(obese.doseMg).toBeCloseTo(125, 5);
     expect(lean.doseMg).toBeCloseTo(70, 5);
     expect(obese.renalFactor).toBe(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+describe('"within limits" accounts for kidney function', () => {
+  // Shaped like the shipped meropenem and ampicillin/sulbactam records: the only
+  // renal rule covers normal kidneys, so an impaired patient matches none.
+  const normalKidneysOnly = weightDrug({
+    dosePerKg: 50,
+    frequency: 'q12h',
+    maxSingleDose: 2000,
+    maxDailyDose: 6000,
+    renalAdjustments: [{ minGFR: 60, maxGFR: 9999, adjustmentFactor: 1 }],
+  });
+
+  it('is not within limits for an elderly patient whose impairment no rule covers', () => {
+    // 85 y, female, 38 kg, SCr 1.6 → Cockcroft-Gault 15.4 mL/min.
+    const r = ok(
+      calculateDosage(
+        adult({
+          age: 85,
+          gender: 'female',
+          weight: 38,
+          height: 150,
+          serumCreatinine: 1.6,
+        }),
+        normalKidneysOnly
+      )
+    );
+    // Every ceiling passes (1900 mg q12h = 3800 mg/day), which is why this used
+    // to read "within safe limits" above a critical renal warning.
+    expect(r.doseMg).toBe(1900);
+    expect(r.dailyTotalMg).toBe(3800);
+    expect(r.cappedByMaximumDose).toBe(false);
+    expect(r.exceedsDailyMax).toBe(false);
+    expect(r.renalEstimate).toMatchObject({
+      value: 15.4,
+      method: 'cockcroft-gault',
+    });
+    expect(r.renalFactor).toBe(1);
+    expect(
+      r.warnings.find(w => w.code === 'safety.renalImpairmentNoRule')?.severity
+    ).toBe('critical');
+
+    expect(r.renalAdjustmentStatus).toBe('impairedNotAdjusted');
+    expect(r.isWithinLimits).toBe(false);
+    expect(limitStatusKeys(r)).toEqual([
+      'calculation.renalAdjustmentNotApplied',
+    ]);
+  });
+
+  it('is not within limits for a child whose Schwartz eGFR no rule covers', () => {
+    // 8 y, 30 kg, 130 cm, SCr 2.0 → 0.413 × 130 / 2.0 = 26.8 mL/min/1.73m².
+    const r = ok(
+      calculateDosage(
+        adult({ age: 8, weight: 30, height: 130, serumCreatinine: 2.0 }),
+        normalKidneysOnly
+      )
+    );
+    expect(r.renalEstimate).toMatchObject({ value: 26.8, method: 'schwartz' });
+    expect(r.dailyTotalMg).toBe(3000);
+    expect(r.cappedByMaximumDose).toBe(false);
+    expect(r.exceedsDailyMax).toBe(false);
+    expect(r.renalAdjustmentStatus).toBe('impairedNotAdjusted');
+    expect(r.isWithinLimits).toBe(false);
+  });
+
+  it('names both reasons when the dose was also capped', () => {
+    // 85 y, female, 90 kg, SCr 1.6 → 36.5 mL/min; 90 kg × 50 mg/kg exceeds 2 g.
+    const r = ok(
+      calculateDosage(
+        adult({
+          age: 85,
+          gender: 'female',
+          weight: 90,
+          height: 160,
+          serumCreatinine: 1.6,
+        }),
+        normalKidneysOnly
+      )
+    );
+    expect(r.cappedByMaximumDose).toBe(true);
+    expect(limitStatusKeys(r)).toEqual([
+      'calculation.exceedsLimits',
+      'calculation.renalAdjustmentNotApplied',
+    ]);
+  });
+
+  it('is within limits once the drug’s own renal rule has been applied', () => {
+    const drug = weightDrug({
+      ...normalKidneysOnly.dosageFormula,
+      renalAdjustments: [
+        {
+          minGFR: 0,
+          maxGFR: 30,
+          adjustmentFactor: 0.5,
+          frequencyOverride: 'q24h',
+        },
+        { minGFR: 30, maxGFR: 9999, adjustmentFactor: 1 },
+      ],
+    });
+    const r = ok(
+      calculateDosage(
+        adult({
+          age: 85,
+          gender: 'female',
+          weight: 38,
+          height: 150,
+          serumCreatinine: 1.6,
+        }),
+        drug
+      )
+    );
+    expect(r.renalAdjustmentStatus).toBe('adjusted');
+    expect(r.doseMg).toBe(950);
+    expect(r.frequency).toBe('q24h');
+    expect(r.isWithinLimits).toBe(true);
+    expect(limitStatusKeys(r)).toEqual([]);
+  });
+
+  it.each([
+    ['has no renal rules', weightDrug({ dosePerKg: 5 })],
+    [
+      'only has rules for impaired kidneys',
+      weightDrug({
+        dosePerKg: 5,
+        renalAdjustments: [{ minGFR: 0, maxGFR: 30, adjustmentFactor: 0.5 }],
+      }),
+    ],
+  ])(
+    'is within limits with normal kidney function when the drug %s',
+    (_label, drug) => {
+      const r = ok(calculateDosage(adult({ serumCreatinine: 1.0 }), drug));
+      expect(r.renalAdjustmentStatus).toBe('notImpaired');
+      expect(r.isWithinLimits).toBe(true);
+    }
+  );
+
+  it('still doses a drug without renal rules when no creatinine was entered', () => {
+    // Unchanged: shown within limits, with a warning that kidneys were not assessed.
+    const r = ok(calculateDosage(adult(), weightDrug({ dosePerKg: 5 })));
+    expect(r.renalAdjustmentStatus).toBe('notAssessed');
+    expect(codes(r)).toContain('safety.renalNotAssessed');
+    expect(r.isWithinLimits).toBe(true);
+  });
+
+  it.each<[string, Partial<Patient>]>([
+    ['no creatinine was entered', {}],
+    ['the creatinine yields no estimate', { serumCreatinine: 0 }],
+  ])(
+    'shows no dose at all for a drug with renal rules when %s',
+    (_label, over) => {
+      // Renal function could not be assessed, so there is no result whose
+      // badge could claim safety.
+      const r = calculateDosage(adult(over), normalKidneysOnly);
+      expect(r.status).toBe('blocked');
+      if (r.status === 'blocked')
+        expect(r.messageCode).toBe('blocked.renalDataRequired');
+    }
+  );
+
+  it('never reports a result within limits while it carries a critical warning', () => {
+    fc.assert(
+      fc.property(
+        fc.integer({ min: 0, max: 120 }),
+        fc.integer({ min: 1, max: 200 }),
+        fc.integer({ min: 50, max: 200 }),
+        fc.constantFrom<Patient['gender']>('male', 'female'),
+        fc.option(fc.double({ min: 0.2, max: 10, noNaN: true }), {
+          nil: undefined,
+        }),
+        fc.constantFrom(normalKidneysOnly, weightDrug({ dosePerKg: 5 })),
+        (age, weight, height, gender, serumCreatinine, drug) => {
+          const r = calculateDosage(
+            adult({ age, weight, height, gender, serumCreatinine }),
+            drug
+          );
+          return (
+            r.status !== 'success' ||
+            !r.isWithinLimits ||
+            !hasCritical(r.warnings)
+          );
+        }
+      )
+    );
+  });
+});
+
+// ---------------------------------------------------------------------------
+describe('renal factor is applied after the single-dose ceiling', () => {
+  // A paediatric per-kg rule with an adult cap, halved below a clearance of 30.
+  const halvedBelow30 = weightDrug({
+    dosePerKg: 50,
+    frequency: 'q12h',
+    maxSingleDose: 2000,
+    maxDailyDose: 6000,
+    renalAdjustments: [
+      { minGFR: 0, maxGFR: 30, adjustmentFactor: 0.5 },
+      { minGFR: 30, maxGFR: 9999, adjustmentFactor: 1 },
+    ],
+  });
+  // 70 y, male, SCr 5.0: Cockcroft-Gault stays below 30 up to 154 kg.
+  const impairedAdult = (weight: number) =>
+    adult({ age: 70, weight, serumCreatinine: 5.0 });
+
+  // Before the fix: 70 kg → 1750 mg; 90 kg and 150 kg → 2000 mg, no reduction.
+  it.each([70, 90, 150])(
+    'halves the capped adult dose to 1000 mg at %s kg',
+    weight => {
+      const r = ok(calculateDosage(impairedAdult(weight), halvedBelow30));
+      expect(r.renalFactor).toBe(0.5);
+      expect(r.doseMg).toBe(1000);
+      expect(r.dailyTotalMg).toBe(2000);
+      expect(r.renalAdjustmentStatus).toBe('adjusted');
+    }
+  );
+
+  it('scales a dose that never reached the ceiling as before', () => {
+    // 8 y, 20 kg, 115 cm, SCr 2.0 → Schwartz 23.7: 20 kg × 50 mg/kg, halved.
+    const r = ok(
+      calculateDosage(
+        adult({ age: 8, weight: 20, height: 115, serumCreatinine: 2.0 }),
+        halvedBelow30
+      )
+    );
+    expect(r.doseMg).toBe(500);
+    expect(r.cappedByMaximumDose).toBe(false);
+    expect(r.formula).toBe('20 kg × 50 mg/kg × 1 (age) × 0.5 (renal)');
+  });
+
+  it('reports the cap against the unadjusted dose and shows the order in the formula', () => {
+    const r = ok(calculateDosage(impairedAdult(90), halvedBelow30));
+    expect(r.cappedByMaximumDose).toBe(true);
+    expect(
+      r.warnings.find(w => w.code === 'safety.cappedSingleDose')?.params
+    ).toMatchObject({ calculated: 4500, max: 2000 });
+    // Checkable by hand: 4500 mg, capped at 2000 mg, then halved.
+    expect(r.formula).toBe(
+      '90 kg × 50 mg/kg × 1 (age) → 2000 mg (max) × 0.5 (renal)'
+    );
+  });
+
+  it('never lets the ceiling absorb a renal reduction, at any weight or clearance', () => {
+    fc.assert(
+      fc.property(
+        fc.integer({ min: 1, max: PATIENT_LIMITS.weight.max }),
+        fc.double({ min: 0.3, max: 12, noNaN: true }),
+        (weight, serumCreatinine) => {
+          const r = calculateDosage(
+            adult({ age: 70, weight, serumCreatinine }),
+            halvedBelow30
+          );
+          return r.status !== 'success' || r.doseMg <= 2000 * r.renalFactor;
+        }
+      )
+    );
   });
 });
 

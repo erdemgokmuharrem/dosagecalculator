@@ -2479,7 +2479,7 @@ const baseDrugs: Drug[] = [
         '2 ay üstü çocuklarda güvenli. Febril nötropenide 50mg/kg q8h.',
       geriatricUse: 'Böbrek fonksiyonuna göre doz mutlaka ayarlanmalı.',
       renalAdjustment:
-        'GFR 30-60: 2g q12h veya 1g q12h. GFR 11-29: 1g q24h. GFR <10: 500mg q24h. (Doz ayarlaması endikasyona göre değişir)',
+        'CrCl ≤60 mL/dk: ilk doz normal böbrek fonksiyonundaki gibidir (hemodiyaliz hariç), idame dozu şemaya göre azaltılır. Normal şema → CrCl 30-60 / 11-29 / <11 mL/dk: 2 g q12h → 2 g q24h / 1 g q24h / 500 mg q24h. 2 g q8h → 2 g q12h / 2 g q24h / 1 g q24h. 1 g q12h → 1 g q24h / 500 mg q24h / 250 mg q24h. 500 mg q12h → 500 mg q24h / 500 mg q24h / 250 mg q24h. Sürekli ayaktan periton diyalizi: aynı doz 48 saatte bir. Hemodiyaliz: 1. gün 1 g, sonra 500 mg q24h (febril nötropenide 1 g q24h); diyaliz günlerinde diyalizden sonra verilir. Çocuklarda erişkindeki değişikliklerle orantılı ayarlanır. (FDA etiketi, Tablo 2)',
       hepaticAdjustment: 'Gerekmez.',
     },
   },

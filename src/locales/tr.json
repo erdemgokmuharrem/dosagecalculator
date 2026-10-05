@@ -189,6 +189,7 @@
     "unverifiedBadge": "DOĞRULANMADI",
     "reviewedBadge": "İNCELENDİ",
     "safetyChecksIncomplete": "Güvenlik kontrolleri tamamlanamadı",
+    "renalAdjustmentNotApplied": "Böbrek fonksiyonu azalmış: renal doz ayarı uygulanmadı",
     "notChecked": "Kontrol edilmedi"
   },
   "vademecum": {

@@ -1,5 +1,9 @@
 import type { TFunction } from 'i18next';
-import type { DoseWarning, DoseCalculationBlocked } from '../../types';
+import type {
+  DoseWarning,
+  DoseCalculationBlocked,
+  DoseCalculationSuccess,
+} from '../../types';
 
 /**
  * i18n edge layer for the calculation engine.
@@ -61,3 +65,21 @@ export const sortWarnings = (warnings: readonly DoseWarning[]): DoseWarning[] =>
 
 export const hasCritical = (warnings: readonly DoseWarning[]): boolean =>
   warnings.some(w => w.severity === 'critical');
+
+/**
+ * i18n keys naming why a result is NOT within safe limits, one per line of the
+ * limit badge; empty when it is. Impaired kidneys with no renal rule applied get
+ * their own line, so the badge above a critical renal warning can neither be
+ * green nor hide that reason behind "dose limit exceeded".
+ */
+export const limitStatusKeys = (result: DoseCalculationSuccess): string[] => {
+  if (result.isWithinLimits) return [];
+  const keys: string[] = [];
+  if (result.cappedByMaximumDose || result.exceedsDailyMax) {
+    keys.push('calculation.exceedsLimits');
+  }
+  if (result.renalAdjustmentStatus === 'impairedNotAdjusted') {
+    keys.push('calculation.renalAdjustmentNotApplied');
+  }
+  return keys.length > 0 ? keys : ['calculation.safetyChecksIncomplete'];
+};

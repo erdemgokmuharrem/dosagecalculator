@@ -1,4 +1,10 @@
-import { Patient, Drug, DoseCalculationResult, DoseWarning } from '../../types';
+import {
+  Patient,
+  Drug,
+  DoseCalculationResult,
+  DoseWarning,
+  RenalAdjustmentStatus,
+} from '../../types';
 
 /**
  * Pure clinical calculation layer.
@@ -14,6 +20,10 @@ import { Patient, Drug, DoseCalculationResult, DoseWarning } from '../../types';
  *     to come from the drug record itself (`dosageFormula.ageAdjustments`,
  *     `dosageFormula.renalAdjustments`). When a rule is absent we surface that
  *     absence to the clinician rather than approximating it.
+ *  4. A factor that reduces the dose (renal, or an age band below 1) is applied
+ *     after the single-dose ceiling, so the ceiling cannot absorb it. A factor
+ *     that raises it (an age band above 1) is applied before, so it cannot
+ *     breach the ceiling.
  */
 
 /** Physiologically plausible input ranges. Values outside these are rejected. */
@@ -265,6 +275,17 @@ const resolveAgeAdjustment = (
 /**
  * Renal adjustment taken strictly from the drug's own data. No factor is
  * invented when the drug carries no renal rules.
+ *
+ * A renal rule keeps or reduces a dose; it never raises it. The factor is
+ * applied after the single-dose ceiling, so a factor above 1 would lift the
+ * dose past that ceiling and a negative one would make it negative. Either is a
+ * data error: the rule is not applied, and an impaired patient is escalated.
+ *
+ * A factor of 0 is the renal counterpart of the age contraindication marker
+ * ("use not recommended" at this level of kidney function): the caller must
+ * refuse, never multiply it in. Where bands overlap, the most restrictive one
+ * wins, as with age bands. The first match used to win, so a permissive band
+ * listed first hid a contraindication behind it.
  */
 const resolveRenalAdjustment = (
   drug: Drug,
@@ -273,27 +294,53 @@ const resolveRenalAdjustment = (
   factor: number;
   applied: boolean;
   hasRules: boolean;
+  contraindicated: boolean;
   frequencyOverride?: string;
 } => {
   const rules = drug.dosageFormula.renalAdjustments;
-  if (!rules || rules.length === 0) {
-    return { factor: 1.0, applied: false, hasRules: false };
-  }
-  if (!renal) {
-    return { factor: 1.0, applied: false, hasRules: true };
-  }
-  const rule = rules.find(
-    r => renal.value >= r.minGFR && renal.value < r.maxGFR
+  const base = {
+    factor: 1.0,
+    applied: false,
+    hasRules: false,
+    contraindicated: false,
+  };
+  if (!rules || rules.length === 0) return base;
+  if (!renal) return { ...base, hasRules: true };
+
+  const matches = rules.filter(
+    r =>
+      renal.value >= r.minGFR &&
+      renal.value < r.maxGFR &&
+      isFiniteNumber(r.adjustmentFactor) &&
+      r.adjustmentFactor >= 0 &&
+      r.adjustmentFactor <= 1
   );
-  if (!rule || !isFiniteNumber(rule.adjustmentFactor)) {
-    return { factor: 1.0, applied: false, hasRules: true };
-  }
+  if (matches.length === 0) return { ...base, hasRules: true };
+
+  const rule = matches.reduce((lowest, current) =>
+    current.adjustmentFactor < lowest.adjustmentFactor ? current : lowest
+  );
   return {
     factor: rule.adjustmentFactor,
     applied: true,
     hasRules: true,
+    contraindicated: rule.adjustmentFactor === 0,
     frequencyOverride: rule.frequencyOverride,
   };
+};
+
+/**
+ * What was done about kidney function. `impairedNotAdjusted` is the state a
+ * clinician must not miss: the kidneys are impaired and the dose shown is the
+ * normal-kidney dose.
+ */
+const resolveRenalStatus = (
+  renal: RenalEstimate | null,
+  adjustmentApplied: boolean
+): RenalAdjustmentStatus => {
+  if (!renal) return 'notAssessed';
+  if (adjustmentApplied) return 'adjusted';
+  return renal.value < 60 ? 'impairedNotAdjusted' : 'notImpaired';
 };
 
 /** Validates raw patient inputs against physiologically plausible ranges. */
@@ -468,7 +515,7 @@ export const calculateDosage = (
   // A renal band with factor 0 means the drug must not be given at that level
   // of kidney function. It used to be multiplied in like any other factor, so
   // the result was a "0 mg" dose instead of a refusal.
-  if (renal && renalAdjustment.applied && renalAdjustment.factor === 0) {
+  if (renal && renalAdjustment.contraindicated) {
     return {
       status: 'blocked',
       reason: 'CLINICAL_REVIEW_REQUIRED',
@@ -503,6 +550,10 @@ export const calculateDosage = (
   }
 
   // ---- Base dose ----------------------------------------------------------
+  // Only a factor that raises the dose is part of the base dose, so the
+  // single-dose ceiling still bounds it: an age band above 1, such as a higher
+  // per-kg rate for young children. Factors that reduce the dose (renal, or an
+  // age band below 1) are applied after the ceiling (see below).
   const ageFactor = ageAdjustment.factor;
   const renalFactor = renalAdjustment.factor;
 
@@ -518,9 +569,8 @@ export const calculateDosage = (
           messageCode: 'blocked.missingDosePerKg',
         };
       }
-      calculatedDose =
-        patient.weight * formula.dosePerKg * ageFactor * renalFactor;
-      formulaUsed = `${patient.weight} kg × ${formula.dosePerKg} ${drug.unit}/kg × ${ageFactor} (age) × ${renalFactor} (renal)`;
+      calculatedDose = patient.weight * formula.dosePerKg;
+      formulaUsed = `${patient.weight} kg × ${formula.dosePerKg} ${drug.unit}/kg`;
       break;
     }
 
@@ -532,8 +582,8 @@ export const calculateDosage = (
           messageCode: 'blocked.missingDosePerM2',
         };
       }
-      calculatedDose = bsa * formula.dosePerM2 * ageFactor * renalFactor;
-      formulaUsed = `${roundTo(bsa, 2)} m² × ${formula.dosePerM2} ${drug.unit}/m² × ${ageFactor} (age) × ${renalFactor} (renal)`;
+      calculatedDose = bsa * formula.dosePerM2;
+      formulaUsed = `${roundTo(bsa, 2)} m² × ${formula.dosePerM2} ${drug.unit}/m²`;
       break;
     }
 
@@ -546,8 +596,8 @@ export const calculateDosage = (
           messageCode: 'blocked.missingFixedDose',
         };
       }
-      calculatedDose = formula.fixedDose * ageFactor * renalFactor;
-      formulaUsed = `${formula.fixedDose} ${drug.unit} × ${ageFactor} (age) × ${renalFactor} (renal)`;
+      calculatedDose = formula.fixedDose;
+      formulaUsed = `${formula.fixedDose} ${drug.unit}`;
       break;
     }
 
@@ -557,6 +607,14 @@ export const calculateDosage = (
         reason: 'UNVERIFIED_RULE',
         messageCode: 'blocked.unknownMethod',
       };
+  }
+
+  // A factor of exactly 1 changes nothing; it is shown here so that an
+  // unadjusted formula still reads "× 1 (age)".
+  const ageRaisesDose = ageFactor >= 1;
+  if (ageRaisesDose) {
+    calculatedDose *= ageFactor;
+    formulaUsed = `${formulaUsed} × ${ageFactor} (age)`;
   }
 
   if (!isFiniteNumber(calculatedDose) || calculatedDose < 0) {
@@ -585,6 +643,7 @@ export const calculateDosage = (
     });
     calculatedDose = maxSingleDose;
     cappedByMaximumDose = true;
+    formulaUsed = `${formulaUsed} → ${maxSingleDose} ${drug.unit} (max)`;
   } else if (maxSingleDose === undefined) {
     warnings.push({
       code: 'safety.noSingleDoseCeiling',
@@ -592,6 +651,30 @@ export const calculateDosage = (
       params: {},
     });
   }
+
+  // ---- Age reduction ------------------------------------------------------
+  // An age band below 1 reduces the dose this patient would otherwise receive,
+  // so like the renal factor it applies AFTER the ceiling. Before the ceiling it
+  // was absorbed in the adults the band is for: 15 mg/kg with a 1000 mg ceiling
+  // and 0.8 from 65 years gave 840 mg at 70 kg and the unreduced 1000 mg from
+  // 84 kg. The same order holds for children, deliberately: a child heavy
+  // enough to reach the ceiling gets the band's fraction of it (0.9 → 900 mg),
+  // not the reduced per-kg rate capped at the full ceiling.
+  if (!ageRaisesDose) {
+    calculatedDose *= ageFactor;
+    formulaUsed = `${formulaUsed} × ${ageFactor} (age)`;
+  }
+
+  // ---- Renal adjustment ---------------------------------------------------
+  // Applied AFTER the ceiling. The ceiling is the most a patient with normal
+  // kidneys may receive (for a per-kg paediatric rule, the adult dose), and the
+  // renal rule reduces that dose. Multiplied in before the clamp, the reduction
+  // was absorbed by the cap in heavier patients: 50 mg/kg halved gave 1750 mg at
+  // 70 kg and an unreduced 2000 mg at 90 kg, not 1000 mg, yet was reported as
+  // applied. Factors are limited to 0-1 (`resolveRenalAdjustment`), so this
+  // cannot lift the dose back over the ceiling.
+  calculatedDose *= renalFactor;
+  formulaUsed = `${formulaUsed} × ${renalFactor} (renal)`;
 
   calculatedDose = roundTo(calculatedDose, 2);
 
@@ -670,9 +753,13 @@ export const calculateDosage = (
     });
   }
 
+  const renalAdjustmentStatus = resolveRenalStatus(
+    renal,
+    renalAdjustment.applied
+  );
+
   if (renal) {
-    const impaired = renal.value < 60;
-    if (renalAdjustment.applied) {
+    if (renalAdjustmentStatus === 'adjusted') {
       warnings.push({
         code: 'safety.renalAdjustmentApplied',
         severity: 'info',
@@ -682,7 +769,7 @@ export const calculateDosage = (
           factor: renalFactor,
         },
       });
-    } else if (impaired) {
+    } else if (renalAdjustmentStatus === 'impairedNotAdjusted') {
       // We have evidence of impairment but no verified rule for this drug.
       // We do NOT invent a factor — we escalate to the clinician.
       warnings.push({
@@ -746,8 +833,20 @@ export const calculateDosage = (
     });
   }
 
+  // A dose that kidney function has not been accounted for is not "within
+  // limits", however the ceilings came out: impaired function with no renal
+  // rule applied, or a drug with renal rules and no renal estimate. That second
+  // case is blocked further up; this flag does not rely on it.
+  const renalAccountedFor =
+    renalAdjustmentStatus === 'adjusted' ||
+    renalAdjustmentStatus === 'notImpaired' ||
+    (renalAdjustmentStatus === 'notAssessed' && !renalAdjustment.hasRules);
+
   const isWithinLimits =
-    !cappedByMaximumDose && !exceedsDailyMax && dosesPerDay !== null;
+    !cappedByMaximumDose &&
+    !exceedsDailyMax &&
+    dosesPerDay !== null &&
+    renalAccountedFor;
 
   return {
     status: 'success',
@@ -771,6 +870,7 @@ export const calculateDosage = (
           unit: renal.unit,
         }
       : undefined,
+    renalAdjustmentStatus,
     ageFactor,
     renalFactor,
     formula: formulaUsed,

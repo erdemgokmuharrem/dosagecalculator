@@ -7,7 +7,9 @@ import {
 import {
   getDosesPerDay,
   calculateDosage,
+  isUnscheduledFrequency,
 } from '../../features/dosage/calculations';
+import { hasCritical } from '../../features/dosage/warnings';
 import type { Patient } from '../../types';
 
 /**
@@ -127,6 +129,70 @@ describe('shipped drug database', () => {
       })
       .map(d => `${d.id} (${d.name})`);
     expect(overlapping).toEqual([]);
+  });
+
+  it('keeps renal bands ordered, with factors between 0 and 1', () => {
+    // The engine applies a renal factor after the single-dose ceiling and
+    // ignores one outside 0-1, since above 1 it would lift the dose over the
+    // ceiling. An ignored band is a renal rule lost, so it must not ship.
+    const bad = sampleDrugs
+      .filter(d =>
+        (d.dosageFormula.renalAdjustments ?? []).some(
+          r =>
+            !(r.minGFR < r.maxGFR) ||
+            !(r.adjustmentFactor >= 0 && r.adjustmentFactor <= 1)
+        )
+      )
+      .map(d => `${d.id} (${d.name})`);
+    expect(bad).toEqual([]);
+  });
+
+  it('never lets renal bands overlap', () => {
+    // Bands are half-open [minGFR, maxGFR), so 0-30 and 30-60 only touch. The
+    // engine resolves a real overlap to the most restrictive band, but which
+    // rule applies should come from the record, not from that fallback.
+    const overlapping = sampleDrugs
+      .filter(d => {
+        const bands = d.dosageFormula.renalAdjustments ?? [];
+        return bands.some((a, i) =>
+          bands.some(
+            (b, j) => i !== j && a.minGFR < b.maxGFR && b.minGFR < a.maxGFR
+          )
+        );
+      })
+      .map(d => `${d.id} (${d.name})`);
+    expect(overlapping).toEqual([]);
+  });
+
+  it('cannot hide a daily-ceiling breach behind a dose reduction', () => {
+    // A reduction (a renal factor, or an age band below 1) scales the dose after
+    // the single-dose ceiling, but the daily total is checked against the
+    // record's unreduced daily maximum. Halving a regimen that breaches that
+    // maximum can bring it under the maximum while it is still over half of it,
+    // and nothing flags that. A single-dose ceiling that fits the daily maximum
+    // on every schedule the record uses rules it out.
+    const bad = sampleDrugs.flatMap(d => {
+      const f = d.dosageFormula;
+      const single = f.maxSingleDose;
+      const daily = f.maxDailyDose ?? d.maxDailyDose;
+      const reduces = [
+        ...(f.ageAdjustments ?? []),
+        ...(f.renalAdjustments ?? []),
+      ].some(b => b.adjustmentFactor > 0 && b.adjustmentFactor < 1);
+      if (!reduces || typeof single !== 'number' || typeof daily !== 'number')
+        return [];
+      return [
+        f.frequency,
+        ...(f.renalAdjustments ?? []).map(r => r.frequencyOverride),
+      ]
+        .filter(
+          (s): s is string =>
+            typeof s === 'string' && !isUnscheduledFrequency(s)
+        )
+        .filter(s => single * (getDosesPerDay(s) ?? 0) > daily + 1e-9)
+        .map(s => `${d.id} (${d.name}): ${single} ${d.unit} ${s} > ${daily}`);
+    });
+    expect(bad).toEqual([]);
   });
 
   it('resolves an endpoint tie to the most restrictive band', () => {
@@ -257,5 +323,106 @@ describe('every shipped drug produces a usable result for a standard adult', () 
     const result = calculateDosage(child, ibuprofen!);
     expect(result.status).toBe('success');
     if (result.status === 'success') expect(result.doseMg).toBeGreaterThan(0);
+  });
+
+  it('never shows a dose as within safe limits above a critical warning', () => {
+    // Regression: with the 85-year-old below (CrCl 15.4), meropenem,
+    // ampicillin/sulbactam and ticarcillin/clavulanate were "within safe
+    // limits" while warning that no renal rule covered her kidney function.
+    const panel: Patient[] = [
+      standardAdult,
+      {
+        ...standardAdult,
+        age: 85,
+        weight: 38,
+        height: 150,
+        gender: 'female',
+        serumCreatinine: 1.6,
+        patientType: 'elderly',
+      },
+      { ...standardAdult, age: 70, weight: 110, serumCreatinine: 4.0 },
+      {
+        ...standardAdult,
+        age: 8,
+        weight: 30,
+        height: 130,
+        serumCreatinine: 2.0,
+        patientType: 'child',
+      },
+    ];
+    const failures: string[] = [];
+    for (const drug of sampleDrugs) {
+      for (const p of panel) {
+        const result = calculateDosage(p, drug);
+        if (
+          result.status === 'success' &&
+          result.isWithinLimits &&
+          hasCritical(result.warnings)
+        ) {
+          failures.push(`${drug.id} (${drug.name}), age ${p.age}`);
+        }
+      }
+    }
+    expect(failures).toEqual([]);
+  });
+
+  it('never lets the single-dose ceiling absorb a renal reduction', () => {
+    // Regression: the renal factor was applied before the cap, so at CrCl < 30
+    // clarithromycin (500 mg cap, halved) gave an 80 kg adult 300 mg and a
+    // 100 kg one 375 mg instead of 250 mg.
+    const failures: string[] = [];
+    for (const drug of sampleDrugs) {
+      const ceiling = drug.dosageFormula.maxSingleDose;
+      if (!drug.dosageFormula.renalAdjustments?.length) continue;
+      if (typeof ceiling !== 'number') continue;
+      for (const weight of [60, 80, 100, 140]) {
+        for (const serumCreatinine of [1.5, 3, 6]) {
+          const result = calculateDosage(
+            { ...standardAdult, age: 70, weight, serumCreatinine },
+            drug
+          );
+          if (
+            result.status === 'success' &&
+            result.doseMg > ceiling * result.renalFactor
+          ) {
+            failures.push(
+              `${drug.id} (${drug.name}), ${weight} kg, SCr ${serumCreatinine}: ${result.doseMg} > ${ceiling} × ${result.renalFactor}`
+            );
+          }
+        }
+      }
+    }
+    expect(failures).toEqual([]);
+  });
+
+  it('never lets the single-dose ceiling absorb an age reduction', () => {
+    // Regression: an age factor below 1 was applied before the cap, so a band
+    // for older patients on a per-kg record did nothing once the dose came from
+    // the ceiling (15 mg/kg, max 1000 mg, 0.8 from 65 y: 1000 mg from 84 kg).
+    const failures: string[] = [];
+    for (const drug of sampleDrugs) {
+      const ceiling = drug.dosageFormula.maxSingleDose;
+      if (typeof ceiling !== 'number') continue;
+      for (const band of drug.dosageFormula.ageAdjustments ?? []) {
+        if (!(band.adjustmentFactor > 0 && band.adjustmentFactor < 1)) continue;
+        const age = (band.minAge + band.maxAge) / 2;
+        for (const weight of [20, 60, 100, 140]) {
+          const result = calculateDosage(
+            { ...standardAdult, age, weight, height: 170 },
+            drug
+          );
+          if (result.status !== 'success') continue;
+          if (
+            result.doseMg >
+            ceiling * result.ageFactor * result.renalFactor + 0.01
+          ) {
+            failures.push(
+              `${drug.id} (${drug.name}), age ${age}, ${weight} kg: ${result.doseMg} > ${ceiling} × ${result.ageFactor} × ${result.renalFactor}`
+            );
+          }
+        }
+      }
+    }
+    expect(failures).toEqual([]);
   });
 });
