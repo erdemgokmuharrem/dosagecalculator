@@ -328,7 +328,6 @@ export type RootStackParamList = {
   DosageCalculation: { patientId: string; drugId: string };
   DrugVademecum: undefined;
   DrugDetail: { drugId: string };
-  ProductInfo: undefined;
   Chemotherapy: undefined;
   ChemotherapyDose: undefined;
   History: undefined;

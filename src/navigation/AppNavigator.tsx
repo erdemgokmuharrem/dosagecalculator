@@ -23,7 +23,6 @@ import SubscriptionScreen from '../screens/SubscriptionScreen';
 
 // Legacy screens (kept for chemotherapy)
 import ChemotherapyDoseScreen from '../screens/ChemotherapyDoseScreen';
-import ProductInfoScreen from '../screens/ProductInfoScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -219,14 +218,6 @@ const AppNavigator: React.FC = () => {
           component={ChemotherapyDoseScreen}
           options={{
             title: t('navigation.chemotherapy', 'Chemotherapy Dose'),
-            headerBackTitle: t('common.back'),
-          }}
-        />
-        <Stack.Screen
-          name="ProductInfo"
-          component={ProductInfoScreen}
-          options={{
-            title: t('vademecum.indications'),
             headerBackTitle: t('common.back'),
           }}
         />

@@ -4,6 +4,17 @@ Bu dosya, projede yakın zamanda yapılan anlamlı değişiklikleri özetler; ba
 bir oturum işe devam ederken git geçmişini baştan okumak zorunda kalmasın diye
 tutulur. En yeni en üstte.
 
+## 2026-10-30
+
+- **Yasal belgeler ve bağlantılar GitHub Pages'e taşındı; `check:release` alan adı engeli kaldırıldı:**
+  - `docs/terms.html` (Kullanım Şartları & Tıbbi Sorumluluk Reddi) oluşturuldu ve `docs/index.html`'e bağlandı.
+  - `src/config/links.ts` içindeki sahte/çözülmeyen `dozuhesapla.com` adresleri `https://erdemgokmuharrem.github.io/dosagecalculator/` ve geçerli iletişim e-postasına güncellendi. `check:release` DNS çözme testi başarıyla geçti.
+- **Kullanılmayan `ProductInfoScreen` kaldırıldı:**
+  - Eski ve hiçbir yerden açılmayan `ProductInfoScreen.tsx` silindi. `AppNavigator` ve `RootStackParamList` temizlendi.
+  - `TECH_DEBT.md` ekran testi maddesi güncellendi; tüm aktif ekranlar %100 render test kapsamındadır.
+- **Tüm testler ve kontroller:**
+  - 29 test suite, 400/400 test geçiyor; TypeScript (`tsc --noEmit`) ve ESLint 0 hata/uyarı ile temiz.
+
 ## 2026-10-05
 
 - **Sefepim ve TMP-SMX hesaplamaya açıldı; böbrek bantları tamamlandı.**

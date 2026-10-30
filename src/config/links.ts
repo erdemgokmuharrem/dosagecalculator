@@ -9,10 +9,11 @@ import { Alert, Linking, Platform } from 'react-native';
  * blocks while any host here does not resolve.
  */
 export const LINKS = {
-  privacyPolicy: 'https://www.dozuhesapla.com/privacy',
-  terms: 'https://www.dozuhesapla.com/terms',
-  supportEmail: 'support@dozuhesapla.com',
-  feedbackEmail: 'feedback@dozuhesapla.com',
+  privacyPolicy:
+    'https://erdemgokmuharrem.github.io/dosagecalculator/privacy.html',
+  terms: 'https://erdemgokmuharrem.github.io/dosagecalculator/terms.html',
+  supportEmail: 'erdemmgokmuharrem@gmail.com',
+  feedbackEmail: 'erdemmgokmuharrem@gmail.com',
 } as const;
 
 const ANDROID_PACKAGE = 'com.dosagecalculator.app';
